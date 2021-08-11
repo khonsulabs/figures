@@ -70,6 +70,16 @@
 <span id="68">68</span>
 <span id="69">69</span>
 <span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
 </pre><pre class="rust">
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">any::type_name</span>, <span class="ident">fmt::Debug</span>, <span class="ident">marker::PhantomData</span>, <span class="ident">ops::Mul</span>};
 
@@ -81,6 +91,16 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Scale</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">UnitA</span>, <span class="ident">UnitB</span><span class="op">&gt;</span> {
     <span class="ident">ratio</span>: <span class="ident">T</span>,
     <span class="ident">_units</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span>(<span class="ident">UnitA</span>, <span class="ident">UnitB</span>)<span class="op">&gt;</span>,
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">UnitA</span>, <span class="ident">UnitB</span><span class="op">&gt;</span> <span class="ident">Scale</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">UnitA</span>, <span class="ident">UnitB</span><span class="op">&gt;</span> {
+    <span class="doccomment">/// Returns a new scale with the given `ratio`.</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">ratio</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="self">Self</span> {
+            <span class="ident">ratio</span>,
+            <span class="ident">_units</span>: <span class="ident">PhantomData</span>,
+        }
+    }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Debug</span>, <span class="ident">UnitA</span>, <span class="ident">UnitB</span><span class="op">&gt;</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Scale</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">UnitA</span>, <span class="ident">UnitB</span><span class="op">&gt;</span> {

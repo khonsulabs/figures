@@ -4,16 +4,19 @@ use crate::Scale;
 
 /// A unit representing DPI-adjusted resolution configured on the system.
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum Points {}
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq, PartialOrd, Ord)]
+pub struct Points;
 
 /// A unit representing physical pixels.
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum Pixels {}
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq, PartialOrd, Ord)]
+pub struct Pixels;
 
 /// A unit representing virtual pixels that are scaled on top of the DPI
 /// adjustment done for the [`Points`] unit.
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum Scaled {}
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq, PartialOrd, Ord)]
+pub struct Scaled;
 
 /// Scaling ratios for [`Scaled`] and [`Displayable`].
 pub struct DisplayScale<T> {

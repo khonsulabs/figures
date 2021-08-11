@@ -29,15 +29,10 @@ macro_rules! define_vectorlike {
             T: std::fmt::Debug,
         {
             fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-                f.debug_struct(&format!(
-                    "{}<{}, {}>",
-                    stringify!($name),
-                    std::any::type_name::<T>(),
-                    std::any::type_name::<Unit>(),
-                ))
-                .field(stringify!($x), &self.$x)
-                .field(stringify!($y), &self.$y)
-                .finish()
+                f.debug_struct(stringify!($name))
+                    .field(stringify!($x), &self.$x)
+                    .field(stringify!($y), &self.$y)
+                    .finish()
             }
         }
 
@@ -466,12 +461,9 @@ define_size_compatibility_ops!(Vector, x, y);
 #[test]
 fn debug_test() {
     let test = Size::<u32, ()>::new(1, 0);
-    assert_eq!(
-        &format!("{:?}", test),
-        "Size<u32, ()> { width: 1, height: 0 }"
-    );
+    assert_eq!(&format!("{:?}", test), "Size { width: 1, height: 0 }");
     let test = Point::<u32, ()>::new(1, 0);
-    assert_eq!(&format!("{:?}", test), "Point<u32, ()> { x: 1, y: 0 }");
+    assert_eq!(&format!("{:?}", test), "Point { x: 1, y: 0 }");
     let test = Vector::<u32, ()>::new(1, 0);
-    assert_eq!(&format!("{:?}", test), "Vector<u32, ()> { x: 1, y: 0 }");
+    assert_eq!(&format!("{:?}", test), "Vector { x: 1, y: 0 }");
 }

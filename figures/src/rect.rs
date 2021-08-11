@@ -1,4 +1,7 @@
-use std::ops::{Add, Div, Mul, Sub};
+use std::{
+    fmt::Debug,
+    ops::{Add, Div, Mul, Sub},
+};
 
 use num_traits::{NumCast, One, Zero};
 
@@ -6,13 +9,24 @@ use crate::{Ceil, Figure, Floor, Point, Round, Scale, Size, Vector, Vectorlike};
 
 /// A 2d rectangle. This type may internally be represented with a [`SizedRect`]
 /// or an [`ExtentsRect`]. All rect types implement [`Rectlike`].
-#[derive(Debug)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum Rect<T, Unit> {
     /// A [`SizedRect`].
     Sized(SizedRect<T, Unit>),
     /// An [`ExtentsRect`].
     Extents(ExtentsRect<T, Unit>),
+}
+
+impl<T, Unit> Debug for Rect<T, Unit>
+where
+    T: Debug,
+{
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Rect::Sized(sized) => sized.fmt(f),
+            Rect::Extents(extents) => extents.fmt(f),
+        }
+    }
 }
 
 impl<T, Unit> From<SizedRect<T, Unit>> for Rect<T, Unit> {
@@ -237,13 +251,24 @@ where
 }
 
 /// A rectangle that uses a [`Point`] and a [`Size`] for representation.
-#[derive(Debug)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct SizedRect<T, Unit> {
     /// The origin of the rectangle.
     pub origin: Point<T, Unit>,
     /// The size of the rectangle.
     pub size: Size<T, Unit>,
+}
+
+impl<T, Unit> Debug for SizedRect<T, Unit>
+where
+    T: Debug,
+{
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("SizedRect")
+            .field("origin", &self.origin)
+            .field("size", &self.size)
+            .finish()
+    }
 }
 
 impl<T, Unit> SizedRect<T, Unit> {
@@ -406,13 +431,24 @@ where
 }
 
 /// A rectangle that uses two [`Point`]s for representation.
-#[derive(Debug)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ExtentsRect<T, Unit> {
     /// The origin of the rectangle.
     pub origin: Point<T, Unit>,
     /// The non-origin point of the rectangle.
     pub extent: Point<T, Unit>,
+}
+
+impl<T, Unit> Debug for ExtentsRect<T, Unit>
+where
+    T: Debug,
+{
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("SizedRect")
+            .field("origin", &self.origin)
+            .field("extent", &self.extent)
+            .finish()
+    }
 }
 
 impl<T, Unit> Copy for ExtentsRect<T, Unit> where T: Copy {}

@@ -1,5 +1,4 @@
 use std::{
-    any::type_name,
     fmt::Debug,
     marker::PhantomData,
     ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Rem, RemAssign, Sub, SubAssign},
@@ -21,13 +20,7 @@ pub struct Figure<T, Unit> {
 
 impl<T: Debug, Unit> Debug for Figure<T, Unit> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        f.debug_tuple(&format!(
-            "Figure<{}, {}>",
-            type_name::<T>(),
-            type_name::<Unit>()
-        ))
-        .field(&self.value)
-        .finish()
+        f.debug_tuple("Figure").field(&self.value).finish()
     }
 }
 

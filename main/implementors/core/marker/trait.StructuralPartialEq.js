@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["figures"] = [{"text":"impl&lt;T, UnitA, UnitB&gt; <a class=\"trait\" href=\"https://doc.rust-lang.org/1.54.0/core/marker/trait.StructuralPartialEq.html\" title=\"trait core::marker::StructuralPartialEq\">StructuralPartialEq</a> for <a class=\"struct\" href=\"figures/struct.Scale.html\" title=\"struct figures::Scale\">Scale</a>&lt;T, UnitA, UnitB&gt;","synthetic":false,"types":["figures::scale::Scale"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

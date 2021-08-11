@@ -469,14 +469,6 @@
 <span id="467">467</span>
 <span id="468">468</span>
 <span id="469">469</span>
-<span id="470">470</span>
-<span id="471">471</span>
-<span id="472">472</span>
-<span id="473">473</span>
-<span id="474">474</span>
-<span id="475">475</span>
-<span id="476">476</span>
-<span id="477">477</span>
 </pre><pre class="rust">
 <span class="macro">macro_rules!</span> <span class="ident">define_vectorlike</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">x</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">y</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">doc</span>:<span class="ident">literal</span>) <span class="op">=</span><span class="op">&gt;</span> {
@@ -509,15 +501,10 @@
             <span class="ident">T</span>: <span class="ident">std::fmt::Debug</span>,
         {
             <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std::fmt::Result</span> {
-                <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(
-                    <span class="string">&quot;{}&lt;{}, {}&gt;&quot;</span>,
-                    <span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>),
-                    <span class="ident">std::any::type_name</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(),
-                    <span class="ident">std::any::type_name</span>::<span class="op">&lt;</span><span class="ident">Unit</span><span class="op">&gt;</span>(),
-                ))
-                .<span class="ident">field</span>(<span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">x</span>), <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">x</span>)
-                .<span class="ident">field</span>(<span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">y</span>), <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">y</span>)
-                .<span class="ident">finish</span>()
+                <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>))
+                    .<span class="ident">field</span>(<span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">x</span>), <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">x</span>)
+                    .<span class="ident">field</span>(<span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">y</span>), <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">y</span>)
+                    .<span class="ident">finish</span>()
             }
         }
 
@@ -946,14 +933,11 @@
 <span class="attribute">#[<span class="ident">test</span>]</span>
 <span class="kw">fn</span> <span class="ident">debug_test</span>() {
     <span class="kw">let</span> <span class="ident">test</span> <span class="op">=</span> <span class="ident">Size</span>::<span class="op">&lt;</span><span class="ident">u32</span>, ()<span class="op">&gt;</span><span class="ident">::new</span>(<span class="number">1</span>, <span class="number">0</span>);
-    <span class="macro">assert_eq!</span>(
-        <span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">test</span>),
-        <span class="string">&quot;Size&lt;u32, ()&gt; { width: 1, height: 0 }&quot;</span>
-    );
+    <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">test</span>), <span class="string">&quot;Size { width: 1, height: 0 }&quot;</span>);
     <span class="kw">let</span> <span class="ident">test</span> <span class="op">=</span> <span class="ident">Point</span>::<span class="op">&lt;</span><span class="ident">u32</span>, ()<span class="op">&gt;</span><span class="ident">::new</span>(<span class="number">1</span>, <span class="number">0</span>);
-    <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">test</span>), <span class="string">&quot;Point&lt;u32, ()&gt; { x: 1, y: 0 }&quot;</span>);
+    <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">test</span>), <span class="string">&quot;Point { x: 1, y: 0 }&quot;</span>);
     <span class="kw">let</span> <span class="ident">test</span> <span class="op">=</span> <span class="ident">Vector</span>::<span class="op">&lt;</span><span class="ident">u32</span>, ()<span class="op">&gt;</span><span class="ident">::new</span>(<span class="number">1</span>, <span class="number">0</span>);
-    <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">test</span>), <span class="string">&quot;Vector&lt;u32, ()&gt; { x: 1, y: 0 }&quot;</span>);
+    <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">test</span>), <span class="string">&quot;Vector { x: 1, y: 0 }&quot;</span>);
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="figures" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script></body></html>

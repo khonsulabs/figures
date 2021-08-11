@@ -862,8 +862,47 @@
 <span id="860">860</span>
 <span id="861">861</span>
 <span id="862">862</span>
+<span id="863">863</span>
+<span id="864">864</span>
+<span id="865">865</span>
+<span id="866">866</span>
+<span id="867">867</span>
+<span id="868">868</span>
+<span id="869">869</span>
+<span id="870">870</span>
+<span id="871">871</span>
+<span id="872">872</span>
+<span id="873">873</span>
+<span id="874">874</span>
+<span id="875">875</span>
+<span id="876">876</span>
+<span id="877">877</span>
+<span id="878">878</span>
+<span id="879">879</span>
+<span id="880">880</span>
+<span id="881">881</span>
+<span id="882">882</span>
+<span id="883">883</span>
+<span id="884">884</span>
+<span id="885">885</span>
+<span id="886">886</span>
+<span id="887">887</span>
+<span id="888">888</span>
+<span id="889">889</span>
+<span id="890">890</span>
+<span id="891">891</span>
+<span id="892">892</span>
+<span id="893">893</span>
+<span id="894">894</span>
+<span id="895">895</span>
+<span id="896">896</span>
+<span id="897">897</span>
+<span id="898">898</span>
 </pre><pre class="rust">
-<span class="kw">use</span> <span class="ident">std::ops</span>::{<span class="ident">Add</span>, <span class="ident">Div</span>, <span class="ident">Mul</span>, <span class="ident">Sub</span>};
+<span class="kw">use</span> <span class="ident">std</span>::{
+    <span class="ident">fmt::Debug</span>,
+    <span class="ident">ops</span>::{<span class="ident">Add</span>, <span class="ident">Div</span>, <span class="ident">Mul</span>, <span class="ident">Sub</span>},
+};
 
 <span class="kw">use</span> <span class="ident">num_traits</span>::{<span class="ident">NumCast</span>, <span class="ident">One</span>, <span class="ident">Zero</span>};
 
@@ -871,13 +910,24 @@
 
 <span class="doccomment">/// A 2d rectangle. This type may internally be represented with a [`SizedRect`]</span>
 <span class="doccomment">/// or an [`ExtentsRect`]. All rect types implement [`Rectlike`].</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;serde&quot;</span>, <span class="ident">derive</span>(<span class="ident">serde::Serialize</span>, <span class="ident">serde::Deserialize</span>))]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Rect</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Unit</span><span class="op">&gt;</span> {
     <span class="doccomment">/// A [`SizedRect`].</span>
     <span class="ident">Sized</span>(<span class="ident">SizedRect</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Unit</span><span class="op">&gt;</span>),
     <span class="doccomment">/// An [`ExtentsRect`].</span>
     <span class="ident">Extents</span>(<span class="ident">ExtentsRect</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Unit</span><span class="op">&gt;</span>),
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Unit</span><span class="op">&gt;</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Rect</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Unit</span><span class="op">&gt;</span>
+<span class="kw">where</span>
+    <span class="ident">T</span>: <span class="ident">Debug</span>,
+{
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std::fmt::Result</span> {
+        <span class="kw">match</span> <span class="self">self</span> {
+            <span class="ident">Rect::Sized</span>(<span class="ident">sized</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">sized</span>.<span class="ident">fmt</span>(<span class="ident">f</span>),
+            <span class="ident">Rect::Extents</span>(<span class="ident">extents</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">extents</span>.<span class="ident">fmt</span>(<span class="ident">f</span>),
+        }
+    }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Unit</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">SizedRect</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Unit</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Rect</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Unit</span><span class="op">&gt;</span> {
@@ -1102,13 +1152,24 @@
 }
 
 <span class="doccomment">/// A rectangle that uses a [`Point`] and a [`Size`] for representation.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;serde&quot;</span>, <span class="ident">derive</span>(<span class="ident">serde::Serialize</span>, <span class="ident">serde::Deserialize</span>))]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SizedRect</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Unit</span><span class="op">&gt;</span> {
     <span class="doccomment">/// The origin of the rectangle.</span>
     <span class="kw">pub</span> <span class="ident">origin</span>: <span class="ident">Point</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Unit</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The size of the rectangle.</span>
     <span class="kw">pub</span> <span class="ident">size</span>: <span class="ident">Size</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Unit</span><span class="op">&gt;</span>,
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Unit</span><span class="op">&gt;</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">SizedRect</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Unit</span><span class="op">&gt;</span>
+<span class="kw">where</span>
+    <span class="ident">T</span>: <span class="ident">Debug</span>,
+{
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std::fmt::Result</span> {
+        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;SizedRect&quot;</span>)
+            .<span class="ident">field</span>(<span class="string">&quot;origin&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">origin</span>)
+            .<span class="ident">field</span>(<span class="string">&quot;size&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">size</span>)
+            .<span class="ident">finish</span>()
+    }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Unit</span><span class="op">&gt;</span> <span class="ident">SizedRect</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Unit</span><span class="op">&gt;</span> {
@@ -1271,13 +1332,24 @@
 }
 
 <span class="doccomment">/// A rectangle that uses two [`Point`]s for representation.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;serde&quot;</span>, <span class="ident">derive</span>(<span class="ident">serde::Serialize</span>, <span class="ident">serde::Deserialize</span>))]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExtentsRect</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Unit</span><span class="op">&gt;</span> {
     <span class="doccomment">/// The origin of the rectangle.</span>
     <span class="kw">pub</span> <span class="ident">origin</span>: <span class="ident">Point</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Unit</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The non-origin point of the rectangle.</span>
     <span class="kw">pub</span> <span class="ident">extent</span>: <span class="ident">Point</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Unit</span><span class="op">&gt;</span>,
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Unit</span><span class="op">&gt;</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">ExtentsRect</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Unit</span><span class="op">&gt;</span>
+<span class="kw">where</span>
+    <span class="ident">T</span>: <span class="ident">Debug</span>,
+{
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std::fmt::Result</span> {
+        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;SizedRect&quot;</span>)
+            .<span class="ident">field</span>(<span class="string">&quot;origin&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">origin</span>)
+            .<span class="ident">field</span>(<span class="string">&quot;extent&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">extent</span>)
+            .<span class="ident">finish</span>()
+    }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Unit</span><span class="op">&gt;</span> <span class="ident">Copy</span> <span class="kw">for</span> <span class="ident">ExtentsRect</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Unit</span><span class="op">&gt;</span> <span class="kw">where</span> <span class="ident">T</span>: <span class="ident">Copy</span> {}

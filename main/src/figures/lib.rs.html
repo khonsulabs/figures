@@ -38,8 +38,18 @@
 <span id="36">36</span>
 <span id="37">37</span>
 <span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
 </pre><pre class="rust">
-<span class="doccomment">//! A math library specialized for 2d screen graphics.</span>
+<span class="doccomment">//! A small math library specialized for 2d screen graphics.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ## Feature Flags</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! To enable serialization of most types, enable the `serde` feature flag.</span>
 
 <span class="attribute">#![<span class="ident">forbid</span>(<span class="ident">unsafe_code</span>)]</span>
 <span class="attribute">#![<span class="ident">warn</span>(
@@ -52,22 +62,24 @@
 <span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy::if_not_else</span>, <span class="ident">clippy::module_name_repetitions</span>)]</span>
 <span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">doc</span>, <span class="ident">warn</span>(<span class="ident">rustdoc::all</span>))]</span>
 
+<span class="kw">mod</span> <span class="ident">angle</span>;
+<span class="kw">mod</span> <span class="ident">approxeq</span>;
 <span class="kw">mod</span> <span class="ident">displayable</span>;
 <span class="kw">mod</span> <span class="ident">figure</span>;
+<span class="kw">mod</span> <span class="ident">num</span>;
 <span class="kw">mod</span> <span class="ident">point</span>;
 <span class="kw">mod</span> <span class="ident">rect</span>;
 <span class="kw">mod</span> <span class="ident">scale</span>;
 <span class="kw">mod</span> <span class="ident">size</span>;
 <span class="kw">mod</span> <span class="ident">vector</span>;
-<span class="attribute">#[<span class="ident">macro_use</span>]</span>
 <span class="kw">mod</span> <span class="ident">vectorlike</span>;
-<span class="kw">mod</span> <span class="ident">angle</span>;
-<span class="kw">mod</span> <span class="ident">num</span>;
 
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">approx</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">num_traits</span>;
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::{
     <span class="ident">angle::Angle</span>,
+    <span class="ident">approxeq::Approx</span>,
     <span class="ident">displayable</span>::{
         <span class="ident">DisplayScale</span>, <span class="ident">Displayable</span>, <span class="ident">Pixels</span>, <span class="ident">Points</span>, <span class="ident">Scaled</span>, <span class="ident">ToPixels</span>, <span class="ident">ToPoints</span>, <span class="ident">ToScaled</span>,
     },

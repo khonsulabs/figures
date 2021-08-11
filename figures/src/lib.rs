@@ -20,12 +20,18 @@ mod size;
 mod vector;
 #[macro_use]
 mod vectorlike;
+mod angle;
+mod num;
+
+pub use num_traits;
 
 pub use self::{
+    angle::Angle,
     displayable::{
         DisplayScale, Displayable, Pixels, Points, Scaled, ToPixels, ToPoints, ToScaled,
     },
     figure::Figure,
+    num::{Ceil, Floor, One, Round, Zero},
     rect::{ExtentsRect, Rect, Rectlike, SizedRect},
     scale::Scale,
     vectorlike::{Point, Size, Vector, Vectorlike},

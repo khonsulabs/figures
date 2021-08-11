@@ -7,7 +7,10 @@ use std::{
 
 use num_traits::{NumCast, One, ToPrimitive, Zero};
 
-use crate::{DisplayScale, Pixels, Points, Scale, Scaled, ToPixels, ToPoints, ToScaled};
+use crate::{
+    num::{Ceil, Floor},
+    DisplayScale, Pixels, Points, Round, Scale, Scaled, ToPixels, ToPoints, ToScaled,
+};
 
 /// A value in a specific unit.
 pub struct Figure<T, Unit> {
@@ -36,8 +39,45 @@ impl<T: Clone, Unit> Clone for Figure<T, Unit> {
 
 impl<T: Copy, Unit> Figure<T, Unit> {
     /// Returns the inner value
+    pub fn new(value: T) -> Self {
+        Self {
+            value,
+            _unit: PhantomData::default(),
+        }
+    }
+
+    /// Returns the inner value
     pub fn get(&self) -> T {
         self.value
+    }
+
+    /// Returns this value with the new unit. Does not affect the underlying
+    /// value.
+    pub fn cast_unit<NewUnit>(&self) -> Figure<T, NewUnit> {
+        Figure::new(self.value)
+    }
+}
+
+impl<T, Unit> Figure<T, Unit>
+where
+    T: std::cmp::PartialOrd + Copy,
+{
+    /// Returns the smaller value of `self` and `rhs`.
+    pub fn min(self, rhs: Self) -> Self {
+        if self.get() <= rhs.get() {
+            self
+        } else {
+            rhs
+        }
+    }
+
+    /// Returns the larger value of `self` and `rhs`.
+    pub fn max(self, rhs: Self) -> Self {
+        if self.get() >= rhs.get() {
+            self
+        } else {
+            rhs
+        }
     }
 }
 
@@ -231,20 +271,6 @@ where
     }
 }
 
-impl<T, Unit> Neg for Figure<T, Unit>
-where
-    T: Neg<Output = T>,
-{
-    type Output = Self;
-
-    fn neg(self) -> Self::Output {
-        Self {
-            value: self.value.neg(),
-            _unit: PhantomData::default(),
-        }
-    }
-}
-
 impl<T, Unit> AddAssign for Figure<T, Unit>
 where
     T: AddAssign,
@@ -287,6 +313,135 @@ where
 {
     fn rem_assign(&mut self, rhs: Self) {
         self.value.rem_assign(rhs.value);
+    }
+}
+
+impl<T, Unit> Add<T> for Figure<T, Unit>
+where
+    T: Add<Output = T>,
+{
+    type Output = Self;
+
+    fn add(self, rhs: T) -> Self::Output {
+        Self {
+            value: self.value.add(rhs),
+            _unit: PhantomData::default(),
+        }
+    }
+}
+
+impl<T, Unit> Sub<T> for Figure<T, Unit>
+where
+    T: Sub<Output = T>,
+{
+    type Output = Self;
+
+    fn sub(self, rhs: T) -> Self::Output {
+        Self {
+            value: self.value.sub(rhs),
+            _unit: PhantomData::default(),
+        }
+    }
+}
+
+impl<T, Unit> Mul<T> for Figure<T, Unit>
+where
+    T: Mul<Output = T>,
+{
+    type Output = Self;
+
+    fn mul(self, rhs: T) -> Self::Output {
+        Self {
+            value: self.value.mul(rhs),
+            _unit: PhantomData::default(),
+        }
+    }
+}
+
+impl<T, Unit> Div<T> for Figure<T, Unit>
+where
+    T: Div<Output = T>,
+{
+    type Output = Self;
+
+    fn div(self, rhs: T) -> Self::Output {
+        Self {
+            value: self.value.div(rhs),
+            _unit: PhantomData::default(),
+        }
+    }
+}
+
+impl<T, Unit> Rem<T> for Figure<T, Unit>
+where
+    T: Rem<Output = T>,
+{
+    type Output = Self;
+
+    fn rem(self, rhs: T) -> Self::Output {
+        Self {
+            value: self.value.rem(rhs),
+            _unit: PhantomData::default(),
+        }
+    }
+}
+
+impl<T, Unit> AddAssign<T> for Figure<T, Unit>
+where
+    T: AddAssign,
+{
+    fn add_assign(&mut self, rhs: T) {
+        self.value.add_assign(rhs);
+    }
+}
+
+impl<T, Unit> SubAssign<T> for Figure<T, Unit>
+where
+    T: SubAssign,
+{
+    fn sub_assign(&mut self, rhs: T) {
+        self.value.sub_assign(rhs);
+    }
+}
+
+impl<T, Unit> DivAssign<T> for Figure<T, Unit>
+where
+    T: DivAssign,
+{
+    fn div_assign(&mut self, rhs: T) {
+        self.value.div_assign(rhs);
+    }
+}
+
+impl<T, Unit> MulAssign<T> for Figure<T, Unit>
+where
+    T: MulAssign,
+{
+    fn mul_assign(&mut self, rhs: T) {
+        self.value.mul_assign(rhs);
+    }
+}
+
+impl<T, Unit> RemAssign<T> for Figure<T, Unit>
+where
+    T: RemAssign,
+{
+    fn rem_assign(&mut self, rhs: T) {
+        self.value.rem_assign(rhs);
+    }
+}
+
+impl<T, Unit> Neg for Figure<T, Unit>
+where
+    T: Neg<Output = T>,
+{
+    type Output = Self;
+
+    fn neg(self) -> Self::Output {
+        Self {
+            value: self.value.neg(),
+            _unit: PhantomData::default(),
+        }
     }
 }
 
@@ -436,5 +591,35 @@ where
 
     fn to_pixels(&self, _scale: &DisplayScale<T>) -> Self::Pixels {
         *self
+    }
+}
+
+impl<T, Unit> Round for Figure<T, Unit>
+where
+    T: Round,
+{
+    fn round(mut self) -> Self {
+        self.value = self.value.round();
+        self
+    }
+}
+
+impl<T, Unit> Ceil for Figure<T, Unit>
+where
+    T: Ceil,
+{
+    fn ceil(mut self) -> Self {
+        self.value = self.value.ceil();
+        self
+    }
+}
+
+impl<T, Unit> Floor for Figure<T, Unit>
+where
+    T: Floor,
+{
+    fn floor(mut self) -> Self {
+        self.value = self.value.floor();
+        self
     }
 }

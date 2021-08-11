@@ -10,6 +10,16 @@ pub struct Scale<T, UnitA, UnitB> {
     _units: PhantomData<(UnitA, UnitB)>,
 }
 
+impl<T, UnitA, UnitB> Scale<T, UnitA, UnitB> {
+    /// Returns a new scale with the given `ratio`.
+    pub const fn new(ratio: T) -> Self {
+        Self {
+            ratio,
+            _units: PhantomData,
+        }
+    }
+}
+
 impl<T: Debug, UnitA, UnitB> Debug for Scale<T, UnitA, UnitB> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.debug_tuple(&format!(

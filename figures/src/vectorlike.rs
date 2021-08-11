@@ -40,6 +40,19 @@ macro_rules! define_vectorlike {
             }
         }
 
+        impl<T, Unit> $name<T, Unit> {
+            ///Returns a new `
+            #[doc = stringify!($name)]
+            ///`.
+            pub const fn new($x: T, $y: T) -> Self {
+                Self {
+                    $x,
+                    $y,
+                    _unit: std::marker::PhantomData,
+                }
+            }
+        }
+
         impl<T, Unit> $name<T, Unit>
         where
             T: Copy,
@@ -47,15 +60,11 @@ macro_rules! define_vectorlike {
             ///Returns a new `
             #[doc = stringify!($name)]
             ///`.
-            pub fn new(
+            pub fn from_figures(
                 $x: impl Into<crate::Figure<T, Unit>>,
                 $y: impl Into<crate::Figure<T, Unit>>,
             ) -> Self {
-                Self {
-                    $x: $x.into().get(),
-                    $y: $y.into().get(),
-                    _unit: std::marker::PhantomData::default(),
-                }
+                Self::new($x.into().get(), $y.into().get())
             }
 
             ///Returns the
@@ -70,6 +79,12 @@ macro_rules! define_vectorlike {
             /// component.
             pub fn $y(&self) -> crate::Figure<T, Unit> {
                 crate::Figure::from(self.$y)
+            }
+
+            /// Returns this value with the new unit. Does not affect the underlying
+            /// value.
+            pub fn cast_unit<NewUnit>(&self) -> $name<T, NewUnit> {
+                $name::new(self.$x, self.$y)
             }
         }
 
@@ -113,6 +128,25 @@ macro_rules! define_vectorlike {
             /// component.
             pub fn signum(&self) -> crate::Vector<T, Unit> {
                 crate::Vector::new(self.$x.signum(), self.$y.signum())
+            }
+        }
+
+        impl<T, Unit> $name<T, Unit>
+        where
+            T: std::cmp::PartialOrd + Copy,
+        {
+            ///Returns a new `
+            #[doc = stringify!($name)]
+            ///` with the smaller value of each component.
+            pub fn min(&self, rhs: &Self) -> Self {
+                Self::from_figures(self.$x().min(rhs.$x()), self.$y().min(rhs.$y()))
+            }
+
+            ///Returns a new `
+            #[doc = stringify!($name)]
+            ///` with the larger value of each component.
+            pub fn max(&self, rhs: &Self) -> Self {
+                Self::from_figures(self.$x().max(rhs.$x()), self.$y().max(rhs.$y()))
             }
         }
 
@@ -168,6 +202,26 @@ macro_rules! define_vectorlike {
             }
         }
 
+        impl<T, Unit> std::ops::AddAssign for $name<T, Unit>
+        where
+            T: std::ops::AddAssign + Copy,
+        {
+            fn add_assign(&mut self, rhs: Self) {
+                self.$x += rhs.$x;
+                self.$y += rhs.$y;
+            }
+        }
+
+        impl<T, Unit> std::ops::SubAssign for $name<T, Unit>
+        where
+            T: std::ops::SubAssign + Copy,
+        {
+            fn sub_assign(&mut self, rhs: Self) {
+                self.$x -= rhs.$x;
+                self.$y -= rhs.$y;
+            }
+        }
+
         impl<T, Unit> std::ops::Neg for $name<T, Unit>
         where
             T: std::ops::Neg<Output = T> + Copy,
@@ -179,23 +233,200 @@ macro_rules! define_vectorlike {
             }
         }
 
-        impl<T, Unit> std::ops::AddAssign for $name<T, Unit>
+        impl<T, Unit> Eq for $name<T, Unit> where T: Eq {}
+
+        impl<T, Unit> PartialEq for $name<T, Unit>
         where
-            T: std::ops::AddAssign + Copy,
+            T: PartialEq,
         {
-            fn add_assign(&mut self, rhs: Self) {
-                self.$x += rhs.$y;
-                self.$y += rhs.$y;
+            fn eq(&self, other: &Self) -> bool {
+                self.$x.eq(&other.$x) && self.$y.eq(&other.$y)
             }
         }
 
-        impl<T, Unit> std::ops::SubAssign for $name<T, Unit>
+        impl<T, UnitA, UnitB> std::ops::Mul<crate::Scale<T, UnitA, UnitB>> for $name<T, UnitA>
+        where
+            T: std::ops::Mul<T, Output = T> + Copy,
+        {
+            type Output = $name<T, UnitB>;
+
+            fn mul(self, rhs: crate::Scale<T, UnitA, UnitB>) -> Self::Output {
+                $name::new(self.$x * rhs.get(), self.$y * rhs.get())
+            }
+        }
+
+        impl<T, UnitA, UnitB> std::ops::Div<crate::Scale<T, UnitA, UnitB>> for $name<T, UnitB>
+        where
+            T: std::ops::Div<T, Output = T> + Copy,
+        {
+            type Output = $name<T, UnitA>;
+
+            fn div(self, rhs: crate::Scale<T, UnitA, UnitB>) -> Self::Output {
+                $name::new(self.$x / rhs.get(), self.$y / rhs.get())
+            }
+        }
+        impl<T, Unit> std::ops::Mul<T> for $name<T, Unit>
+        where
+            T: std::ops::Mul<T, Output = T> + Copy,
+        {
+            type Output = $name<T, Unit>;
+
+            fn mul(self, rhs: T) -> Self::Output {
+                $name::new(self.$x * rhs, self.$y * rhs)
+            }
+        }
+
+        impl<T, Unit> std::ops::Div<T> for $name<T, Unit>
+        where
+            T: std::ops::Div<T, Output = T> + Copy,
+        {
+            type Output = $name<T, Unit>;
+
+            fn div(self, rhs: T) -> Self::Output {
+                $name::new(self.$x / rhs, self.$y / rhs)
+            }
+        }
+
+        impl<T, Unit> crate::num::Round for $name<T, Unit>
+        where
+            T: crate::num::Round,
+        {
+            fn round(mut self) -> Self {
+                self.$x = self.$x.round();
+                self.$y = self.$y.round();
+                self
+            }
+        }
+
+        impl<T, Unit> crate::num::Ceil for $name<T, Unit>
+        where
+            T: crate::num::Ceil,
+        {
+            fn ceil(mut self) -> Self {
+                self.$x = self.$x.ceil();
+                self.$y = self.$y.ceil();
+                self
+            }
+        }
+
+        impl<T, Unit> crate::num::Floor for $name<T, Unit>
+        where
+            T: crate::num::Floor,
+        {
+            fn floor(mut self) -> Self {
+                self.$x = self.$x.floor();
+                self.$y = self.$y.floor();
+                self
+            }
+        }
+    };
+}
+
+macro_rules! define_vector_compatibility_ops {
+    ($name:ident, $x:ident, $y:ident) => {
+        impl<T, Unit> std::ops::Add<Vector<T, Unit>> for $name<T, Unit>
+        where
+            T: std::ops::Add<Output = T> + Copy,
+        {
+            type Output = Self;
+
+            fn add(self, rhs: Vector<T, Unit>) -> Self::Output {
+                Self::new(self.$x + rhs.x, self.$y + rhs.y)
+            }
+        }
+
+        impl<T, Unit> std::ops::Sub<Vector<T, Unit>> for $name<T, Unit>
+        where
+            T: std::ops::Sub<Output = T> + Copy,
+        {
+            type Output = Self;
+
+            fn sub(self, rhs: Vector<T, Unit>) -> Self::Output {
+                Self::new(self.$x - rhs.x, self.$y - rhs.y)
+            }
+        }
+
+        impl<T, Unit> std::ops::AddAssign<Vector<T, Unit>> for $name<T, Unit>
+        where
+            T: std::ops::AddAssign + Copy,
+        {
+            fn add_assign(&mut self, rhs: Vector<T, Unit>) {
+                self.$x += rhs.x;
+                self.$y += rhs.y;
+            }
+        }
+
+        impl<T, Unit> std::ops::SubAssign<Vector<T, Unit>> for $name<T, Unit>
         where
             T: std::ops::SubAssign + Copy,
         {
-            fn sub_assign(&mut self, rhs: Self) {
-                self.$x -= rhs.$y;
-                self.$y -= rhs.$y;
+            fn sub_assign(&mut self, rhs: Vector<T, Unit>) {
+                self.$x -= rhs.x;
+                self.$y -= rhs.y;
+            }
+        }
+
+        impl<T, Unit> PartialEq<Vector<T, Unit>> for $name<T, Unit>
+        where
+            T: PartialEq,
+        {
+            fn eq(&self, other: &Vector<T, Unit>) -> bool {
+                self.$x.eq(&other.x) && self.$y.eq(&other.y)
+            }
+        }
+    };
+}
+
+macro_rules! define_size_compatibility_ops {
+    ($name:ident, $x:ident, $y:ident) => {
+        impl<T, Unit> std::ops::Add<Size<T, Unit>> for $name<T, Unit>
+        where
+            T: std::ops::Add<Output = T> + Copy,
+        {
+            type Output = Self;
+
+            fn add(self, rhs: Size<T, Unit>) -> Self::Output {
+                Self::new(self.$x + rhs.width, self.$y + rhs.height)
+            }
+        }
+
+        impl<T, Unit> std::ops::Sub<Size<T, Unit>> for $name<T, Unit>
+        where
+            T: std::ops::Sub<Output = T> + Copy,
+        {
+            type Output = Self;
+
+            fn sub(self, rhs: Size<T, Unit>) -> Self::Output {
+                Self::new(self.$x - rhs.width, self.$y - rhs.height)
+            }
+        }
+
+        impl<T, Unit> std::ops::AddAssign<Size<T, Unit>> for $name<T, Unit>
+        where
+            T: std::ops::AddAssign + Copy,
+        {
+            fn add_assign(&mut self, rhs: Size<T, Unit>) {
+                self.$x += rhs.width;
+                self.$y += rhs.height;
+            }
+        }
+
+        impl<T, Unit> std::ops::SubAssign<Size<T, Unit>> for $name<T, Unit>
+        where
+            T: std::ops::SubAssign + Copy,
+        {
+            fn sub_assign(&mut self, rhs: Size<T, Unit>) {
+                self.$x -= rhs.width;
+                self.$y -= rhs.height;
+            }
+        }
+
+        impl<T, Unit> PartialEq<Size<T, Unit>> for $name<T, Unit>
+        where
+            T: PartialEq,
+        {
+            fn eq(&self, other: &Size<T, Unit>) -> bool {
+                self.$x.eq(&other.width) && self.$y.eq(&other.height)
             }
         }
     };
@@ -219,6 +450,11 @@ define_vectorlike!(
 );
 define_vectorlike!(Point, x, y, "A location represented by an x and y value.");
 define_vectorlike!(Vector, x, y, "A 2d measurement using x and y values.");
+
+define_vector_compatibility_ops!(Size, width, height);
+define_vector_compatibility_ops!(Point, x, y);
+define_size_compatibility_ops!(Point, x, y);
+define_size_compatibility_ops!(Vector, x, y);
 
 #[test]
 fn debug_test() {

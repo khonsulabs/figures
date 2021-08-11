@@ -9,6 +9,7 @@ use crate::{Point, Vector};
 
 /// An angle of rotation.
 #[derive(Clone, Copy)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum Angle<T> {
     /// An angle expressed in radians.
     Radians(T),

@@ -9,10 +9,11 @@ use num_traits::{NumCast, One, ToPrimitive, Zero};
 
 use crate::{
     num::{Ceil, Floor},
-    DisplayScale, Pixels, Points, Round, Scale, Scaled, ToPixels, ToPoints, ToScaled,
+    Approx, DisplayScale, Pixels, Points, Round, Scale, Scaled, ToPixels, ToPoints, ToScaled,
 };
 
 /// A value in a specific unit.
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Figure<T, Unit> {
     value: T,
     _unit: PhantomData<Unit>,
@@ -37,15 +38,17 @@ impl<T: Clone, Unit> Clone for Figure<T, Unit> {
     }
 }
 
-impl<T: Copy, Unit> Figure<T, Unit> {
-    /// Returns the inner value
-    pub fn new(value: T) -> Self {
+impl<T, Unit> Figure<T, Unit> {
+    /// Returns a new figure with `value`.
+    pub const fn new(value: T) -> Self {
         Self {
             value,
-            _unit: PhantomData::default(),
+            _unit: PhantomData,
         }
     }
+}
 
+impl<T: Copy, Unit> Figure<T, Unit> {
     /// Returns the inner value
     pub fn get(&self) -> T {
         self.value
@@ -621,5 +624,14 @@ where
     fn floor(mut self) -> Self {
         self.value = self.value.floor();
         self
+    }
+}
+
+impl<T, Unit> Approx<T> for Figure<T, Unit>
+where
+    T: approx::AbsDiffEq,
+{
+    fn approx_eq(&self, other: &Self) -> bool {
+        self.value.abs_diff_eq(&other.value, T::default_epsilon())
     }
 }

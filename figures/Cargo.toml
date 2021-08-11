@@ -9,6 +9,10 @@ keywords = ["2d", "math", "graphics"]
 categories = ["mathematics"]
 readme = "./README.md"
 
+[features]
+default = []
+
 [dependencies]
 approx = "0.5"
 num-traits = "0.2"
+serde = { version = "1", features = ["derive"], optional = true }

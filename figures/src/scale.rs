@@ -5,6 +5,7 @@ use num_traits::One;
 /// Allows converting between `UnitA` and `UnitB` by multiplying or dividing by
 /// a scaling ratio.
 #[derive(PartialEq, Eq, PartialOrd, Ord)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Scale<T, UnitA, UnitB> {
     ratio: T,
     _units: PhantomData<(UnitA, UnitB)>,

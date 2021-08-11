@@ -2,6 +2,7 @@ macro_rules! define_vectorlike {
     ($name:ident, $x:ident, $y:ident, $doc:literal) => {
         #[doc = $doc]
         #[allow(missing_docs)]
+        #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
         pub struct $name<T, Unit> {
             pub $x: T,
             pub $y: T,
@@ -60,11 +61,8 @@ macro_rules! define_vectorlike {
             ///Returns a new `
             #[doc = stringify!($name)]
             ///`.
-            pub fn from_figures(
-                $x: impl Into<crate::Figure<T, Unit>>,
-                $y: impl Into<crate::Figure<T, Unit>>,
-            ) -> Self {
-                Self::new($x.into().get(), $y.into().get())
+            pub fn from_figures($x: crate::Figure<T, Unit>, $y: crate::Figure<T, Unit>) -> Self {
+                Self::new($x.get(), $y.get())
             }
 
             ///Returns the
@@ -317,6 +315,15 @@ macro_rules! define_vectorlike {
                 self.$x = self.$x.floor();
                 self.$y = self.$y.floor();
                 self
+            }
+        }
+
+        impl<T, Unit> crate::Approx<T> for $name<T, Unit>
+        where
+            T: approx::AbsDiffEq + Copy,
+        {
+            fn approx_eq(&self, other: &Self) -> bool {
+                self.$x().approx_eq(&other.$x()) && self.$y().approx_eq(&other.$y())
             }
         }
     };

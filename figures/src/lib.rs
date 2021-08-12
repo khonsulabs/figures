@@ -33,9 +33,7 @@ pub use num_traits;
 pub use self::{
     angle::Angle,
     approxeq::Approx,
-    displayable::{
-        DisplayScale, Displayable, Pixels, Points, Scaled, ToPixels, ToPoints, ToScaled,
-    },
+    displayable::{DisplayScale, Displayable, Pixels, Points, Scaled},
     figure::Figure,
     num::{Ceil, Floor, One, Round, Zero},
     rect::{ExtentsRect, Rect, Rectlike, SizedRect},

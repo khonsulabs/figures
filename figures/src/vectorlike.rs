@@ -321,6 +321,69 @@ macro_rules! define_vectorlike {
                 self.$x().approx_eq(&other.$x()) && self.$y().approx_eq(&other.$y())
             }
         }
+
+        impl<T> crate::Displayable<T> for $name<T, crate::Scaled>
+        where
+            T: std::ops::Div<T, Output = T> + std::ops::Mul<T, Output = T> + Copy,
+        {
+            type Pixels = $name<T, crate::Pixels>;
+            type Points = $name<T, crate::Points>;
+            type Scaled = Self;
+
+            fn to_pixels(&self, scale: &crate::DisplayScale<T>) -> Self::Pixels {
+                *self / scale.scaled
+            }
+
+            fn to_points(&self, scale: &crate::DisplayScale<T>) -> Self::Points {
+                *self / scale.between
+            }
+
+            fn to_scaled(&self, _scale: &crate::DisplayScale<T>) -> Self::Scaled {
+                *self
+            }
+        }
+
+        impl<T> crate::Displayable<T> for $name<T, crate::Points>
+        where
+            T: std::ops::Div<T, Output = T> + std::ops::Mul<T, Output = T> + Copy,
+        {
+            type Pixels = $name<T, crate::Pixels>;
+            type Points = Self;
+            type Scaled = $name<T, crate::Scaled>;
+
+            fn to_pixels(&self, scale: &crate::DisplayScale<T>) -> Self::Pixels {
+                *self / scale.points
+            }
+
+            fn to_points(&self, _scale: &crate::DisplayScale<T>) -> Self::Points {
+                *self
+            }
+
+            fn to_scaled(&self, scale: &crate::DisplayScale<T>) -> Self::Scaled {
+                *self * scale.between
+            }
+        }
+
+        impl<T> crate::Displayable<T> for $name<T, crate::Pixels>
+        where
+            T: std::ops::Div<T, Output = T> + std::ops::Mul<T, Output = T> + Copy,
+        {
+            type Pixels = Self;
+            type Points = $name<T, crate::Points>;
+            type Scaled = $name<T, crate::Scaled>;
+
+            fn to_pixels(&self, _scale: &crate::DisplayScale<T>) -> Self::Pixels {
+                *self
+            }
+
+            fn to_points(&self, scale: &crate::DisplayScale<T>) -> Self::Points {
+                *self * scale.points
+            }
+
+            fn to_scaled(&self, scale: &crate::DisplayScale<T>) -> Self::Scaled {
+                *self * scale.scaled
+            }
+        }
     };
 }
 

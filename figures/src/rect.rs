@@ -5,7 +5,10 @@ use std::{
 
 use num_traits::{NumCast, One, Zero};
 
-use crate::{Ceil, Figure, Floor, Point, Round, Scale, Size, Vector, Vectorlike};
+use crate::{
+    Ceil, DisplayScale, Displayable, Figure, Floor, Pixels, Point, Points, Round, Scale, Scaled,
+    Size, Vector, Vectorlike,
+};
 
 /// A 2d rectangle. This type may internally be represented with a [`SizedRect`]
 /// or an [`ExtentsRect`]. All rect types implement [`Rectlike`].
@@ -249,6 +252,86 @@ where
         }
     }
 }
+impl<T> Displayable<T> for Rect<T, Scaled>
+where
+    T: Div<T, Output = T> + Mul<T, Output = T> + Copy,
+{
+    type Pixels = Rect<T, Pixels>;
+    type Points = Rect<T, Points>;
+    type Scaled = Self;
+
+    fn to_pixels(&self, scale: &DisplayScale<T>) -> Self::Pixels {
+        match self {
+            Self::Sized(sized) => Rect::Sized(sized.to_pixels(scale)),
+            Self::Extents(extents) => Rect::Extents(extents.to_pixels(scale)),
+        }
+    }
+
+    fn to_points(&self, scale: &DisplayScale<T>) -> Self::Points {
+        match self {
+            Self::Sized(sized) => Rect::Sized(sized.to_points(scale)),
+            Self::Extents(extents) => Rect::Extents(extents.to_points(scale)),
+        }
+    }
+
+    fn to_scaled(&self, _scale: &DisplayScale<T>) -> Self::Scaled {
+        *self
+    }
+}
+
+impl<T> Displayable<T> for Rect<T, Points>
+where
+    T: Div<T, Output = T> + Mul<T, Output = T> + Copy,
+{
+    type Pixels = Rect<T, Pixels>;
+    type Points = Self;
+    type Scaled = Rect<T, Scaled>;
+
+    fn to_pixels(&self, scale: &DisplayScale<T>) -> Self::Pixels {
+        match self {
+            Self::Sized(sized) => Rect::Sized(sized.to_pixels(scale)),
+            Self::Extents(extents) => Rect::Extents(extents.to_pixels(scale)),
+        }
+    }
+
+    fn to_points(&self, _scale: &DisplayScale<T>) -> Self::Points {
+        *self
+    }
+
+    fn to_scaled(&self, scale: &DisplayScale<T>) -> Self::Scaled {
+        match self {
+            Self::Sized(sized) => Rect::Sized(sized.to_scaled(scale)),
+            Self::Extents(extents) => Rect::Extents(extents.to_scaled(scale)),
+        }
+    }
+}
+
+impl<T> Displayable<T> for Rect<T, Pixels>
+where
+    T: Div<T, Output = T> + Mul<T, Output = T> + Copy,
+{
+    type Pixels = Self;
+    type Points = Rect<T, Points>;
+    type Scaled = Rect<T, Scaled>;
+
+    fn to_pixels(&self, _scale: &DisplayScale<T>) -> Self::Pixels {
+        *self
+    }
+
+    fn to_points(&self, scale: &DisplayScale<T>) -> Self::Points {
+        match self {
+            Self::Sized(sized) => Rect::Sized(sized.to_points(scale)),
+            Self::Extents(extents) => Rect::Extents(extents.to_points(scale)),
+        }
+    }
+
+    fn to_scaled(&self, scale: &DisplayScale<T>) -> Self::Scaled {
+        match self {
+            Self::Sized(sized) => Rect::Sized(sized.to_scaled(scale)),
+            Self::Extents(extents) => Rect::Extents(extents.to_scaled(scale)),
+        }
+    }
+}
 
 /// A rectangle that uses a [`Point`] and a [`Size`] for representation.
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -430,6 +513,69 @@ where
     }
 }
 
+impl<T> Displayable<T> for SizedRect<T, Scaled>
+where
+    T: Div<T, Output = T> + Mul<T, Output = T> + Copy,
+{
+    type Pixels = SizedRect<T, Pixels>;
+    type Points = SizedRect<T, Points>;
+    type Scaled = Self;
+
+    fn to_pixels(&self, scale: &DisplayScale<T>) -> Self::Pixels {
+        *self / scale.scaled
+    }
+
+    fn to_points(&self, scale: &DisplayScale<T>) -> Self::Points {
+        *self / scale.between
+    }
+
+    fn to_scaled(&self, _scale: &DisplayScale<T>) -> Self::Scaled {
+        *self
+    }
+}
+
+impl<T> Displayable<T> for SizedRect<T, Points>
+where
+    T: Div<T, Output = T> + Mul<T, Output = T> + Copy,
+{
+    type Pixels = SizedRect<T, Pixels>;
+    type Points = Self;
+    type Scaled = SizedRect<T, Scaled>;
+
+    fn to_pixels(&self, scale: &DisplayScale<T>) -> Self::Pixels {
+        *self / scale.points
+    }
+
+    fn to_points(&self, _scale: &DisplayScale<T>) -> Self::Points {
+        *self
+    }
+
+    fn to_scaled(&self, scale: &DisplayScale<T>) -> Self::Scaled {
+        *self * scale.between
+    }
+}
+
+impl<T> Displayable<T> for SizedRect<T, Pixels>
+where
+    T: Div<T, Output = T> + Mul<T, Output = T> + Copy,
+{
+    type Pixels = Self;
+    type Points = SizedRect<T, Points>;
+    type Scaled = SizedRect<T, Scaled>;
+
+    fn to_pixels(&self, _scale: &DisplayScale<T>) -> Self::Pixels {
+        *self
+    }
+
+    fn to_points(&self, scale: &DisplayScale<T>) -> Self::Points {
+        *self * scale.points
+    }
+
+    fn to_scaled(&self, scale: &DisplayScale<T>) -> Self::Scaled {
+        *self * scale.scaled
+    }
+}
+
 /// A rectangle that uses two [`Point`]s for representation.
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ExtentsRect<T, Unit> {
@@ -607,6 +753,69 @@ where
 {
     fn approx_eq(&self, other: &Self) -> bool {
         self.origin.approx_eq(&other.origin) && self.extent.approx_eq(&other.extent)
+    }
+}
+
+impl<T> Displayable<T> for ExtentsRect<T, Scaled>
+where
+    T: Div<T, Output = T> + Mul<T, Output = T> + Copy,
+{
+    type Pixels = ExtentsRect<T, Pixels>;
+    type Points = ExtentsRect<T, Points>;
+    type Scaled = Self;
+
+    fn to_pixels(&self, scale: &DisplayScale<T>) -> Self::Pixels {
+        *self / scale.scaled
+    }
+
+    fn to_points(&self, scale: &DisplayScale<T>) -> Self::Points {
+        *self / scale.between
+    }
+
+    fn to_scaled(&self, _scale: &DisplayScale<T>) -> Self::Scaled {
+        *self
+    }
+}
+
+impl<T> Displayable<T> for ExtentsRect<T, Points>
+where
+    T: Div<T, Output = T> + Mul<T, Output = T> + Copy,
+{
+    type Pixels = ExtentsRect<T, Pixels>;
+    type Points = Self;
+    type Scaled = ExtentsRect<T, Scaled>;
+
+    fn to_pixels(&self, scale: &DisplayScale<T>) -> Self::Pixels {
+        *self / scale.points
+    }
+
+    fn to_points(&self, _scale: &DisplayScale<T>) -> Self::Points {
+        *self
+    }
+
+    fn to_scaled(&self, scale: &DisplayScale<T>) -> Self::Scaled {
+        *self * scale.between
+    }
+}
+
+impl<T> Displayable<T> for ExtentsRect<T, Pixels>
+where
+    T: Div<T, Output = T> + Mul<T, Output = T> + Copy,
+{
+    type Pixels = Self;
+    type Points = ExtentsRect<T, Points>;
+    type Scaled = ExtentsRect<T, Scaled>;
+
+    fn to_pixels(&self, _scale: &DisplayScale<T>) -> Self::Pixels {
+        *self
+    }
+
+    fn to_points(&self, scale: &DisplayScale<T>) -> Self::Points {
+        *self * scale.points
+    }
+
+    fn to_scaled(&self, scale: &DisplayScale<T>) -> Self::Scaled {
+        *self * scale.scaled
     }
 }
 

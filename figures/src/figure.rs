@@ -8,7 +8,7 @@ use num_traits::{NumCast, One, ToPrimitive, Zero};
 
 use crate::{
     num::{Ceil, Floor},
-    Approx, DisplayScale, Pixels, Points, Round, Scale, Scaled, ToPixels, ToPoints, ToScaled,
+    Approx, DisplayScale, Displayable, Pixels, Points, Round, Scale, Scaled,
 };
 
 /// A value in a specific unit.
@@ -491,102 +491,66 @@ where
     }
 }
 
-impl<T> ToScaled<T> for Figure<T, Scaled>
+impl<T> Displayable<T> for Figure<T, Scaled>
 where
-    T: Copy,
+    T: Div<T, Output = T> + Mul<T, Output = T> + Copy,
 {
+    type Pixels = Figure<T, Pixels>;
+    type Points = Figure<T, Points>;
     type Scaled = Self;
+
+    fn to_pixels(&self, scale: &DisplayScale<T>) -> Self::Pixels {
+        *self / scale.scaled
+    }
+
+    fn to_points(&self, scale: &DisplayScale<T>) -> Self::Points {
+        *self / scale.between
+    }
 
     fn to_scaled(&self, _scale: &DisplayScale<T>) -> Self::Scaled {
         *self
     }
 }
 
-impl<T> ToScaled<T> for Figure<T, Points>
+impl<T> Displayable<T> for Figure<T, Points>
 where
-    T: Mul<T, Output = T> + Copy,
+    T: Div<T, Output = T> + Mul<T, Output = T> + Copy,
 {
+    type Pixels = Figure<T, Pixels>;
+    type Points = Self;
     type Scaled = Figure<T, Scaled>;
+
+    fn to_pixels(&self, scale: &DisplayScale<T>) -> Self::Pixels {
+        *self / scale.points
+    }
+
+    fn to_points(&self, _scale: &DisplayScale<T>) -> Self::Points {
+        *self
+    }
 
     fn to_scaled(&self, scale: &DisplayScale<T>) -> Self::Scaled {
         *self * scale.between
     }
 }
 
-impl<T> ToScaled<T> for Figure<T, Pixels>
+impl<T> Displayable<T> for Figure<T, Pixels>
 where
-    T: Mul<T, Output = T> + Copy,
+    T: Div<T, Output = T> + Mul<T, Output = T> + Copy,
 {
+    type Pixels = Self;
+    type Points = Figure<T, Points>;
     type Scaled = Figure<T, Scaled>;
 
-    fn to_scaled(&self, scale: &DisplayScale<T>) -> Self::Scaled {
-        *self * scale.scaled
-    }
-}
-
-impl<T> ToPoints<T> for Figure<T, Scaled>
-where
-    T: Div<T, Output = T> + Copy,
-{
-    type Points = Figure<T, Points>;
-
-    fn to_points(&self, scale: &DisplayScale<T>) -> Self::Points {
-        *self / scale.between
-    }
-}
-
-impl<T> ToPoints<T> for Figure<T, Points>
-where
-    T: Copy,
-{
-    type Points = Self;
-
-    fn to_points(&self, _scale: &DisplayScale<T>) -> Self::Points {
+    fn to_pixels(&self, _scale: &DisplayScale<T>) -> Self::Pixels {
         *self
     }
-}
-
-impl<T> ToPoints<T> for Figure<T, Pixels>
-where
-    T: Mul<T, Output = T> + Copy,
-{
-    type Points = Figure<T, Points>;
 
     fn to_points(&self, scale: &DisplayScale<T>) -> Self::Points {
         *self * scale.points
     }
-}
 
-impl<T> ToPixels<T> for Figure<T, Scaled>
-where
-    T: Div<T, Output = T> + Copy,
-{
-    type Pixels = Figure<T, Pixels>;
-
-    fn to_pixels(&self, scale: &DisplayScale<T>) -> Self::Pixels {
-        *self / scale.scaled
-    }
-}
-
-impl<T> ToPixels<T> for Figure<T, Points>
-where
-    T: Div<T, Output = T> + Copy,
-{
-    type Pixels = Figure<T, Pixels>;
-
-    fn to_pixels(&self, scale: &DisplayScale<T>) -> Self::Pixels {
-        *self / scale.points
-    }
-}
-
-impl<T> ToPixels<T> for Figure<T, Pixels>
-where
-    T: Copy,
-{
-    type Pixels = Self;
-
-    fn to_pixels(&self, _scale: &DisplayScale<T>) -> Self::Pixels {
-        *self
+    fn to_scaled(&self, scale: &DisplayScale<T>) -> Self::Scaled {
+        *self * scale.scaled
     }
 }
 

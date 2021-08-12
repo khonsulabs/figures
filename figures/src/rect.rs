@@ -831,6 +831,14 @@ where
         + Div<T, Output = T>
         + Copy,
 {
+    /// Returns this rectangle as a `Rect`. The rectangle's underlying data will
+    /// be unchanged by this operation.
+    fn as_rect(&self) -> Rect<T, Unit>;
+    /// Returns this rectangle converted to an [`ExtentsRect`].
+    fn as_extents(&self) -> ExtentsRect<T, Unit>;
+    /// Returns this rectangle converted to a [`SizedRect`].
+    fn as_sized(&self) -> SizedRect<T, Unit>;
+
     /// Checks to see if this rect is empty. If it is, None is returned. If it
     /// isn't, the rect is returned unmodified.
     fn to_non_empty(self) -> Option<Self> {
@@ -885,11 +893,6 @@ where
     /// Increases the size of this rectangle by the vector provided. The rectangle will grow around its center.
     fn inflate<V: Into<Vector<T, Unit>>>(&self, by: V) -> Self;
 
-    /// Returns this rectangle converted to an [`ExtentsRect`].
-    fn as_extents(&self) -> ExtentsRect<T, Unit>;
-    /// Returns this rectangle converted to a [`SizedRect`].
-    fn as_sized(&self) -> SizedRect<T, Unit>;
-
     /// Returns the intersecting area between the two rectangles. If the
     /// rectangles do not intersect, None is returned.
     fn intersection<R: Rectlike<T, Unit>>(&self, other: &R) -> Option<ExtentsRect<T, Unit>> {
@@ -928,18 +931,8 @@ where
         + Div<T, Output = T>
         + Copy,
 {
-    fn width(&self) -> Figure<T, Unit> {
-        match self {
-            Rect::Sized(sized) => sized.width(),
-            Rect::Extents(extents) => extents.width(),
-        }
-    }
-
-    fn height(&self) -> Figure<T, Unit> {
-        match self {
-            Rect::Sized(sized) => sized.height(),
-            Rect::Extents(extents) => extents.height(),
-        }
+    fn as_rect(&self) -> Rect<T, Unit> {
+        *self
     }
 
     fn as_extents(&self) -> ExtentsRect<T, Unit> {
@@ -953,6 +946,20 @@ where
         match self {
             Rect::Sized(sized) => sized.as_sized(),
             Rect::Extents(extents) => extents.as_sized(),
+        }
+    }
+
+    fn width(&self) -> Figure<T, Unit> {
+        match self {
+            Rect::Sized(sized) => sized.width(),
+            Rect::Extents(extents) => extents.width(),
+        }
+    }
+
+    fn height(&self) -> Figure<T, Unit> {
+        match self {
+            Rect::Sized(sized) => sized.height(),
+            Rect::Extents(extents) => extents.height(),
         }
     }
 
@@ -989,12 +996,8 @@ where
         + Div<T, Output = T>
         + Copy,
 {
-    fn width(&self) -> Figure<T, Unit> {
-        self.extent.x() - self.origin.x()
-    }
-
-    fn height(&self) -> Figure<T, Unit> {
-        self.extent.y() - self.origin.y()
+    fn as_rect(&self) -> Rect<T, Unit> {
+        Rect::Extents(*self)
     }
 
     fn as_extents(&self) -> Self {
@@ -1006,6 +1009,14 @@ where
             self.origin,
             (self.extent.to_vector() - self.origin.to_vector()).to_size(),
         )
+    }
+
+    fn width(&self) -> Figure<T, Unit> {
+        self.extent.x() - self.origin.x()
+    }
+
+    fn height(&self) -> Figure<T, Unit> {
+        self.extent.y() - self.origin.y()
     }
 
     fn origin(&self) -> Point<T, Unit> {
@@ -1040,12 +1051,8 @@ where
         + Div<T, Output = T>
         + Copy,
 {
-    fn width(&self) -> Figure<T, Unit> {
-        self.size.width()
-    }
-
-    fn height(&self) -> Figure<T, Unit> {
-        self.size.height()
+    fn as_rect(&self) -> Rect<T, Unit> {
+        Rect::Sized(*self)
     }
 
     fn as_extents(&self) -> ExtentsRect<T, Unit> {
@@ -1054,6 +1061,14 @@ where
 
     fn as_sized(&self) -> Self {
         *self
+    }
+
+    fn width(&self) -> Figure<T, Unit> {
+        self.size.width()
+    }
+
+    fn height(&self) -> Figure<T, Unit> {
+        self.size.height()
     }
 
     fn origin(&self) -> Point<T, Unit> {

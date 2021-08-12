@@ -322,6 +322,73 @@ macro_rules! define_vectorlike {
             }
         }
 
+        impl<T, Unit> approx::AbsDiffEq for $name<T, Unit>
+        where
+            T: approx::AbsDiffEq<Epsilon = T> + Copy,
+        {
+            type Epsilon = T::Epsilon;
+
+            fn default_epsilon() -> Self::Epsilon {
+                T::default_epsilon()
+            }
+
+            fn abs_diff_eq(&self, other: &Self, epsilon: Self::Epsilon) -> bool {
+                self.$x.abs_diff_eq(&other.$x, epsilon) && self.$y.abs_diff_eq(&other.$y, epsilon)
+            }
+
+            fn abs_diff_ne(&self, other: &Self, epsilon: Self::Epsilon) -> bool {
+                self.$x.abs_diff_ne(&other.$x, epsilon) || self.$y.abs_diff_ne(&other.$y, epsilon)
+            }
+        }
+
+        impl<T, Unit> approx::UlpsEq for $name<T, Unit>
+        where
+            T: approx::UlpsEq<Epsilon = T> + Copy,
+        {
+            fn default_max_ulps() -> u32 {
+                T::default_max_ulps()
+            }
+
+            fn ulps_eq(&self, other: &Self, epsilon: Self::Epsilon, max_ulps: u32) -> bool {
+                self.$x.ulps_eq(&other.$x, epsilon, max_ulps)
+                    && self.$y.ulps_eq(&other.$y, epsilon, max_ulps)
+            }
+
+            fn ulps_ne(&self, other: &Self, epsilon: Self::Epsilon, max_ulps: u32) -> bool {
+                self.$x.ulps_ne(&other.$x, epsilon, max_ulps)
+                    || self.$y.ulps_ne(&other.$y, epsilon, max_ulps)
+            }
+        }
+
+        impl<T, Unit> approx::RelativeEq for $name<T, Unit>
+        where
+            T: approx::RelativeEq<Epsilon = T> + Copy,
+        {
+            fn default_max_relative() -> Self::Epsilon {
+                T::default_max_relative()
+            }
+
+            fn relative_eq(
+                &self,
+                other: &Self,
+                epsilon: Self::Epsilon,
+                max_relative: Self::Epsilon,
+            ) -> bool {
+                self.$x.relative_eq(&other.$x, epsilon, max_relative)
+                    && self.$y.relative_eq(&other.$y, epsilon, max_relative)
+            }
+
+            fn relative_ne(
+                &self,
+                other: &Self,
+                epsilon: Self::Epsilon,
+                max_relative: Self::Epsilon,
+            ) -> bool {
+                self.$x.relative_ne(&other.$x, epsilon, max_relative)
+                    || self.$y.relative_ne(&other.$y, epsilon, max_relative)
+            }
+        }
+
         impl<T> crate::Displayable<T> for $name<T, crate::Scaled>
         where
             T: std::ops::Div<T, Output = T> + std::ops::Mul<T, Output = T> + Copy,

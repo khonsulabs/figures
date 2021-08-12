@@ -252,6 +252,116 @@ where
         }
     }
 }
+
+impl<T, Unit> approx::AbsDiffEq for Rect<T, Unit>
+where
+    T: approx::AbsDiffEq<Epsilon = T>
+        + Zero
+        + PartialOrd
+        + Mul<T, Output = T>
+        + Sub<T, Output = T>
+        + One
+        + Add<T, Output = T>
+        + Div<T, Output = T>
+        + Copy,
+{
+    type Epsilon = T::Epsilon;
+
+    fn default_epsilon() -> Self::Epsilon {
+        T::default_epsilon()
+    }
+
+    fn abs_diff_eq(&self, other: &Self, epsilon: Self::Epsilon) -> bool {
+        match self {
+            Self::Sized(sized) => sized.abs_diff_eq(&other.as_sized(), epsilon),
+            Self::Extents(extents) => extents.abs_diff_eq(&other.as_extents(), epsilon),
+        }
+    }
+
+    fn abs_diff_ne(&self, other: &Self, epsilon: Self::Epsilon) -> bool {
+        match self {
+            Self::Sized(sized) => sized.abs_diff_ne(&other.as_sized(), epsilon),
+            Self::Extents(extents) => extents.abs_diff_ne(&other.as_extents(), epsilon),
+        }
+    }
+}
+
+impl<T, Unit> approx::UlpsEq for Rect<T, Unit>
+where
+    T: approx::UlpsEq<Epsilon = T>
+        + Zero
+        + PartialOrd
+        + Mul<T, Output = T>
+        + Sub<T, Output = T>
+        + One
+        + Add<T, Output = T>
+        + Div<T, Output = T>
+        + Copy,
+{
+    fn default_max_ulps() -> u32 {
+        T::default_max_ulps()
+    }
+
+    fn ulps_eq(&self, other: &Self, epsilon: Self::Epsilon, max_ulps: u32) -> bool {
+        match self {
+            Self::Sized(sized) => sized.ulps_eq(&other.as_sized(), epsilon, max_ulps),
+            Self::Extents(extents) => extents.ulps_eq(&other.as_extents(), epsilon, max_ulps),
+        }
+    }
+
+    fn ulps_ne(&self, other: &Self, epsilon: Self::Epsilon, max_ulps: u32) -> bool {
+        match self {
+            Self::Sized(sized) => sized.ulps_ne(&other.as_sized(), epsilon, max_ulps),
+            Self::Extents(extents) => extents.ulps_ne(&other.as_extents(), epsilon, max_ulps),
+        }
+    }
+}
+
+impl<T, Unit> approx::RelativeEq for Rect<T, Unit>
+where
+    T: approx::RelativeEq<Epsilon = T>
+        + Zero
+        + PartialOrd
+        + Mul<T, Output = T>
+        + Sub<T, Output = T>
+        + One
+        + Add<T, Output = T>
+        + Div<T, Output = T>
+        + Copy,
+{
+    fn default_max_relative() -> Self::Epsilon {
+        T::default_max_relative()
+    }
+
+    fn relative_eq(
+        &self,
+        other: &Self,
+        epsilon: Self::Epsilon,
+        max_relative: Self::Epsilon,
+    ) -> bool {
+        match self {
+            Self::Sized(sized) => sized.relative_eq(&other.as_sized(), epsilon, max_relative),
+            Self::Extents(extents) => {
+                extents.relative_eq(&other.as_extents(), epsilon, max_relative)
+            }
+        }
+    }
+
+    fn relative_ne(
+        &self,
+        other: &Self,
+        epsilon: Self::Epsilon,
+        max_relative: Self::Epsilon,
+    ) -> bool {
+        match self {
+            Self::Sized(sized) => sized.relative_ne(&other.as_sized(), epsilon, max_relative),
+            Self::Extents(extents) => {
+                extents.relative_ne(&other.as_extents(), epsilon, max_relative)
+            }
+        }
+    }
+}
+
 impl<T> Displayable<T> for Rect<T, Scaled>
 where
     T: Div<T, Output = T> + Mul<T, Output = T> + Copy,
@@ -513,6 +623,77 @@ where
     }
 }
 
+impl<T, Unit> approx::AbsDiffEq for SizedRect<T, Unit>
+where
+    T: approx::AbsDiffEq<Epsilon = T> + Copy,
+{
+    type Epsilon = T::Epsilon;
+
+    fn default_epsilon() -> Self::Epsilon {
+        T::default_epsilon()
+    }
+
+    fn abs_diff_eq(&self, other: &Self, epsilon: Self::Epsilon) -> bool {
+        self.origin.abs_diff_eq(&other.origin, epsilon)
+            && self.size.abs_diff_eq(&other.size, epsilon)
+    }
+
+    fn abs_diff_ne(&self, other: &Self, epsilon: Self::Epsilon) -> bool {
+        self.origin.abs_diff_ne(&other.origin, epsilon)
+            || self.size.abs_diff_ne(&other.size, epsilon)
+    }
+}
+
+impl<T, Unit> approx::UlpsEq for SizedRect<T, Unit>
+where
+    T: approx::UlpsEq<Epsilon = T> + Copy,
+{
+    fn default_max_ulps() -> u32 {
+        T::default_max_ulps()
+    }
+
+    fn ulps_eq(&self, other: &Self, epsilon: Self::Epsilon, max_ulps: u32) -> bool {
+        self.origin.ulps_eq(&other.origin, epsilon, max_ulps)
+            && self.size.ulps_eq(&other.size, epsilon, max_ulps)
+    }
+
+    fn ulps_ne(&self, other: &Self, epsilon: Self::Epsilon, max_ulps: u32) -> bool {
+        self.origin.ulps_ne(&other.origin, epsilon, max_ulps)
+            || self.size.ulps_ne(&other.size, epsilon, max_ulps)
+    }
+}
+
+impl<T, Unit> approx::RelativeEq for SizedRect<T, Unit>
+where
+    T: approx::RelativeEq<Epsilon = T> + Copy,
+{
+    fn default_max_relative() -> Self::Epsilon {
+        T::default_max_relative()
+    }
+
+    fn relative_eq(
+        &self,
+        other: &Self,
+        epsilon: Self::Epsilon,
+        max_relative: Self::Epsilon,
+    ) -> bool {
+        self.origin
+            .relative_eq(&other.origin, epsilon, max_relative)
+            && self.size.relative_eq(&other.size, epsilon, max_relative)
+    }
+
+    fn relative_ne(
+        &self,
+        other: &Self,
+        epsilon: Self::Epsilon,
+        max_relative: Self::Epsilon,
+    ) -> bool {
+        self.origin
+            .relative_ne(&other.origin, epsilon, max_relative)
+            || self.size.relative_ne(&other.size, epsilon, max_relative)
+    }
+}
+
 impl<T> Displayable<T> for SizedRect<T, Scaled>
 where
     T: Div<T, Output = T> + Mul<T, Output = T> + Copy,
@@ -753,6 +934,81 @@ where
 {
     fn approx_eq(&self, other: &Self) -> bool {
         self.origin.approx_eq(&other.origin) && self.extent.approx_eq(&other.extent)
+    }
+}
+
+impl<T, Unit> approx::AbsDiffEq for ExtentsRect<T, Unit>
+where
+    T: approx::AbsDiffEq<Epsilon = T> + Copy,
+{
+    type Epsilon = T::Epsilon;
+
+    fn default_epsilon() -> Self::Epsilon {
+        T::default_epsilon()
+    }
+
+    fn abs_diff_eq(&self, other: &Self, epsilon: Self::Epsilon) -> bool {
+        self.origin.abs_diff_eq(&other.origin, epsilon)
+            && self.extent.abs_diff_eq(&other.extent, epsilon)
+    }
+
+    fn abs_diff_ne(&self, other: &Self, epsilon: Self::Epsilon) -> bool {
+        self.origin.abs_diff_ne(&other.origin, epsilon)
+            || self.extent.abs_diff_ne(&other.extent, epsilon)
+    }
+}
+
+impl<T, Unit> approx::UlpsEq for ExtentsRect<T, Unit>
+where
+    T: approx::UlpsEq<Epsilon = T> + Copy,
+{
+    fn default_max_ulps() -> u32 {
+        T::default_max_ulps()
+    }
+
+    fn ulps_eq(&self, other: &Self, epsilon: Self::Epsilon, max_ulps: u32) -> bool {
+        self.origin.ulps_eq(&other.origin, epsilon, max_ulps)
+            && self.extent.ulps_eq(&other.extent, epsilon, max_ulps)
+    }
+
+    fn ulps_ne(&self, other: &Self, epsilon: Self::Epsilon, max_ulps: u32) -> bool {
+        self.origin.ulps_ne(&other.origin, epsilon, max_ulps)
+            || self.extent.ulps_ne(&other.extent, epsilon, max_ulps)
+    }
+}
+
+impl<T, Unit> approx::RelativeEq for ExtentsRect<T, Unit>
+where
+    T: approx::RelativeEq<Epsilon = T> + Copy,
+{
+    fn default_max_relative() -> Self::Epsilon {
+        T::default_max_relative()
+    }
+
+    fn relative_eq(
+        &self,
+        other: &Self,
+        epsilon: Self::Epsilon,
+        max_relative: Self::Epsilon,
+    ) -> bool {
+        self.origin
+            .relative_eq(&other.origin, epsilon, max_relative)
+            && self
+                .extent
+                .relative_eq(&other.extent, epsilon, max_relative)
+    }
+
+    fn relative_ne(
+        &self,
+        other: &Self,
+        epsilon: Self::Epsilon,
+        max_relative: Self::Epsilon,
+    ) -> bool {
+        self.origin
+            .relative_ne(&other.origin, epsilon, max_relative)
+            || self
+                .extent
+                .relative_ne(&other.extent, epsilon, max_relative)
     }
 }
 

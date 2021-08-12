@@ -1,5 +1,5 @@
 macro_rules! define_vectorlike {
-    ($name:ident, $x:ident, $y:ident, $doc:literal) => {
+    ($name:ident, $test_mod_name:ident, $x:ident, $y:ident, $doc:literal) => {
         #[doc = $doc]
         #[allow(missing_docs)]
         #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -451,114 +451,199 @@ macro_rules! define_vectorlike {
                 *self * scale.scaled
             }
         }
+
+        #[cfg(test)]
+        mod $test_mod_name {
+            use super::*;
+            use crate::{
+                Approx, Ceil, DisplayScale, Displayable, Floor, Pixels, Points, Round, Scale,
+            };
+
+            #[test]
+            fn cast_unit_test() {
+                let pixels = $name::<i32, Pixels>::new(1, 2);
+                let points: $name<i32, Points> = pixels.cast_unit();
+                assert_eq!(pixels.$x, points.$x);
+                assert_eq!(pixels.$y, points.$y);
+            }
+
+            #[test]
+            fn cast_tests() {
+                let pixels = $name::<i32, Pixels>::new(256, 255);
+                let as_u32 = pixels.cast::<u32>();
+                assert_eq!(as_u32.$x, 256);
+                assert_eq!(as_u32.$y, 255);
+                assert_eq!(pixels.try_cast::<u8>(), None);
+            }
+
+            #[test]
+            fn signed_tests() {
+                let pixels = $name::<i32, Pixels>::new(-256, -255);
+                let signum = pixels.signum();
+                assert_eq!(signum.x, -1);
+                assert_eq!(signum.y, -1);
+                let abs = pixels.abs();
+                assert_eq!(abs.$x, 256);
+                assert_eq!(abs.$y, 255);
+                let signum = abs.signum();
+                assert_eq!(signum.x, 1);
+                assert_eq!(signum.y, 1);
+            }
+
+            #[test]
+            fn vectorlike_conversions() {
+                let original = $name::<i32, Pixels>::new(256, 255);
+                let vector = original.to_vector();
+                assert_eq!(vector.x, 256);
+                assert_eq!(vector.y, 255);
+                let point = original.to_point();
+                assert_eq!(point.x, 256);
+                assert_eq!(point.y, 255);
+                let size = original.to_size();
+                assert_eq!(size.width, 256);
+                assert_eq!(size.height, 255);
+            }
+
+            #[test]
+            fn math_ops() {
+                let one = $name::<i32, Pixels>::new(1, 10);
+                let two = one + one;
+                assert_eq!(two.$x, 2);
+                assert_eq!(two.$y, 20);
+                let one_after_sub = two - one;
+                assert_eq!(one_after_sub.$x, 1);
+                assert_eq!(one_after_sub.$y, 10);
+                let neg_one = -one;
+                assert_eq!(neg_one.$x, -1);
+                assert_eq!(neg_one.$y, -10);
+                let four = two * 2;
+                assert_eq!(four.$x, 4);
+                assert_eq!(four.$y, 40);
+                let two_div = four / 2;
+                assert_eq!(two_div.$x, 2);
+                assert_eq!(two_div.$y, 20);
+
+                let mut value = one;
+                value += one;
+                assert_eq!(value.$x, 2);
+                assert_eq!(value.$y, 20);
+                value -= one;
+                assert_eq!(value.$x, 1);
+                assert_eq!(value.$y, 10);
+            }
+
+            #[test]
+            fn display_scale_math() {
+                let scale = DisplayScale::<u32>::new(Scale::new(2), Scale::new(3));
+                let one_pixel = $name::<u32, Pixels>::new(1, 10);
+                assert_eq!(one_pixel.to_pixels(&scale), one_pixel);
+                let two_points = one_pixel.to_points(&scale);
+                assert_eq!(two_points, $name::new(2, 20));
+                assert_eq!(two_points.to_points(&scale), two_points);
+                let six_scaled = one_pixel.to_scaled(&scale);
+                assert_eq!(six_scaled, $name::new(6, 60));
+                assert_eq!(six_scaled.to_scaled(&scale), six_scaled);
+
+                assert_eq!(six_scaled.to_points(&scale), two_points);
+                assert_eq!(six_scaled.to_pixels(&scale), one_pixel);
+
+                assert_eq!(two_points.to_scaled(&scale), six_scaled);
+                assert_eq!(two_points.to_pixels(&scale), one_pixel);
+            }
+
+            #[test]
+            fn float_ops_test() {
+                let one = $name::<f32, Pixels>::new(1., 10.);
+                assert!($name::<f32, Pixels>::new(0.5, 9.5).round().approx_eq(&one));
+                assert!($name::<f32, Pixels>::new(0.1, 9.1).ceil().approx_eq(&one));
+                assert!($name::<f32, Pixels>::new(1.9, 10.9).floor().approx_eq(&one));
+            }
+        }
     };
 }
 
 macro_rules! define_vector_compatibility_ops {
-    ($name:ident, $x:ident, $y:ident) => {
-        impl<T, Unit> std::ops::Add<Vector<T, Unit>> for $name<T, Unit>
+    (
+        $name:ident,
+        $test_mod_name:ident,
+        $x:ident,
+        $y:ident,
+        $other_name:ident,
+        $other_x:ident,
+        $other_y:ident
+    ) => {
+        impl<T, Unit> std::ops::Add<$other_name<T, Unit>> for $name<T, Unit>
         where
             T: std::ops::Add<Output = T> + Copy,
         {
             type Output = Self;
 
-            fn add(self, rhs: Vector<T, Unit>) -> Self::Output {
-                Self::new(self.$x + rhs.x, self.$y + rhs.y)
+            fn add(self, rhs: $other_name<T, Unit>) -> Self::Output {
+                Self::new(self.$x + rhs.$other_x, self.$y + rhs.$other_y)
             }
         }
 
-        impl<T, Unit> std::ops::Sub<Vector<T, Unit>> for $name<T, Unit>
+        impl<T, Unit> std::ops::Sub<$other_name<T, Unit>> for $name<T, Unit>
         where
             T: std::ops::Sub<Output = T> + Copy,
         {
             type Output = Self;
 
-            fn sub(self, rhs: Vector<T, Unit>) -> Self::Output {
-                Self::new(self.$x - rhs.x, self.$y - rhs.y)
+            fn sub(self, rhs: $other_name<T, Unit>) -> Self::Output {
+                Self::new(self.$x - rhs.$other_x, self.$y - rhs.$other_y)
             }
         }
 
-        impl<T, Unit> std::ops::AddAssign<Vector<T, Unit>> for $name<T, Unit>
+        impl<T, Unit> std::ops::AddAssign<$other_name<T, Unit>> for $name<T, Unit>
         where
             T: std::ops::AddAssign + Copy,
         {
-            fn add_assign(&mut self, rhs: Vector<T, Unit>) {
-                self.$x += rhs.x;
-                self.$y += rhs.y;
+            fn add_assign(&mut self, rhs: $other_name<T, Unit>) {
+                self.$x += rhs.$other_x;
+                self.$y += rhs.$other_y;
             }
         }
 
-        impl<T, Unit> std::ops::SubAssign<Vector<T, Unit>> for $name<T, Unit>
+        impl<T, Unit> std::ops::SubAssign<$other_name<T, Unit>> for $name<T, Unit>
         where
             T: std::ops::SubAssign + Copy,
         {
-            fn sub_assign(&mut self, rhs: Vector<T, Unit>) {
-                self.$x -= rhs.x;
-                self.$y -= rhs.y;
+            fn sub_assign(&mut self, rhs: $other_name<T, Unit>) {
+                self.$x -= rhs.$other_x;
+                self.$y -= rhs.$other_y;
             }
         }
 
-        impl<T, Unit> PartialEq<Vector<T, Unit>> for $name<T, Unit>
+        impl<T, Unit> PartialEq<$other_name<T, Unit>> for $name<T, Unit>
         where
             T: PartialEq,
         {
-            fn eq(&self, other: &Vector<T, Unit>) -> bool {
-                self.$x.eq(&other.x) && self.$y.eq(&other.y)
-            }
-        }
-    };
-}
-
-macro_rules! define_size_compatibility_ops {
-    ($name:ident, $x:ident, $y:ident) => {
-        impl<T, Unit> std::ops::Add<Size<T, Unit>> for $name<T, Unit>
-        where
-            T: std::ops::Add<Output = T> + Copy,
-        {
-            type Output = Self;
-
-            fn add(self, rhs: Size<T, Unit>) -> Self::Output {
-                Self::new(self.$x + rhs.width, self.$y + rhs.height)
+            fn eq(&self, other: &$other_name<T, Unit>) -> bool {
+                self.$x.eq(&other.$other_x) && self.$y.eq(&other.$other_y)
             }
         }
 
-        impl<T, Unit> std::ops::Sub<Size<T, Unit>> for $name<T, Unit>
-        where
-            T: std::ops::Sub<Output = T> + Copy,
-        {
-            type Output = Self;
+        #[cfg(test)]
+        mod $test_mod_name {
+            use super::*;
+            use crate::Pixels;
 
-            fn sub(self, rhs: Size<T, Unit>) -> Self::Output {
-                Self::new(self.$x - rhs.width, self.$y - rhs.height)
-            }
-        }
+            #[test]
+            fn math_ops() {
+                let one = $name::<i32, Pixels>::new(1, 10);
+                let other_one = $other_name::new(1, 10);
+                let two = one + other_one;
+                assert_eq!(two.$x, 2);
+                assert_eq!(two.$y, 20);
+                let one_after_sub = two - other_one;
+                assert_eq!(one_after_sub, other_one);
 
-        impl<T, Unit> std::ops::AddAssign<Size<T, Unit>> for $name<T, Unit>
-        where
-            T: std::ops::AddAssign + Copy,
-        {
-            fn add_assign(&mut self, rhs: Size<T, Unit>) {
-                self.$x += rhs.width;
-                self.$y += rhs.height;
-            }
-        }
-
-        impl<T, Unit> std::ops::SubAssign<Size<T, Unit>> for $name<T, Unit>
-        where
-            T: std::ops::SubAssign + Copy,
-        {
-            fn sub_assign(&mut self, rhs: Size<T, Unit>) {
-                self.$x -= rhs.width;
-                self.$y -= rhs.height;
-            }
-        }
-
-        impl<T, Unit> PartialEq<Size<T, Unit>> for $name<T, Unit>
-        where
-            T: PartialEq,
-        {
-            fn eq(&self, other: &Size<T, Unit>) -> bool {
-                self.$x.eq(&other.width) && self.$y.eq(&other.height)
+                let mut value = one;
+                value += other_one;
+                assert_eq!(value.$x, 2);
+                assert_eq!(value.$y, 20);
+                value -= other_one;
+                assert_eq!(value, other_one);
             }
         }
     };
@@ -576,17 +661,30 @@ pub trait Vectorlike<T, Unit> {
 
 define_vectorlike!(
     Size,
+    size_tests,
     width,
     height,
     "A measurement of space using width and height."
 );
-define_vectorlike!(Point, x, y, "A location represented by an x and y value.");
-define_vectorlike!(Vector, x, y, "A 2d measurement using x and y values.");
+define_vectorlike!(
+    Point,
+    point_tests,
+    x,
+    y,
+    "A location represented by an x and y value."
+);
+define_vectorlike!(
+    Vector,
+    vector_tests,
+    x,
+    y,
+    "A 2d measurement using x and y values."
+);
 
-define_vector_compatibility_ops!(Size, width, height);
-define_vector_compatibility_ops!(Point, x, y);
-define_size_compatibility_ops!(Point, x, y);
-define_size_compatibility_ops!(Vector, x, y);
+define_vector_compatibility_ops!(Size, size_vector_tests, width, height, Vector, x, y);
+define_vector_compatibility_ops!(Point, point_vector_tests, x, y, Vector, x, y);
+define_vector_compatibility_ops!(Point, point_size_tests, x, y, Size, width, height);
+define_vector_compatibility_ops!(Vector, vector_size_tests, x, y, Size, width, height);
 
 #[test]
 fn debug_test() {

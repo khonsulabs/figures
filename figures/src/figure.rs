@@ -656,3 +656,148 @@ where
         self.value.relative_ne(&other.value, epsilon, max_relative)
     }
 }
+
+#[test]
+fn debug_test() {
+    assert_eq!(&format!("{:?}", Figure::<u32, Pixels>::new(1)), "Figure(1)");
+}
+
+#[test]
+fn cast_unit_test() {
+    let pixels = Figure::<u32, Pixels>::new(1);
+    let points: Figure<_, Points> = pixels.cast_unit();
+    assert_eq!(pixels.get(), points.get());
+}
+
+#[test]
+fn partial_ord_tests() {
+    let one = Figure::<u32, Pixels>::one();
+    let zero = Figure::<u32, Pixels>::zero();
+    assert!(zero.is_zero());
+
+    assert_eq!(one.min(zero), zero);
+    assert_eq!(zero.min(one), zero);
+    assert_eq!(one.max(zero), one);
+    assert_eq!(zero.max(one), one);
+}
+
+#[test]
+fn to_primitive_tests() {
+    let zero = Figure::<u32, Pixels>::default();
+
+    assert_eq!(zero.to_i8(), Some(0));
+    assert_eq!(zero.to_i16(), Some(0));
+    assert_eq!(zero.to_i32(), Some(0));
+    assert_eq!(zero.to_i64(), Some(0));
+    assert_eq!(zero.to_i128(), Some(0));
+    assert_eq!(zero.to_isize(), Some(0));
+    assert_eq!(zero.to_u8(), Some(0));
+    assert_eq!(zero.to_u16(), Some(0));
+    assert_eq!(zero.to_u32(), Some(0));
+    assert_eq!(zero.to_u64(), Some(0));
+    assert_eq!(zero.to_u128(), Some(0));
+    assert_eq!(zero.to_usize(), Some(0));
+    approx::assert_abs_diff_eq!(zero.to_f32().unwrap(), 0.);
+    approx::assert_abs_diff_eq!(zero.to_f64().unwrap(), 0.);
+}
+
+#[test]
+fn numcast_test() {
+    let zero = <Figure<u32, Pixels> as NumCast>::from(0.0_f64);
+
+    assert_eq!(zero.unwrap().get(), 0_u32);
+}
+
+#[test]
+fn ords_test() {
+    let zero = Figure::<u32, Pixels>::zero();
+    let one = Figure::<u32, Pixels>::one();
+
+    assert_eq!(zero.cmp(&one), std::cmp::Ordering::Less);
+    assert_eq!(zero.partial_cmp(&one), Some(std::cmp::Ordering::Less));
+}
+
+#[test]
+fn maths_test() {
+    let one = Figure::<u32, Pixels>::one();
+    assert_eq!(one.get(), 1);
+    let two = one + one;
+    assert_eq!(two.get(), 2);
+    let four = two * two;
+    assert_eq!(four.get(), 4);
+    let three = four - one;
+    assert_eq!(three.get(), 3);
+    let one_rem = four % three;
+    assert_eq!(one_rem.get(), 1);
+    let two_div = four / two;
+    assert_eq!(two_div.get(), 2);
+
+    let mut value = one;
+    value += one;
+    assert_eq!(value.get(), 2);
+    value -= one;
+    assert_eq!(value.get(), 1);
+    value *= four;
+    assert_eq!(value.get(), 4);
+    value /= two;
+    assert_eq!(value.get(), 2);
+    value %= two;
+    assert_eq!(value.get(), 0);
+}
+
+#[test]
+fn scalar_maths_test() {
+    let one = Figure::<i32, Pixels>::one();
+    assert_eq!(one.get(), 1);
+    let two = one + 1;
+    assert_eq!(two.get(), 2);
+    let four = two * 2;
+    assert_eq!(four.get(), 4);
+    let three = four - 1;
+    assert_eq!(three.get(), 3);
+    let one_rem = four % 3;
+    assert_eq!(one_rem.get(), 1);
+    let two_div = four / 2;
+    assert_eq!(two_div.get(), 2);
+    let neg_two = -two_div;
+    assert_eq!(neg_two.get(), -2);
+
+    let mut value = one;
+    value += 1;
+    assert_eq!(value.get(), 2);
+    value -= 1;
+    assert_eq!(value.get(), 1);
+    value *= 4;
+    assert_eq!(value.get(), 4);
+    value /= 2;
+    assert_eq!(value.get(), 2);
+    value %= 2;
+    assert_eq!(value.get(), 0);
+}
+
+#[test]
+fn display_scale_math() {
+    let scale = DisplayScale::<u32>::new(Scale::new(2), Scale::new(3));
+    let one_pixel = Figure::<u32, Pixels>::one();
+    assert_eq!(one_pixel.to_pixels(&scale), one_pixel);
+    let two_points = one_pixel.to_points(&scale);
+    assert_eq!(two_points.get(), 2);
+    assert_eq!(two_points.to_points(&scale), two_points);
+    let six_scaled = one_pixel.to_scaled(&scale);
+    assert_eq!(six_scaled.get(), 6);
+    assert_eq!(six_scaled.to_scaled(&scale), six_scaled);
+
+    assert_eq!(six_scaled.to_points(&scale), two_points);
+    assert_eq!(six_scaled.to_pixels(&scale), one_pixel);
+
+    assert_eq!(two_points.to_scaled(&scale), six_scaled);
+    assert_eq!(two_points.to_pixels(&scale), one_pixel);
+}
+
+#[test]
+fn float_ops_test() {
+    let one = Figure::<f32, Pixels>::new(1.);
+    assert!(Figure::<f32, Pixels>::new(0.5).round().approx_eq(&one));
+    assert!(Figure::<f32, Pixels>::new(0.1).ceil().approx_eq(&one));
+    assert!(Figure::<f32, Pixels>::new(1.9).floor().approx_eq(&one));
+}

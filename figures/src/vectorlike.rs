@@ -398,11 +398,11 @@ macro_rules! define_vectorlike {
             type Scaled = Self;
 
             fn to_pixels(&self, scale: &crate::DisplayScale<T>) -> Self::Pixels {
-                *self / scale.total
+                *self * scale.total
             }
 
             fn to_points(&self, scale: &crate::DisplayScale<T>) -> Self::Points {
-                *self / scale.additional
+                *self * scale.additional
             }
 
             fn to_scaled(&self, _scale: &crate::DisplayScale<T>) -> Self::Scaled {
@@ -419,7 +419,7 @@ macro_rules! define_vectorlike {
             type Scaled = $name<T, crate::Scaled>;
 
             fn to_pixels(&self, scale: &crate::DisplayScale<T>) -> Self::Pixels {
-                *self / scale.dpi
+                *self * scale.dpi
             }
 
             fn to_points(&self, _scale: &crate::DisplayScale<T>) -> Self::Points {
@@ -427,7 +427,7 @@ macro_rules! define_vectorlike {
             }
 
             fn to_scaled(&self, scale: &crate::DisplayScale<T>) -> Self::Scaled {
-                *self * scale.additional
+                *self / scale.additional
             }
         }
 
@@ -444,11 +444,11 @@ macro_rules! define_vectorlike {
             }
 
             fn to_points(&self, scale: &crate::DisplayScale<T>) -> Self::Points {
-                *self * scale.dpi
+                *self / scale.dpi
             }
 
             fn to_scaled(&self, scale: &crate::DisplayScale<T>) -> Self::Scaled {
-                *self * scale.total
+                *self / scale.total
             }
         }
 

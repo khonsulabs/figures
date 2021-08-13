@@ -501,11 +501,11 @@ where
     type Scaled = Self;
 
     fn to_pixels(&self, scale: &DisplayScale<T>) -> Self::Pixels {
-        *self / scale.total
+        *self * scale.total
     }
 
     fn to_points(&self, scale: &DisplayScale<T>) -> Self::Points {
-        *self / scale.additional
+        *self * scale.additional
     }
 
     fn to_scaled(&self, _scale: &DisplayScale<T>) -> Self::Scaled {
@@ -522,7 +522,7 @@ where
     type Scaled = Figure<T, Scaled>;
 
     fn to_pixels(&self, scale: &DisplayScale<T>) -> Self::Pixels {
-        *self / scale.dpi
+        *self * scale.dpi
     }
 
     fn to_points(&self, _scale: &DisplayScale<T>) -> Self::Points {
@@ -530,7 +530,7 @@ where
     }
 
     fn to_scaled(&self, scale: &DisplayScale<T>) -> Self::Scaled {
-        *self * scale.additional
+        *self / scale.additional
     }
 }
 
@@ -547,11 +547,11 @@ where
     }
 
     fn to_points(&self, scale: &DisplayScale<T>) -> Self::Points {
-        *self * scale.dpi
+        *self / scale.dpi
     }
 
     fn to_scaled(&self, scale: &DisplayScale<T>) -> Self::Scaled {
-        *self * scale.total
+        *self / scale.total
     }
 }
 

@@ -23,7 +23,7 @@
         <div>
             <p class="heading">Functions</p>
             <p class="title has-text-warning">
-                <abbr title="104 / 126">82.54 %</abbr></p>
+                <abbr title="105 / 127">82.68 %</abbr></p>
         </div>
     </div>
 
@@ -6586,7 +6586,7 @@
                 1
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">        *self &#x2F; scale.total</pre>
+                <pre class="has-background-success-light py-0 px-2">        *self * scale.total</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6638,7 +6638,7 @@
                 1
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">        *self &#x2F; scale.additional</pre>
+                <pre class="has-background-success-light py-0 px-2">        *self * scale.additional</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6859,7 +6859,7 @@
                 1
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">        *self &#x2F; scale.dpi</pre>
+                <pre class="has-background-success-light py-0 px-2">        *self * scale.dpi</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6963,7 +6963,7 @@
                 1
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">        *self * scale.additional</pre>
+                <pre class="has-background-success-light py-0 px-2">        *self &#x2F; scale.additional</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7184,7 +7184,7 @@
                 1
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">        *self * scale.dpi</pre>
+                <pre class="has-background-success-light py-0 px-2">        *self &#x2F; scale.dpi</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7236,7 +7236,7 @@
                 1
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">        *self * scale.total</pre>
+                <pre class="has-background-success-light py-0 px-2">        *self &#x2F; scale.total</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -10187,7 +10187,7 @@
                 1
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">    let one_pixel = Figure::&lt;u32, Pixels&gt;::one();</pre>
+                <pre class="has-background-success-light py-0 px-2">    let one_scaled = Figure::&lt;u32, Scaled&gt;::one();</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -10200,7 +10200,7 @@
                 1
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">    assert_eq!(one_pixel.to_pixels(&amp;scale), one_pixel);</pre>
+                <pre class="has-background-success-light py-0 px-2">    assert_eq!(one_scaled.to_scaled(&amp;scale), one_scaled);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -10213,7 +10213,7 @@
                 1
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">    let two_points = one_pixel.to_points(&amp;scale);</pre>
+                <pre class="has-background-success-light py-0 px-2">    let two_points = one_scaled.to_points(&amp;scale);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -10226,7 +10226,7 @@
                 1
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">    assert_eq!(two_points.get(), 2);</pre>
+                <pre class="has-background-success-light py-0 px-2">    assert_eq!(two_points.get(), 3);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -10252,7 +10252,7 @@
                 1
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">    let six_scaled = one_pixel.to_scaled(&amp;scale);</pre>
+                <pre class="has-background-success-light py-0 px-2">    let six_pixels = one_scaled.to_pixels(&amp;scale);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -10265,7 +10265,7 @@
                 1
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">    assert_eq!(six_scaled.get(), 6);</pre>
+                <pre class="has-background-success-light py-0 px-2">    assert_eq!(six_pixels.get(), 6);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -10278,7 +10278,7 @@
                 1
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">    assert_eq!(six_scaled.to_scaled(&amp;scale), six_scaled);</pre>
+                <pre class="has-background-success-light py-0 px-2">    assert_eq!(six_pixels.to_pixels(&amp;scale), six_pixels);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -10304,7 +10304,7 @@
                 1
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">    assert_eq!(six_scaled.to_points(&amp;scale), two_points);</pre>
+                <pre class="has-background-success-light py-0 px-2">    assert_eq!(six_pixels.to_points(&amp;scale), two_points);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -10317,7 +10317,7 @@
                 1
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">    assert_eq!(six_scaled.to_pixels(&amp;scale), one_pixel);</pre>
+                <pre class="has-background-success-light py-0 px-2">    assert_eq!(six_pixels.to_scaled(&amp;scale), one_scaled);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -10343,7 +10343,7 @@
                 1
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">    assert_eq!(two_points.to_scaled(&amp;scale), six_scaled);</pre>
+                <pre class="has-background-success-light py-0 px-2">    assert_eq!(two_points.to_pixels(&amp;scale), six_pixels);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -10356,7 +10356,7 @@
                 1
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">    assert_eq!(two_points.to_pixels(&amp;scale), one_pixel);</pre>
+                <pre class="has-background-success-light py-0 px-2">    assert_eq!(two_points.to_scaled(&amp;scale), one_scaled);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -10478,7 +10478,7 @@
         </div></div>
         <footer class="footer">
             <div class="content has-text-centered">
-                <p class="heading">Date: 2021-08-13 16:57</p>
+                <p class="heading">Date: 2021-08-13 17:14</p>
             </div>
         </footer>
     </body>

@@ -5247,7 +5247,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                *self &#x2F; scale.total</pre>
+                <pre class="has-background-success-light py-0 px-2">                *self * scale.total</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -5299,7 +5299,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                *self &#x2F; scale.additional</pre>
+                <pre class="has-background-success-light py-0 px-2">                *self * scale.additional</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -5520,7 +5520,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                *self &#x2F; scale.dpi</pre>
+                <pre class="has-background-success-light py-0 px-2">                *self * scale.dpi</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -5624,7 +5624,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                *self * scale.additional</pre>
+                <pre class="has-background-success-light py-0 px-2">                *self &#x2F; scale.additional</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -5845,7 +5845,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                *self * scale.dpi</pre>
+                <pre class="has-background-success-light py-0 px-2">                *self &#x2F; scale.dpi</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -5897,7 +5897,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                *self * scale.total</pre>
+                <pre class="has-background-success-light py-0 px-2">                *self &#x2F; scale.total</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6014,7 +6014,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">            };</pre>
+                <pre class="has-background-white py-0 px-2">                Scaled,</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6027,7 +6027,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2"></pre>
+                <pre class="has-background-white py-0 px-2">            };</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6040,7 +6040,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">            #[test]</pre>
+                <pre class="has-background-white py-0 px-2"></pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6049,11 +6049,11 @@
                 <a href="#463">463</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-success-light has-background-success">
-                3
+                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
+                
             </div>
-            <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">            fn cast_unit_test() {</pre>
+            <div class="column has-background-white p-0">
+                <pre class="has-background-white py-0 px-2">            #[test]</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6066,7 +6066,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                let pixels = $name::&lt;i32, Pixels&gt;::new(1, 2);</pre>
+                <pre class="has-background-success-light py-0 px-2">            fn cast_unit_test() {</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6079,7 +6079,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                let points: $name&lt;i32, Points&gt; = pixels.cast_unit();</pre>
+                <pre class="has-background-success-light py-0 px-2">                let pixels = $name::&lt;i32, Pixels&gt;::new(1, 2);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6092,7 +6092,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(pixels.$x, points.$x);</pre>
+                <pre class="has-background-success-light py-0 px-2">                let points: $name&lt;i32, Points&gt; = pixels.cast_unit();</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6105,7 +6105,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(pixels.$y, points.$y);</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(pixels.$x, points.$x);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6118,7 +6118,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">            }</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(pixels.$y, points.$y);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6127,11 +6127,11 @@
                 <a href="#469">469</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
-                
+                class="column is-1 is-narrow p-0 has-text-centered has-text-success-light has-background-success">
+                3
             </div>
-            <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2"></pre>
+            <div class="column has-background-success-light p-0">
+                <pre class="has-background-success-light py-0 px-2">            }</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6144,7 +6144,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">            #[test]</pre>
+                <pre class="has-background-white py-0 px-2"></pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6153,11 +6153,11 @@
                 <a href="#471">471</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-success-light has-background-success">
-                3
+                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
+                
             </div>
-            <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">            fn cast_tests() {</pre>
+            <div class="column has-background-white p-0">
+                <pre class="has-background-white py-0 px-2">            #[test]</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6170,7 +6170,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                let pixels = $name::&lt;i32, Pixels&gt;::new(256, 255);</pre>
+                <pre class="has-background-success-light py-0 px-2">            fn cast_tests() {</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6183,7 +6183,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                let as_u32 = pixels.cast::&lt;u32&gt;();</pre>
+                <pre class="has-background-success-light py-0 px-2">                let pixels = $name::&lt;i32, Pixels&gt;::new(256, 255);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6196,7 +6196,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(as_u32.$x, 256);</pre>
+                <pre class="has-background-success-light py-0 px-2">                let as_u32 = pixels.cast::&lt;u32&gt;();</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6209,7 +6209,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(as_u32.$y, 255);</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(as_u32.$x, 256);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6222,7 +6222,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(pixels.try_cast::&lt;u8&gt;(), None);</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(as_u32.$y, 255);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6235,7 +6235,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">            }</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(pixels.try_cast::&lt;u8&gt;(), None);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6244,11 +6244,11 @@
                 <a href="#478">478</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
-                
+                class="column is-1 is-narrow p-0 has-text-centered has-text-success-light has-background-success">
+                3
             </div>
-            <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2"></pre>
+            <div class="column has-background-success-light p-0">
+                <pre class="has-background-success-light py-0 px-2">            }</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6261,7 +6261,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">            #[test]</pre>
+                <pre class="has-background-white py-0 px-2"></pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6270,11 +6270,11 @@
                 <a href="#480">480</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-success-light has-background-success">
-                3
+                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
+                
             </div>
-            <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">            fn signed_tests() {</pre>
+            <div class="column has-background-white p-0">
+                <pre class="has-background-white py-0 px-2">            #[test]</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6287,7 +6287,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                let pixels = $name::&lt;i32, Pixels&gt;::new(-256, -255);</pre>
+                <pre class="has-background-success-light py-0 px-2">            fn signed_tests() {</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6300,7 +6300,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                let signum = pixels.signum();</pre>
+                <pre class="has-background-success-light py-0 px-2">                let pixels = $name::&lt;i32, Pixels&gt;::new(-256, -255);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6313,7 +6313,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(signum.x, -1);</pre>
+                <pre class="has-background-success-light py-0 px-2">                let signum = pixels.signum();</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6326,7 +6326,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(signum.y, -1);</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(signum.x, -1);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6339,7 +6339,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                let abs = pixels.abs();</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(signum.y, -1);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6352,7 +6352,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(abs.$x, 256);</pre>
+                <pre class="has-background-success-light py-0 px-2">                let abs = pixels.abs();</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6365,7 +6365,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(abs.$y, 255);</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(abs.$x, 256);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6378,7 +6378,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                let signum = abs.signum();</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(abs.$y, 255);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6391,7 +6391,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(signum.x, 1);</pre>
+                <pre class="has-background-success-light py-0 px-2">                let signum = abs.signum();</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6404,7 +6404,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(signum.y, 1);</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(signum.x, 1);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6417,7 +6417,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">            }</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(signum.y, 1);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6426,11 +6426,11 @@
                 <a href="#492">492</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
-                
+                class="column is-1 is-narrow p-0 has-text-centered has-text-success-light has-background-success">
+                3
             </div>
-            <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2"></pre>
+            <div class="column has-background-success-light p-0">
+                <pre class="has-background-success-light py-0 px-2">            }</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6443,7 +6443,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">            #[test]</pre>
+                <pre class="has-background-white py-0 px-2"></pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6452,11 +6452,11 @@
                 <a href="#494">494</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-success-light has-background-success">
-                3
+                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
+                
             </div>
-            <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">            fn vectorlike_conversions() {</pre>
+            <div class="column has-background-white p-0">
+                <pre class="has-background-white py-0 px-2">            #[test]</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6469,7 +6469,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                let original = $name::&lt;i32, Pixels&gt;::new(256, 255);</pre>
+                <pre class="has-background-success-light py-0 px-2">            fn vectorlike_conversions() {</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6482,7 +6482,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                let vector = original.to_vector();</pre>
+                <pre class="has-background-success-light py-0 px-2">                let original = $name::&lt;i32, Pixels&gt;::new(256, 255);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6495,7 +6495,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(vector.x, 256);</pre>
+                <pre class="has-background-success-light py-0 px-2">                let vector = original.to_vector();</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6508,7 +6508,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(vector.y, 255);</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(vector.x, 256);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6521,7 +6521,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                let point = original.to_point();</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(vector.y, 255);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6534,7 +6534,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(point.x, 256);</pre>
+                <pre class="has-background-success-light py-0 px-2">                let point = original.to_point();</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6547,7 +6547,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(point.y, 255);</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(point.x, 256);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6560,7 +6560,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                let size = original.to_size();</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(point.y, 255);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6573,7 +6573,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(size.width, 256);</pre>
+                <pre class="has-background-success-light py-0 px-2">                let size = original.to_size();</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6586,7 +6586,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(size.height, 255);</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(size.width, 256);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6599,7 +6599,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">            }</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(size.height, 255);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6608,11 +6608,11 @@
                 <a href="#506">506</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
-                
+                class="column is-1 is-narrow p-0 has-text-centered has-text-success-light has-background-success">
+                3
             </div>
-            <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2"></pre>
+            <div class="column has-background-success-light p-0">
+                <pre class="has-background-success-light py-0 px-2">            }</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6625,7 +6625,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">            #[test]</pre>
+                <pre class="has-background-white py-0 px-2"></pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6634,11 +6634,11 @@
                 <a href="#508">508</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-success-light has-background-success">
-                3
+                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
+                
             </div>
-            <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">            fn math_ops() {</pre>
+            <div class="column has-background-white p-0">
+                <pre class="has-background-white py-0 px-2">            #[test]</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6651,7 +6651,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                let one = $name::&lt;i32, Pixels&gt;::new(1, 10);</pre>
+                <pre class="has-background-success-light py-0 px-2">            fn math_ops() {</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6664,7 +6664,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                let two = one + one;</pre>
+                <pre class="has-background-success-light py-0 px-2">                let one = $name::&lt;i32, Pixels&gt;::new(1, 10);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6677,7 +6677,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(two.$x, 2);</pre>
+                <pre class="has-background-success-light py-0 px-2">                let two = one + one;</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6690,7 +6690,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(two.$y, 20);</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(two.$x, 2);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6703,7 +6703,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                let one_after_sub = two - one;</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(two.$y, 20);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6716,7 +6716,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(one_after_sub.$x, 1);</pre>
+                <pre class="has-background-success-light py-0 px-2">                let one_after_sub = two - one;</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6729,7 +6729,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(one_after_sub.$y, 10);</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(one_after_sub.$x, 1);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6742,7 +6742,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                let neg_one = -one;</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(one_after_sub.$y, 10);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6755,7 +6755,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(neg_one.$x, -1);</pre>
+                <pre class="has-background-success-light py-0 px-2">                let neg_one = -one;</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6768,7 +6768,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(neg_one.$y, -10);</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(neg_one.$x, -1);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6781,7 +6781,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                let four = two * 2;</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(neg_one.$y, -10);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6794,7 +6794,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(four.$x, 4);</pre>
+                <pre class="has-background-success-light py-0 px-2">                let four = two * 2;</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6807,7 +6807,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(four.$y, 40);</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(four.$x, 4);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6820,7 +6820,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                let two_div = four &#x2F; 2;</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(four.$y, 40);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6833,7 +6833,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(two_div.$x, 2);</pre>
+                <pre class="has-background-success-light py-0 px-2">                let two_div = four &#x2F; 2;</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6846,7 +6846,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(two_div.$y, 20);</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(two_div.$x, 2);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6855,11 +6855,11 @@
                 <a href="#525">525</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
-                
+                class="column is-1 is-narrow p-0 has-text-centered has-text-success-light has-background-success">
+                3
             </div>
-            <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2"></pre>
+            <div class="column has-background-success-light p-0">
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(two_div.$y, 20);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6868,11 +6868,11 @@
                 <a href="#526">526</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-success-light has-background-success">
-                3
+                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
+                
             </div>
-            <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                let mut value = one;</pre>
+            <div class="column has-background-white p-0">
+                <pre class="has-background-white py-0 px-2"></pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6885,7 +6885,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                value += one;</pre>
+                <pre class="has-background-success-light py-0 px-2">                let mut value = one;</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6898,7 +6898,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(value.$x, 2);</pre>
+                <pre class="has-background-success-light py-0 px-2">                value += one;</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6911,7 +6911,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(value.$y, 20);</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(value.$x, 2);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6924,7 +6924,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                value -= one;</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(value.$y, 20);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6937,7 +6937,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(value.$x, 1);</pre>
+                <pre class="has-background-success-light py-0 px-2">                value -= one;</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6950,7 +6950,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(value.$y, 10);</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(value.$x, 1);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6963,7 +6963,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">            }</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(value.$y, 10);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6972,11 +6972,11 @@
                 <a href="#534">534</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
-                
+                class="column is-1 is-narrow p-0 has-text-centered has-text-success-light has-background-success">
+                3
             </div>
-            <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2"></pre>
+            <div class="column has-background-success-light p-0">
+                <pre class="has-background-success-light py-0 px-2">            }</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6989,7 +6989,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">            #[test]</pre>
+                <pre class="has-background-white py-0 px-2"></pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -6998,11 +6998,11 @@
                 <a href="#536">536</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-success-light has-background-success">
-                3
+                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
+                
             </div>
-            <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">            fn display_scale_math() {</pre>
+            <div class="column has-background-white p-0">
+                <pre class="has-background-white py-0 px-2">            #[test]</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7015,7 +7015,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                let scale = DisplayScale::&lt;u32&gt;::new(Scale::new(2), Scale::new(3));</pre>
+                <pre class="has-background-success-light py-0 px-2">            fn display_scale_math() {</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7028,7 +7028,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                let one_pixel = $name::&lt;u32, Pixels&gt;::new(1, 10);</pre>
+                <pre class="has-background-success-light py-0 px-2">                let scale = DisplayScale::&lt;u32&gt;::new(Scale::new(2), Scale::new(3));</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7041,7 +7041,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(one_pixel.to_pixels(&amp;scale), one_pixel);</pre>
+                <pre class="has-background-success-light py-0 px-2">                let one_scaled = $name::&lt;u32, Scaled&gt;::new(1, 10);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7054,7 +7054,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                let two_points = one_pixel.to_points(&amp;scale);</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(one_scaled.to_scaled(&amp;scale), one_scaled);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7067,7 +7067,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(two_points, $name::new(2, 20));</pre>
+                <pre class="has-background-success-light py-0 px-2">                let two_points = one_scaled.to_points(&amp;scale);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7080,7 +7080,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(two_points.to_points(&amp;scale), two_points);</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(two_points, $name::new(3, 30));</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7093,7 +7093,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                let six_scaled = one_pixel.to_scaled(&amp;scale);</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(two_points.to_points(&amp;scale), two_points);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7106,7 +7106,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(six_scaled, $name::new(6, 60));</pre>
+                <pre class="has-background-success-light py-0 px-2">                let six_pixels = one_scaled.to_pixels(&amp;scale);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7119,7 +7119,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(six_scaled.to_scaled(&amp;scale), six_scaled);</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(six_pixels, $name::new(6, 60));</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7128,11 +7128,11 @@
                 <a href="#546">546</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
-                
+                class="column is-1 is-narrow p-0 has-text-centered has-text-success-light has-background-success">
+                3
             </div>
-            <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2"></pre>
+            <div class="column has-background-success-light p-0">
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(six_pixels.to_pixels(&amp;scale), six_pixels);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7141,11 +7141,11 @@
                 <a href="#547">547</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-success-light has-background-success">
-                3
+                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
+                
             </div>
-            <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(six_scaled.to_points(&amp;scale), two_points);</pre>
+            <div class="column has-background-white p-0">
+                <pre class="has-background-white py-0 px-2"></pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7158,7 +7158,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(six_scaled.to_pixels(&amp;scale), one_pixel);</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(six_pixels.to_points(&amp;scale), two_points);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7167,11 +7167,11 @@
                 <a href="#549">549</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
-                
+                class="column is-1 is-narrow p-0 has-text-centered has-text-success-light has-background-success">
+                3
             </div>
-            <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2"></pre>
+            <div class="column has-background-success-light p-0">
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(six_pixels.to_scaled(&amp;scale), one_scaled);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7180,11 +7180,11 @@
                 <a href="#550">550</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-success-light has-background-success">
-                3
+                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
+                
             </div>
-            <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(two_points.to_scaled(&amp;scale), six_scaled);</pre>
+            <div class="column has-background-white p-0">
+                <pre class="has-background-white py-0 px-2"></pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7197,7 +7197,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(two_points.to_pixels(&amp;scale), one_pixel);</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(two_points.to_pixels(&amp;scale), six_pixels);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7210,7 +7210,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">            }</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(two_points.to_scaled(&amp;scale), one_scaled);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7219,11 +7219,11 @@
                 <a href="#553">553</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
-                
+                class="column is-1 is-narrow p-0 has-text-centered has-text-success-light has-background-success">
+                3
             </div>
-            <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2"></pre>
+            <div class="column has-background-success-light p-0">
+                <pre class="has-background-success-light py-0 px-2">            }</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7236,7 +7236,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">            #[test]</pre>
+                <pre class="has-background-white py-0 px-2"></pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7245,11 +7245,11 @@
                 <a href="#555">555</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-success-light has-background-success">
-                3
+                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
+                
             </div>
-            <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">            fn float_ops_test() {</pre>
+            <div class="column has-background-white p-0">
+                <pre class="has-background-white py-0 px-2">            #[test]</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7262,7 +7262,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                let one = $name::&lt;f32, Pixels&gt;::new(1., 10.);</pre>
+                <pre class="has-background-success-light py-0 px-2">            fn float_ops_test() {</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7275,7 +7275,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert!($name::&lt;f32, Pixels&gt;::new(0.5, 9.5).round().approx_eq(&amp;one));</pre>
+                <pre class="has-background-success-light py-0 px-2">                let one = $name::&lt;f32, Pixels&gt;::new(1., 10.);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7288,7 +7288,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert!($name::&lt;f32, Pixels&gt;::new(0.1, 9.1).ceil().approx_eq(&amp;one));</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert!($name::&lt;f32, Pixels&gt;::new(0.5, 9.5).round().approx_eq(&amp;one));</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7301,7 +7301,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert!($name::&lt;f32, Pixels&gt;::new(1.9, 10.9).floor().approx_eq(&amp;one));</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert!($name::&lt;f32, Pixels&gt;::new(0.1, 9.1).ceil().approx_eq(&amp;one));</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7314,7 +7314,7 @@
                 3
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">            }</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert!($name::&lt;f32, Pixels&gt;::new(1.9, 10.9).floor().approx_eq(&amp;one));</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7323,11 +7323,11 @@
                 <a href="#561">561</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
-                
+                class="column is-1 is-narrow p-0 has-text-centered has-text-success-light has-background-success">
+                3
             </div>
-            <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">        }</pre>
+            <div class="column has-background-success-light p-0">
+                <pre class="has-background-success-light py-0 px-2">            }</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7340,7 +7340,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">    };</pre>
+                <pre class="has-background-white py-0 px-2">        }</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7353,7 +7353,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">}</pre>
+                <pre class="has-background-white py-0 px-2">    };</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7366,7 +7366,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2"></pre>
+                <pre class="has-background-white py-0 px-2">}</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7379,7 +7379,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">macro_rules! define_vector_compatibility_ops {</pre>
+                <pre class="has-background-white py-0 px-2"></pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7392,7 +7392,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">    (</pre>
+                <pre class="has-background-white py-0 px-2">macro_rules! define_vector_compatibility_ops {</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7405,7 +7405,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">        $name:ident,</pre>
+                <pre class="has-background-white py-0 px-2">    (</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7418,7 +7418,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">        $test_mod_name:ident,</pre>
+                <pre class="has-background-white py-0 px-2">        $name:ident,</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7431,7 +7431,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">        $x:ident,</pre>
+                <pre class="has-background-white py-0 px-2">        $test_mod_name:ident,</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7444,7 +7444,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">        $y:ident,</pre>
+                <pre class="has-background-white py-0 px-2">        $x:ident,</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7457,7 +7457,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">        $other_name:ident,</pre>
+                <pre class="has-background-white py-0 px-2">        $y:ident,</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7470,7 +7470,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">        $other_x:ident,</pre>
+                <pre class="has-background-white py-0 px-2">        $other_name:ident,</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7483,7 +7483,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">        $other_y:ident</pre>
+                <pre class="has-background-white py-0 px-2">        $other_x:ident,</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7496,7 +7496,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">    ) =&gt; {</pre>
+                <pre class="has-background-white py-0 px-2">        $other_y:ident</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7509,7 +7509,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">        impl&lt;T, Unit&gt; std::ops::Add&lt;$other_name&lt;T, Unit&gt;&gt; for $name&lt;T, Unit&gt;</pre>
+                <pre class="has-background-white py-0 px-2">    ) =&gt; {</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7522,7 +7522,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">        where</pre>
+                <pre class="has-background-white py-0 px-2">        impl&lt;T, Unit&gt; std::ops::Add&lt;$other_name&lt;T, Unit&gt;&gt; for $name&lt;T, Unit&gt;</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7535,7 +7535,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">            T: std::ops::Add&lt;Output = T&gt; + Copy,</pre>
+                <pre class="has-background-white py-0 px-2">        where</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7548,7 +7548,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">        {</pre>
+                <pre class="has-background-white py-0 px-2">            T: std::ops::Add&lt;Output = T&gt; + Copy,</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7561,7 +7561,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">            type Output = Self;</pre>
+                <pre class="has-background-white py-0 px-2">        {</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7574,7 +7574,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2"></pre>
+                <pre class="has-background-white py-0 px-2">            type Output = Self;</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7583,11 +7583,11 @@
                 <a href="#581">581</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-success-light has-background-success">
-                20
+                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
+                
             </div>
-            <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">            fn add(self, rhs: $other_name&lt;T, Unit&gt;) -&gt; Self::Output {</pre>
+            <div class="column has-background-white p-0">
+                <pre class="has-background-white py-0 px-2"></pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7600,7 +7600,7 @@
                 20
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                Self::new(self.$x + rhs.$other_x, self.$y + rhs.$other_y)</pre>
+                <pre class="has-background-success-light py-0 px-2">            fn add(self, rhs: $other_name&lt;T, Unit&gt;) -&gt; Self::Output {</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7613,7 +7613,7 @@
                 20
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">            }</pre>
+                <pre class="has-background-success-light py-0 px-2">                Self::new(self.$x + rhs.$other_x, self.$y + rhs.$other_y)</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7622,11 +7622,11 @@
                 <a href="#584">584</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
-                
+                class="column is-1 is-narrow p-0 has-text-centered has-text-success-light has-background-success">
+                20
             </div>
-            <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">        }</pre>
+            <div class="column has-background-success-light p-0">
+                <pre class="has-background-success-light py-0 px-2">            }</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7639,7 +7639,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2"></pre>
+                <pre class="has-background-white py-0 px-2">        }</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7652,7 +7652,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">        impl&lt;T, Unit&gt; std::ops::Sub&lt;$other_name&lt;T, Unit&gt;&gt; for $name&lt;T, Unit&gt;</pre>
+                <pre class="has-background-white py-0 px-2"></pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7665,7 +7665,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">        where</pre>
+                <pre class="has-background-white py-0 px-2">        impl&lt;T, Unit&gt; std::ops::Sub&lt;$other_name&lt;T, Unit&gt;&gt; for $name&lt;T, Unit&gt;</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7678,7 +7678,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">            T: std::ops::Sub&lt;Output = T&gt; + Copy,</pre>
+                <pre class="has-background-white py-0 px-2">        where</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7691,7 +7691,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">        {</pre>
+                <pre class="has-background-white py-0 px-2">            T: std::ops::Sub&lt;Output = T&gt; + Copy,</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7704,7 +7704,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">            type Output = Self;</pre>
+                <pre class="has-background-white py-0 px-2">        {</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7717,7 +7717,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2"></pre>
+                <pre class="has-background-white py-0 px-2">            type Output = Self;</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7726,11 +7726,11 @@
                 <a href="#592">592</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-success-light has-background-success">
-                4
+                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
+                
             </div>
-            <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">            fn sub(self, rhs: $other_name&lt;T, Unit&gt;) -&gt; Self::Output {</pre>
+            <div class="column has-background-white p-0">
+                <pre class="has-background-white py-0 px-2"></pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7743,7 +7743,7 @@
                 4
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                Self::new(self.$x - rhs.$other_x, self.$y - rhs.$other_y)</pre>
+                <pre class="has-background-success-light py-0 px-2">            fn sub(self, rhs: $other_name&lt;T, Unit&gt;) -&gt; Self::Output {</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7756,7 +7756,7 @@
                 4
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">            }</pre>
+                <pre class="has-background-success-light py-0 px-2">                Self::new(self.$x - rhs.$other_x, self.$y - rhs.$other_y)</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7765,11 +7765,11 @@
                 <a href="#595">595</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
-                
+                class="column is-1 is-narrow p-0 has-text-centered has-text-success-light has-background-success">
+                4
             </div>
-            <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">        }</pre>
+            <div class="column has-background-success-light p-0">
+                <pre class="has-background-success-light py-0 px-2">            }</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7782,7 +7782,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2"></pre>
+                <pre class="has-background-white py-0 px-2">        }</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7795,7 +7795,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">        impl&lt;T, Unit&gt; std::ops::AddAssign&lt;$other_name&lt;T, Unit&gt;&gt; for $name&lt;T, Unit&gt;</pre>
+                <pre class="has-background-white py-0 px-2"></pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7808,7 +7808,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">        where</pre>
+                <pre class="has-background-white py-0 px-2">        impl&lt;T, Unit&gt; std::ops::AddAssign&lt;$other_name&lt;T, Unit&gt;&gt; for $name&lt;T, Unit&gt;</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7821,7 +7821,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">            T: std::ops::AddAssign + Copy,</pre>
+                <pre class="has-background-white py-0 px-2">        where</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7834,7 +7834,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">        {</pre>
+                <pre class="has-background-white py-0 px-2">            T: std::ops::AddAssign + Copy,</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7843,11 +7843,11 @@
                 <a href="#601">601</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-success-light has-background-success">
-                4
+                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
+                
             </div>
-            <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">            fn add_assign(&amp;mut self, rhs: $other_name&lt;T, Unit&gt;) {</pre>
+            <div class="column has-background-white p-0">
+                <pre class="has-background-white py-0 px-2">        {</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7860,7 +7860,7 @@
                 4
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                self.$x += rhs.$other_x;</pre>
+                <pre class="has-background-success-light py-0 px-2">            fn add_assign(&amp;mut self, rhs: $other_name&lt;T, Unit&gt;) {</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7873,7 +7873,7 @@
                 4
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                self.$y += rhs.$other_y;</pre>
+                <pre class="has-background-success-light py-0 px-2">                self.$x += rhs.$other_x;</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7886,7 +7886,7 @@
                 4
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">            }</pre>
+                <pre class="has-background-success-light py-0 px-2">                self.$y += rhs.$other_y;</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7895,11 +7895,11 @@
                 <a href="#605">605</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
-                
+                class="column is-1 is-narrow p-0 has-text-centered has-text-success-light has-background-success">
+                4
             </div>
-            <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">        }</pre>
+            <div class="column has-background-success-light p-0">
+                <pre class="has-background-success-light py-0 px-2">            }</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7912,7 +7912,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2"></pre>
+                <pre class="has-background-white py-0 px-2">        }</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7925,7 +7925,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">        impl&lt;T, Unit&gt; std::ops::SubAssign&lt;$other_name&lt;T, Unit&gt;&gt; for $name&lt;T, Unit&gt;</pre>
+                <pre class="has-background-white py-0 px-2"></pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7938,7 +7938,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">        where</pre>
+                <pre class="has-background-white py-0 px-2">        impl&lt;T, Unit&gt; std::ops::SubAssign&lt;$other_name&lt;T, Unit&gt;&gt; for $name&lt;T, Unit&gt;</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7951,7 +7951,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">            T: std::ops::SubAssign + Copy,</pre>
+                <pre class="has-background-white py-0 px-2">        where</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7964,7 +7964,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">        {</pre>
+                <pre class="has-background-white py-0 px-2">            T: std::ops::SubAssign + Copy,</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7973,11 +7973,11 @@
                 <a href="#611">611</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-success-light has-background-success">
-                4
+                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
+                
             </div>
-            <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">            fn sub_assign(&amp;mut self, rhs: $other_name&lt;T, Unit&gt;) {</pre>
+            <div class="column has-background-white p-0">
+                <pre class="has-background-white py-0 px-2">        {</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -7990,7 +7990,7 @@
                 4
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                self.$x -= rhs.$other_x;</pre>
+                <pre class="has-background-success-light py-0 px-2">            fn sub_assign(&amp;mut self, rhs: $other_name&lt;T, Unit&gt;) {</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8003,7 +8003,7 @@
                 4
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                self.$y -= rhs.$other_y;</pre>
+                <pre class="has-background-success-light py-0 px-2">                self.$x -= rhs.$other_x;</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8016,7 +8016,7 @@
                 4
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">            }</pre>
+                <pre class="has-background-success-light py-0 px-2">                self.$y -= rhs.$other_y;</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8025,11 +8025,11 @@
                 <a href="#615">615</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
-                
+                class="column is-1 is-narrow p-0 has-text-centered has-text-success-light has-background-success">
+                4
             </div>
-            <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">        }</pre>
+            <div class="column has-background-success-light p-0">
+                <pre class="has-background-success-light py-0 px-2">            }</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8042,7 +8042,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2"></pre>
+                <pre class="has-background-white py-0 px-2">        }</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8055,7 +8055,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">        impl&lt;T, Unit&gt; PartialEq&lt;$other_name&lt;T, Unit&gt;&gt; for $name&lt;T, Unit&gt;</pre>
+                <pre class="has-background-white py-0 px-2"></pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8068,7 +8068,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">        where</pre>
+                <pre class="has-background-white py-0 px-2">        impl&lt;T, Unit&gt; PartialEq&lt;$other_name&lt;T, Unit&gt;&gt; for $name&lt;T, Unit&gt;</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8081,7 +8081,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">            T: PartialEq,</pre>
+                <pre class="has-background-white py-0 px-2">        where</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8094,7 +8094,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">        {</pre>
+                <pre class="has-background-white py-0 px-2">            T: PartialEq,</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8103,11 +8103,11 @@
                 <a href="#621">621</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-success-light has-background-success">
-                8
+                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
+                
             </div>
-            <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">            fn eq(&amp;self, other: &amp;$other_name&lt;T, Unit&gt;) -&gt; bool {</pre>
+            <div class="column has-background-white p-0">
+                <pre class="has-background-white py-0 px-2">        {</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8120,7 +8120,7 @@
                 8
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                self.$x.eq(&amp;other.$other_x) &amp;&amp; self.$y.eq(&amp;other.$other_y)</pre>
+                <pre class="has-background-success-light py-0 px-2">            fn eq(&amp;self, other: &amp;$other_name&lt;T, Unit&gt;) -&gt; bool {</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8133,7 +8133,7 @@
                 8
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">            }</pre>
+                <pre class="has-background-success-light py-0 px-2">                self.$x.eq(&amp;other.$other_x) &amp;&amp; self.$y.eq(&amp;other.$other_y)</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8142,11 +8142,11 @@
                 <a href="#624">624</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
-                
+                class="column is-1 is-narrow p-0 has-text-centered has-text-success-light has-background-success">
+                8
             </div>
-            <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">        }</pre>
+            <div class="column has-background-success-light p-0">
+                <pre class="has-background-success-light py-0 px-2">            }</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8159,7 +8159,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2"></pre>
+                <pre class="has-background-white py-0 px-2">        }</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8172,7 +8172,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">        #[cfg(test)]</pre>
+                <pre class="has-background-white py-0 px-2"></pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8185,7 +8185,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">        mod $test_mod_name {</pre>
+                <pre class="has-background-white py-0 px-2">        #[cfg(test)]</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8198,7 +8198,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">            use super::*;</pre>
+                <pre class="has-background-white py-0 px-2">        mod $test_mod_name {</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8211,7 +8211,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">            use crate::Pixels;</pre>
+                <pre class="has-background-white py-0 px-2">            use super::*;</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8224,7 +8224,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2"></pre>
+                <pre class="has-background-white py-0 px-2">            use crate::Pixels;</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8237,7 +8237,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">            #[test]</pre>
+                <pre class="has-background-white py-0 px-2"></pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8246,11 +8246,11 @@
                 <a href="#632">632</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-success-light has-background-success">
-                4
+                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
+                
             </div>
-            <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">            fn math_ops() {</pre>
+            <div class="column has-background-white p-0">
+                <pre class="has-background-white py-0 px-2">            #[test]</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8263,7 +8263,7 @@
                 4
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                let one = $name::&lt;i32, Pixels&gt;::new(1, 10);</pre>
+                <pre class="has-background-success-light py-0 px-2">            fn math_ops() {</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8276,7 +8276,7 @@
                 4
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                let other_one = $other_name::new(1, 10);</pre>
+                <pre class="has-background-success-light py-0 px-2">                let one = $name::&lt;i32, Pixels&gt;::new(1, 10);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8289,7 +8289,7 @@
                 4
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                let two = one + other_one;</pre>
+                <pre class="has-background-success-light py-0 px-2">                let other_one = $other_name::new(1, 10);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8302,7 +8302,7 @@
                 4
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(two.$x, 2);</pre>
+                <pre class="has-background-success-light py-0 px-2">                let two = one + other_one;</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8315,7 +8315,7 @@
                 4
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(two.$y, 20);</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(two.$x, 2);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8328,7 +8328,7 @@
                 4
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                let one_after_sub = two - other_one;</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(two.$y, 20);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8341,7 +8341,7 @@
                 4
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(one_after_sub, other_one);</pre>
+                <pre class="has-background-success-light py-0 px-2">                let one_after_sub = two - other_one;</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8350,11 +8350,11 @@
                 <a href="#640">640</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
-                
+                class="column is-1 is-narrow p-0 has-text-centered has-text-success-light has-background-success">
+                4
             </div>
-            <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2"></pre>
+            <div class="column has-background-success-light p-0">
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(one_after_sub, other_one);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8363,11 +8363,11 @@
                 <a href="#641">641</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-success-light has-background-success">
-                4
+                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
+                
             </div>
-            <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                let mut value = one;</pre>
+            <div class="column has-background-white p-0">
+                <pre class="has-background-white py-0 px-2"></pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8380,7 +8380,7 @@
                 4
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                value += other_one;</pre>
+                <pre class="has-background-success-light py-0 px-2">                let mut value = one;</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8393,7 +8393,7 @@
                 4
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(value.$x, 2);</pre>
+                <pre class="has-background-success-light py-0 px-2">                value += other_one;</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8406,7 +8406,7 @@
                 4
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(value.$y, 20);</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(value.$x, 2);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8419,7 +8419,7 @@
                 4
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                value -= other_one;</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(value.$y, 20);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8432,7 +8432,7 @@
                 4
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">                assert_eq!(value, other_one);</pre>
+                <pre class="has-background-success-light py-0 px-2">                value -= other_one;</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8445,7 +8445,7 @@
                 4
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">            }</pre>
+                <pre class="has-background-success-light py-0 px-2">                assert_eq!(value, other_one);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8454,11 +8454,11 @@
                 <a href="#648">648</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
-                
+                class="column is-1 is-narrow p-0 has-text-centered has-text-success-light has-background-success">
+                4
             </div>
-            <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">        }</pre>
+            <div class="column has-background-success-light p-0">
+                <pre class="has-background-success-light py-0 px-2">            }</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8471,7 +8471,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">    };</pre>
+                <pre class="has-background-white py-0 px-2">        }</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8484,7 +8484,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">}</pre>
+                <pre class="has-background-white py-0 px-2">    };</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8497,7 +8497,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2"></pre>
+                <pre class="has-background-white py-0 px-2">}</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8510,7 +8510,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">&#x2F;&#x2F;&#x2F; Methods that enable converting between 2d types that have two components.</pre>
+                <pre class="has-background-white py-0 px-2"></pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8523,7 +8523,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">pub trait Vectorlike&lt;T, Unit&gt; {</pre>
+                <pre class="has-background-white py-0 px-2">&#x2F;&#x2F;&#x2F; Methods that enable converting between 2d types that have two components.</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8536,7 +8536,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">    &#x2F;&#x2F;&#x2F; Returns `self` as a `Vector`.</pre>
+                <pre class="has-background-white py-0 px-2">pub trait Vectorlike&lt;T, Unit&gt; {</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8549,7 +8549,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">    fn to_vector(&amp;self) -&gt; Vector&lt;T, Unit&gt;;</pre>
+                <pre class="has-background-white py-0 px-2">    &#x2F;&#x2F;&#x2F; Returns `self` as a `Vector`.</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8562,7 +8562,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">    &#x2F;&#x2F;&#x2F; Returns `self` as a `Size`.</pre>
+                <pre class="has-background-white py-0 px-2">    fn to_vector(&amp;self) -&gt; Vector&lt;T, Unit&gt;;</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8575,7 +8575,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">    fn to_size(&amp;self) -&gt; Size&lt;T, Unit&gt;;</pre>
+                <pre class="has-background-white py-0 px-2">    &#x2F;&#x2F;&#x2F; Returns `self` as a `Size`.</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8588,7 +8588,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">    &#x2F;&#x2F;&#x2F; Returns `self` as a `Point`.</pre>
+                <pre class="has-background-white py-0 px-2">    fn to_size(&amp;self) -&gt; Size&lt;T, Unit&gt;;</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8601,7 +8601,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">    fn to_point(&amp;self) -&gt; Point&lt;T, Unit&gt;;</pre>
+                <pre class="has-background-white py-0 px-2">    &#x2F;&#x2F;&#x2F; Returns `self` as a `Point`.</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8614,7 +8614,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">}</pre>
+                <pre class="has-background-white py-0 px-2">    fn to_point(&amp;self) -&gt; Point&lt;T, Unit&gt;;</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8627,7 +8627,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2"></pre>
+                <pre class="has-background-white py-0 px-2">}</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8636,11 +8636,11 @@
                 <a href="#662">662</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-success-light has-background-success">
-                7
+                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
+                
             </div>
-            <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">define_vectorlike!(</pre>
+            <div class="column has-background-white p-0">
+                <pre class="has-background-white py-0 px-2"></pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8653,7 +8653,7 @@
                 7
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">    Size,</pre>
+                <pre class="has-background-success-light py-0 px-2">define_vectorlike!(</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8666,7 +8666,7 @@
                 7
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">    size_tests,</pre>
+                <pre class="has-background-success-light py-0 px-2">    Size,</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8679,7 +8679,7 @@
                 7
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">    width,</pre>
+                <pre class="has-background-success-light py-0 px-2">    size_tests,</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8692,7 +8692,7 @@
                 7
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">    height,</pre>
+                <pre class="has-background-success-light py-0 px-2">    width,</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8705,7 +8705,7 @@
                 7
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">    &quot;A measurement of space using width and height.&quot;</pre>
+                <pre class="has-background-success-light py-0 px-2">    height,</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8718,7 +8718,7 @@
                 7
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">);</pre>
+                <pre class="has-background-success-light py-0 px-2">    &quot;A measurement of space using width and height.&quot;</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8731,7 +8731,7 @@
                 7
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">define_vectorlike!(</pre>
+                <pre class="has-background-success-light py-0 px-2">);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8744,7 +8744,7 @@
                 7
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">    Point,</pre>
+                <pre class="has-background-success-light py-0 px-2">define_vectorlike!(</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8757,7 +8757,7 @@
                 7
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">    point_tests,</pre>
+                <pre class="has-background-success-light py-0 px-2">    Point,</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8770,7 +8770,7 @@
                 7
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">    x,</pre>
+                <pre class="has-background-success-light py-0 px-2">    point_tests,</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8783,7 +8783,7 @@
                 7
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">    y,</pre>
+                <pre class="has-background-success-light py-0 px-2">    x,</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8796,7 +8796,7 @@
                 7
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">    &quot;A location represented by an x and y value.&quot;</pre>
+                <pre class="has-background-success-light py-0 px-2">    y,</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8809,7 +8809,7 @@
                 7
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">);</pre>
+                <pre class="has-background-success-light py-0 px-2">    &quot;A location represented by an x and y value.&quot;</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8822,7 +8822,7 @@
                 7
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">define_vectorlike!(</pre>
+                <pre class="has-background-success-light py-0 px-2">);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8835,7 +8835,7 @@
                 7
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">    Vector,</pre>
+                <pre class="has-background-success-light py-0 px-2">define_vectorlike!(</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8848,7 +8848,7 @@
                 7
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">    vector_tests,</pre>
+                <pre class="has-background-success-light py-0 px-2">    Vector,</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8861,7 +8861,7 @@
                 7
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">    x,</pre>
+                <pre class="has-background-success-light py-0 px-2">    vector_tests,</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8874,7 +8874,7 @@
                 7
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">    y,</pre>
+                <pre class="has-background-success-light py-0 px-2">    x,</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8887,7 +8887,7 @@
                 7
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">    &quot;A 2d measurement using x and y values.&quot;</pre>
+                <pre class="has-background-success-light py-0 px-2">    y,</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8900,7 +8900,7 @@
                 7
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">);</pre>
+                <pre class="has-background-success-light py-0 px-2">    &quot;A 2d measurement using x and y values.&quot;</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8909,11 +8909,11 @@
                 <a href="#683">683</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
-                
+                class="column is-1 is-narrow p-0 has-text-centered has-text-success-light has-background-success">
+                7
             </div>
-            <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2"></pre>
+            <div class="column has-background-success-light p-0">
+                <pre class="has-background-success-light py-0 px-2">);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8922,11 +8922,11 @@
                 <a href="#684">684</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-success-light has-background-success">
-                1
+                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
+                
             </div>
-            <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">define_vector_compatibility_ops!(Size, size_vector_tests, width, height, Vector, x, y);</pre>
+            <div class="column has-background-white p-0">
+                <pre class="has-background-white py-0 px-2"></pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8939,7 +8939,7 @@
                 1
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">define_vector_compatibility_ops!(Point, point_vector_tests, x, y, Vector, x, y);</pre>
+                <pre class="has-background-success-light py-0 px-2">define_vector_compatibility_ops!(Size, size_vector_tests, width, height, Vector, x, y);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8952,7 +8952,7 @@
                 1
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">define_vector_compatibility_ops!(Point, point_size_tests, x, y, Size, width, height);</pre>
+                <pre class="has-background-success-light py-0 px-2">define_vector_compatibility_ops!(Point, point_vector_tests, x, y, Vector, x, y);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8965,7 +8965,7 @@
                 1
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">define_vector_compatibility_ops!(Vector, vector_size_tests, x, y, Size, width, height);</pre>
+                <pre class="has-background-success-light py-0 px-2">define_vector_compatibility_ops!(Point, point_size_tests, x, y, Size, width, height);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8974,11 +8974,11 @@
                 <a href="#688">688</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
-                
+                class="column is-1 is-narrow p-0 has-text-centered has-text-success-light has-background-success">
+                1
             </div>
-            <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2"></pre>
+            <div class="column has-background-success-light p-0">
+                <pre class="has-background-success-light py-0 px-2">define_vector_compatibility_ops!(Vector, vector_size_tests, x, y, Size, width, height);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -8987,11 +8987,11 @@
                 <a href="#689">689</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-success-light has-background-success">
-                1
+                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
+                
             </div>
-            <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">#[test]</pre>
+            <div class="column has-background-white p-0">
+                <pre class="has-background-white py-0 px-2"></pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -9004,7 +9004,7 @@
                 1
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">fn debug_test() {</pre>
+                <pre class="has-background-success-light py-0 px-2">#[test]</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -9017,7 +9017,7 @@
                 1
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">    let test = Size::&lt;u32, ()&gt;::new(1, 0);</pre>
+                <pre class="has-background-success-light py-0 px-2">fn debug_test() {</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -9030,7 +9030,7 @@
                 1
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">    assert_eq!(&amp;format!(&quot;{:?}&quot;, test), &quot;Size { width: 1, height: 0 }&quot;);</pre>
+                <pre class="has-background-success-light py-0 px-2">    let test = Size::&lt;u32, ()&gt;::new(1, 0);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -9043,7 +9043,7 @@
                 1
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">    let test = Point::&lt;u32, ()&gt;::new(1, 0);</pre>
+                <pre class="has-background-success-light py-0 px-2">    assert_eq!(&amp;format!(&quot;{:?}&quot;, test), &quot;Size { width: 1, height: 0 }&quot;);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -9056,7 +9056,7 @@
                 1
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">    assert_eq!(&amp;format!(&quot;{:?}&quot;, test), &quot;Point { x: 1, y: 0 }&quot;);</pre>
+                <pre class="has-background-success-light py-0 px-2">    let test = Point::&lt;u32, ()&gt;::new(1, 0);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -9069,7 +9069,7 @@
                 1
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">    let test = Vector::&lt;u32, ()&gt;::new(1, 0);</pre>
+                <pre class="has-background-success-light py-0 px-2">    assert_eq!(&amp;format!(&quot;{:?}&quot;, test), &quot;Point { x: 1, y: 0 }&quot;);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -9082,7 +9082,7 @@
                 1
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">    assert_eq!(&amp;format!(&quot;{:?}&quot;, test), &quot;Vector { x: 1, y: 0 }&quot;);</pre>
+                <pre class="has-background-success-light py-0 px-2">    let test = Vector::&lt;u32, ()&gt;::new(1, 0);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -9095,7 +9095,7 @@
                 1
             </div>
             <div class="column has-background-success-light p-0">
-                <pre class="has-background-success-light py-0 px-2">}</pre>
+                <pre class="has-background-success-light py-0 px-2">    assert_eq!(&amp;format!(&quot;{:?}&quot;, test), &quot;Vector { x: 1, y: 0 }&quot;);</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -9104,11 +9104,11 @@
                 <a href="#698">698</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
-                
+                class="column is-1 is-narrow p-0 has-text-centered has-text-success-light has-background-success">
+                1
             </div>
-            <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2"></pre>
+            <div class="column has-background-success-light p-0">
+                <pre class="has-background-success-light py-0 px-2">}</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -9121,7 +9121,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">impl&lt;T, Unit&gt; From&lt;Vector&lt;T, Unit&gt;&gt; for Point&lt;T, Unit&gt; {</pre>
+                <pre class="has-background-white py-0 px-2"></pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -9130,11 +9130,11 @@
                 <a href="#700">700</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-danger-light has-background-danger">
+                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
                 
             </div>
-            <div class="column has-background-danger-light p-0">
-                <pre class="has-background-danger-light py-0 px-2">    fn from(other: Vector&lt;T, Unit&gt;) -&gt; Self {</pre>
+            <div class="column has-background-white p-0">
+                <pre class="has-background-white py-0 px-2">impl&lt;T, Unit&gt; From&lt;Vector&lt;T, Unit&gt;&gt; for Point&lt;T, Unit&gt; {</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -9147,7 +9147,7 @@
                 
             </div>
             <div class="column has-background-danger-light p-0">
-                <pre class="has-background-danger-light py-0 px-2">        Self::new(other.x, other.y)</pre>
+                <pre class="has-background-danger-light py-0 px-2">    fn from(other: Vector&lt;T, Unit&gt;) -&gt; Self {</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -9160,7 +9160,7 @@
                 
             </div>
             <div class="column has-background-danger-light p-0">
-                <pre class="has-background-danger-light py-0 px-2">    }</pre>
+                <pre class="has-background-danger-light py-0 px-2">        Self::new(other.x, other.y)</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -9169,11 +9169,11 @@
                 <a href="#703">703</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
+                class="column is-1 is-narrow p-0 has-text-centered has-text-danger-light has-background-danger">
                 
             </div>
-            <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">}</pre>
+            <div class="column has-background-danger-light p-0">
+                <pre class="has-background-danger-light py-0 px-2">    }</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -9186,7 +9186,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2"></pre>
+                <pre class="has-background-white py-0 px-2">}</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -9199,7 +9199,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">impl&lt;T, Unit&gt; From&lt;Point&lt;T, Unit&gt;&gt; for Vector&lt;T, Unit&gt; {</pre>
+                <pre class="has-background-white py-0 px-2"></pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -9208,11 +9208,11 @@
                 <a href="#706">706</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-danger-light has-background-danger">
+                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
                 
             </div>
-            <div class="column has-background-danger-light p-0">
-                <pre class="has-background-danger-light py-0 px-2">    fn from(other: Point&lt;T, Unit&gt;) -&gt; Self {</pre>
+            <div class="column has-background-white p-0">
+                <pre class="has-background-white py-0 px-2">impl&lt;T, Unit&gt; From&lt;Point&lt;T, Unit&gt;&gt; for Vector&lt;T, Unit&gt; {</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -9225,7 +9225,7 @@
                 
             </div>
             <div class="column has-background-danger-light p-0">
-                <pre class="has-background-danger-light py-0 px-2">        Self::new(other.x, other.y)</pre>
+                <pre class="has-background-danger-light py-0 px-2">    fn from(other: Point&lt;T, Unit&gt;) -&gt; Self {</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -9238,7 +9238,7 @@
                 
             </div>
             <div class="column has-background-danger-light p-0">
-                <pre class="has-background-danger-light py-0 px-2">    }</pre>
+                <pre class="has-background-danger-light py-0 px-2">        Self::new(other.x, other.y)</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -9247,11 +9247,11 @@
                 <a href="#709">709</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
+                class="column is-1 is-narrow p-0 has-text-centered has-text-danger-light has-background-danger">
                 
             </div>
-            <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">}</pre>
+            <div class="column has-background-danger-light p-0">
+                <pre class="has-background-danger-light py-0 px-2">    }</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -9264,7 +9264,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2"></pre>
+                <pre class="has-background-white py-0 px-2">}</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -9277,7 +9277,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">impl&lt;T, Unit&gt; From&lt;Vector&lt;T, Unit&gt;&gt; for Size&lt;T, Unit&gt; {</pre>
+                <pre class="has-background-white py-0 px-2"></pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -9286,11 +9286,11 @@
                 <a href="#712">712</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-danger-light has-background-danger">
+                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
                 
             </div>
-            <div class="column has-background-danger-light p-0">
-                <pre class="has-background-danger-light py-0 px-2">    fn from(other: Vector&lt;T, Unit&gt;) -&gt; Self {</pre>
+            <div class="column has-background-white p-0">
+                <pre class="has-background-white py-0 px-2">impl&lt;T, Unit&gt; From&lt;Vector&lt;T, Unit&gt;&gt; for Size&lt;T, Unit&gt; {</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -9303,7 +9303,7 @@
                 
             </div>
             <div class="column has-background-danger-light p-0">
-                <pre class="has-background-danger-light py-0 px-2">        Self::new(other.x, other.y)</pre>
+                <pre class="has-background-danger-light py-0 px-2">    fn from(other: Vector&lt;T, Unit&gt;) -&gt; Self {</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -9316,7 +9316,7 @@
                 
             </div>
             <div class="column has-background-danger-light p-0">
-                <pre class="has-background-danger-light py-0 px-2">    }</pre>
+                <pre class="has-background-danger-light py-0 px-2">        Self::new(other.x, other.y)</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -9325,11 +9325,11 @@
                 <a href="#715">715</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
+                class="column is-1 is-narrow p-0 has-text-centered has-text-danger-light has-background-danger">
                 
             </div>
-            <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">}</pre>
+            <div class="column has-background-danger-light p-0">
+                <pre class="has-background-danger-light py-0 px-2">    }</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -9342,7 +9342,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2"></pre>
+                <pre class="has-background-white py-0 px-2">}</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -9355,7 +9355,7 @@
                 
             </div>
             <div class="column has-background-white p-0">
-                <pre class="has-background-white py-0 px-2">impl&lt;T, Unit&gt; From&lt;Size&lt;T, Unit&gt;&gt; for Vector&lt;T, Unit&gt; {</pre>
+                <pre class="has-background-white py-0 px-2"></pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -9364,11 +9364,11 @@
                 <a href="#718">718</a>
             </div>
             <div
-                class="column is-1 is-narrow p-0 has-text-centered has-text-danger-light has-background-danger">
+                class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
                 
             </div>
-            <div class="column has-background-danger-light p-0">
-                <pre class="has-background-danger-light py-0 px-2">    fn from(other: Size&lt;T, Unit&gt;) -&gt; Self {</pre>
+            <div class="column has-background-white p-0">
+                <pre class="has-background-white py-0 px-2">impl&lt;T, Unit&gt; From&lt;Size&lt;T, Unit&gt;&gt; for Vector&lt;T, Unit&gt; {</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -9381,7 +9381,7 @@
                 
             </div>
             <div class="column has-background-danger-light p-0">
-                <pre class="has-background-danger-light py-0 px-2">        Self::new(other.width, other.height)</pre>
+                <pre class="has-background-danger-light py-0 px-2">    fn from(other: Size&lt;T, Unit&gt;) -&gt; Self {</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
@@ -9394,13 +9394,26 @@
                 
             </div>
             <div class="column has-background-danger-light p-0">
-                <pre class="has-background-danger-light py-0 px-2">    }</pre>
+                <pre class="has-background-danger-light py-0 px-2">        Self::new(other.width, other.height)</pre>
             </div>
         </div><div class="columns p-0 m-0">
             <div
                 class="column is-1 is-narrow p-0 has-text-centered"
                 id="721">
                 <a href="#721">721</a>
+            </div>
+            <div
+                class="column is-1 is-narrow p-0 has-text-centered has-text-danger-light has-background-danger">
+                
+            </div>
+            <div class="column has-background-danger-light p-0">
+                <pre class="has-background-danger-light py-0 px-2">    }</pre>
+            </div>
+        </div><div class="columns p-0 m-0">
+            <div
+                class="column is-1 is-narrow p-0 has-text-centered"
+                id="722">
+                <a href="#722">722</a>
             </div>
             <div
                 class="column is-1 is-narrow p-0 has-text-centered has-text-white has-background-white">
@@ -9412,7 +9425,7 @@
         </div></div>
         <footer class="footer">
             <div class="content has-text-centered">
-                <p class="heading">Date: 2021-08-13 16:57</p>
+                <p class="heading">Date: 2021-08-13 17:14</p>
             </div>
         </footer>
     </body>

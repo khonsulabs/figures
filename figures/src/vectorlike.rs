@@ -695,3 +695,27 @@ fn debug_test() {
     let test = Vector::<u32, ()>::new(1, 0);
     assert_eq!(&format!("{:?}", test), "Vector { x: 1, y: 0 }");
 }
+
+impl<T, Unit> From<Vector<T, Unit>> for Point<T, Unit> {
+    fn from(other: Vector<T, Unit>) -> Self {
+        Self::new(other.x, other.y)
+    }
+}
+
+impl<T, Unit> From<Point<T, Unit>> for Vector<T, Unit> {
+    fn from(other: Point<T, Unit>) -> Self {
+        Self::new(other.x, other.y)
+    }
+}
+
+impl<T, Unit> From<Vector<T, Unit>> for Size<T, Unit> {
+    fn from(other: Vector<T, Unit>) -> Self {
+        Self::new(other.x, other.y)
+    }
+}
+
+impl<T, Unit> From<Size<T, Unit>> for Vector<T, Unit> {
+    fn from(other: Size<T, Unit>) -> Self {
+        Self::new(other.width, other.height)
+    }
+}

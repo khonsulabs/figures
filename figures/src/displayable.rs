@@ -1,6 +1,6 @@
 use std::ops::Mul;
 
-use crate::Scale;
+use crate::{One, Scale};
 
 /// A unit representing DPI-adjusted resolution configured on the system.
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -19,10 +19,40 @@ pub struct Pixels;
 pub struct Scaled;
 
 /// Scaling ratios for [`Scaled`] and [`Displayable`].
+#[derive(Debug, Clone, Copy)]
 pub struct DisplayScale<T> {
-    pub(crate) scaled: Scale<T, Pixels, Scaled>,
-    pub(crate) points: Scale<T, Pixels, Points>,
-    pub(crate) between: Scale<T, Points, Scaled>,
+    pub(crate) total: Scale<T, Pixels, Scaled>,
+    pub(crate) dpi: Scale<T, Pixels, Points>,
+    pub(crate) additional: Scale<T, Points, Scaled>,
+}
+
+impl<T: Mul<T, Output = T> + Copy> DisplayScale<T> {
+    /// Returns the scale between [`Pixels`] and [`Points`].
+    pub fn dpi_scale(&self) -> Scale<T, Pixels, Points> {
+        self.dpi
+    }
+
+    /// Returns the scale between [`Points`] and [`Scaled`].
+    pub fn additional_scale(&self) -> Scale<T, Points, Scaled> {
+        self.additional
+    }
+
+    /// Returns the scale between [`Pixels`] and [`Scaled`].
+    pub fn total_scale(&self) -> Scale<T, Pixels, Scaled> {
+        self.total
+    }
+
+    /// Sets the scale factor between [`Points`] and [`Scaled`].
+    pub fn set_additional_scale(&mut self, scale: Scale<T, Points, Scaled>) {
+        self.additional = scale;
+        self.total = total_scale(self.dpi, self.additional);
+    }
+
+    /// Sets the scale factor between [`Pixels`] and [`Points`].
+    pub fn set_dpi_scale(&mut self, scale: Scale<T, Pixels, Points>) {
+        self.dpi = scale;
+        self.total = total_scale(self.dpi, self.additional);
+    }
 }
 
 impl<T: Mul<T, Output = T> + Copy> DisplayScale<T> {
@@ -42,21 +72,37 @@ impl<T: Mul<T, Output = T> + Copy> DisplayScale<T> {
         additional_scaling: Scale<T, Points, Scaled>,
     ) -> Self {
         Self {
-            points: dpi,
-            between: additional_scaling,
-            scaled: Scale::new(dpi.get() * additional_scaling.get()),
+            dpi,
+            additional: additional_scaling,
+            total: total_scale(dpi, additional_scaling),
         }
+    }
+}
+
+fn total_scale<T: Mul<T, Output = T> + Copy>(
+    dpi: Scale<T, Pixels, Points>,
+    additional_scaling: Scale<T, Points, Scaled>,
+) -> Scale<T, Pixels, Scaled> {
+    Scale::new(dpi.get() * additional_scaling.get())
+}
+
+impl<T> One for DisplayScale<T>
+where
+    T: num_traits::One + Mul<T, Output = T> + Copy,
+{
+    fn one() -> Self {
+        Self::new(Scale::one(), Scale::one())
     }
 }
 
 /// Methods for converting between display scales.
 pub trait Displayable<T> {
     /// The [`Pixels`] unit type for this implementor.
-    type Pixels;
+    type Pixels: Displayable<T>;
     /// The [`Points`] unit type for this implementor.
-    type Points;
+    type Points: Displayable<T>;
     /// The [`Scaled`] unit type for this implementor.
-    type Scaled;
+    type Scaled: Displayable<T>;
 
     /// Returns this value after applying `scale`, if needed.
     fn to_pixels(&self, scale: &DisplayScale<T>) -> Self::Pixels;

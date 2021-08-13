@@ -778,20 +778,20 @@ fn scalar_maths_test() {
 #[test]
 fn display_scale_math() {
     let scale = DisplayScale::<u32>::new(Scale::new(2), Scale::new(3));
-    let one_pixel = Figure::<u32, Pixels>::one();
-    assert_eq!(one_pixel.to_pixels(&scale), one_pixel);
-    let two_points = one_pixel.to_points(&scale);
-    assert_eq!(two_points.get(), 2);
+    let one_scaled = Figure::<u32, Scaled>::one();
+    assert_eq!(one_scaled.to_scaled(&scale), one_scaled);
+    let two_points = one_scaled.to_points(&scale);
+    assert_eq!(two_points.get(), 3);
     assert_eq!(two_points.to_points(&scale), two_points);
-    let six_scaled = one_pixel.to_scaled(&scale);
-    assert_eq!(six_scaled.get(), 6);
-    assert_eq!(six_scaled.to_scaled(&scale), six_scaled);
+    let six_pixels = one_scaled.to_pixels(&scale);
+    assert_eq!(six_pixels.get(), 6);
+    assert_eq!(six_pixels.to_pixels(&scale), six_pixels);
 
-    assert_eq!(six_scaled.to_points(&scale), two_points);
-    assert_eq!(six_scaled.to_pixels(&scale), one_pixel);
+    assert_eq!(six_pixels.to_points(&scale), two_points);
+    assert_eq!(six_pixels.to_scaled(&scale), one_scaled);
 
-    assert_eq!(two_points.to_scaled(&scale), six_scaled);
-    assert_eq!(two_points.to_pixels(&scale), one_pixel);
+    assert_eq!(two_points.to_pixels(&scale), six_pixels);
+    assert_eq!(two_points.to_scaled(&scale), one_scaled);
 }
 
 #[test]

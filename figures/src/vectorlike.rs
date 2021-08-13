@@ -457,6 +457,7 @@ macro_rules! define_vectorlike {
             use super::*;
             use crate::{
                 Approx, Ceil, DisplayScale, Displayable, Floor, Pixels, Points, Round, Scale,
+                Scaled,
             };
 
             #[test]
@@ -535,20 +536,20 @@ macro_rules! define_vectorlike {
             #[test]
             fn display_scale_math() {
                 let scale = DisplayScale::<u32>::new(Scale::new(2), Scale::new(3));
-                let one_pixel = $name::<u32, Pixels>::new(1, 10);
-                assert_eq!(one_pixel.to_pixels(&scale), one_pixel);
-                let two_points = one_pixel.to_points(&scale);
-                assert_eq!(two_points, $name::new(2, 20));
+                let one_scaled = $name::<u32, Scaled>::new(1, 10);
+                assert_eq!(one_scaled.to_scaled(&scale), one_scaled);
+                let two_points = one_scaled.to_points(&scale);
+                assert_eq!(two_points, $name::new(3, 30));
                 assert_eq!(two_points.to_points(&scale), two_points);
-                let six_scaled = one_pixel.to_scaled(&scale);
-                assert_eq!(six_scaled, $name::new(6, 60));
-                assert_eq!(six_scaled.to_scaled(&scale), six_scaled);
+                let six_pixels = one_scaled.to_pixels(&scale);
+                assert_eq!(six_pixels, $name::new(6, 60));
+                assert_eq!(six_pixels.to_pixels(&scale), six_pixels);
 
-                assert_eq!(six_scaled.to_points(&scale), two_points);
-                assert_eq!(six_scaled.to_pixels(&scale), one_pixel);
+                assert_eq!(six_pixels.to_points(&scale), two_points);
+                assert_eq!(six_pixels.to_scaled(&scale), one_scaled);
 
-                assert_eq!(two_points.to_scaled(&scale), six_scaled);
-                assert_eq!(two_points.to_pixels(&scale), one_pixel);
+                assert_eq!(two_points.to_pixels(&scale), six_pixels);
+                assert_eq!(two_points.to_scaled(&scale), one_scaled);
             }
 
             #[test]

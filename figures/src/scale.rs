@@ -1,4 +1,9 @@
-use std::{any::type_name, fmt::Debug, marker::PhantomData, ops::Mul};
+use std::{
+    any::type_name,
+    fmt::Debug,
+    marker::PhantomData,
+    ops::{Div, Mul},
+};
 
 use num_traits::One;
 
@@ -16,6 +21,16 @@ impl<T, UnitA, UnitB> Scale<T, UnitA, UnitB> {
     pub const fn new(ratio: T) -> Self {
         Self {
             ratio,
+            _units: PhantomData,
+        }
+    }
+}
+
+impl<T: One + Div<T, Output = T>, UnitA, UnitB> Scale<T, UnitA, UnitB> {
+    /// Returns the inverse of this scale.
+    pub fn inverse(self) -> Scale<T, UnitB, UnitA> {
+        Scale {
+            ratio: T::one() / self.ratio,
             _units: PhantomData,
         }
     }

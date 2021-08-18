@@ -1288,10 +1288,10 @@ where
     }
 
     fn inflate<V: Into<Vector<T, Unit>>>(&self, by: V) -> Self {
-        let by = by.into() / (T::one() + T::one());
+        let half = by.into() / (T::one() + T::one());
         Self {
-            origin: self.origin - by,
-            extent: self.extent + by,
+            origin: self.origin - half,
+            extent: self.extent + half,
         }
     }
 }
@@ -1340,9 +1340,10 @@ where
     }
 
     fn inflate<V: Into<Vector<T, Unit>>>(&self, by: V) -> Self {
-        let by = by.into() / (T::one() + T::one());
+        let by = by.into();
+        let half = by / (T::one() + T::one());
         Self {
-            origin: self.origin - by,
+            origin: self.origin - half,
             size: self.size + by,
         }
     }
@@ -1375,4 +1376,15 @@ fn contains_test() {
     assert!(!a.contains(Point::new(10, 61)));
     assert!(!a.contains(Point::new(41, 60)));
     assert!(!a.contains(Point::new(40, 61)));
+}
+
+#[test]
+fn inflation_tests() {
+    let a = SizedRect::<u32, ()>::new(Point::new(2, 3), Size::new(4, 5));
+    let inflated = a.inflate(Vector::new(2, 2));
+    assert_eq!(inflated, SizedRect::new(Point::new(1, 2), Size::new(6, 7)));
+    assert_eq!(
+        a.as_extents().inflate(Vector::new(2, 2)),
+        inflated.as_extents()
+    );
 }

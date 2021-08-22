@@ -1,13 +1,13 @@
 [package]
 name = "figures"
-version = "0.1.0-dev.0"
+version = "0.1.0"
 edition = "2018"
 description = "A math library specialized for 2d screen graphics."
 repository = "https://github.com/khonsulabs/figures"
 license = "MIT OR Apache-2.0"
 keywords = ["2d", "math", "graphics"]
 categories = ["mathematics"]
-readme = "./README.md"
+readme = "../README.md"
 
 [features]
 default = []

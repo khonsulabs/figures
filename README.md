@@ -1,5 +1,10 @@
 # figures
 
+[![crate version](https://img.shields.io/crates/v/gooey.svg)](https://crates.io/crates/figures)
+[![Live Build Status](https://img.shields.io/github/workflow/status/khonsulabs/figures/Tests/main)](https://github.com/khonsulabs/figures/actions?query=workflow:Tests)
+[![HTML Coverage Report for `main` branch](https://khonsulabs.github.io/figures/coverage/badge.svg)](https://khonsulabs.github.io/figures/coverage/)
+[![Documentation for `main` branch](https://img.shields.io/badge/docs-main-informational)](https://khonsulabs.github.io/figures/main/figures/)
+
 A minimalist crate for 2d math focused on what is needed to build user
 interfaces. Written for [`Gooey`][gooey] and [`Kludgine`][kludgine].
 

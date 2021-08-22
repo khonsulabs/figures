@@ -452,6 +452,12 @@ pub struct SizedRect<T, Unit> {
     pub size: Size<T, Unit>,
 }
 
+impl<T: Default, Unit> From<Size<T, Unit>> for SizedRect<T, Unit> {
+    fn from(size: Size<T, Unit>) -> Self {
+        Self::new(Point::default(), size)
+    }
+}
+
 impl<T, Unit> Debug for SizedRect<T, Unit>
 where
     T: Debug,

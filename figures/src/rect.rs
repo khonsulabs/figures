@@ -38,6 +38,12 @@ impl<T, Unit> From<SizedRect<T, Unit>> for Rect<T, Unit> {
     }
 }
 
+impl<T: Default, Unit> From<Size<T, Unit>> for Rect<T, Unit> {
+    fn from(size: Size<T, Unit>) -> Self {
+        Self::Sized(SizedRect::from(size))
+    }
+}
+
 impl<T, Unit> From<ExtentsRect<T, Unit>> for Rect<T, Unit> {
     fn from(rect: ExtentsRect<T, Unit>) -> Self {
         Self::Extents(rect)

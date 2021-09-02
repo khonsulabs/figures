@@ -452,6 +452,15 @@ macro_rules! define_vectorlike {
             }
         }
 
+        impl<T, Unit> From<(T, T)> for $name<T, Unit>
+        where
+            T: Copy,
+        {
+            fn from(tuple: (T, T)) -> Self {
+                Self::new(tuple.0, tuple.1)
+            }
+        }
+
         #[cfg(test)]
         mod $test_mod_name {
             use super::*;
@@ -645,6 +654,11 @@ macro_rules! define_vector_compatibility_ops {
                 assert_eq!(value.$y, 20);
                 value -= other_one;
                 assert_eq!(value, other_one);
+            }
+
+            #[test]
+            fn tuple_froms() {
+                assert_eq!($name::<i32, Pixels>::new(1, 2), $name::from((1, 2)));
             }
         }
     };

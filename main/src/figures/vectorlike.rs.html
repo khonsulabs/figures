@@ -722,6 +722,20 @@
 <span id="720">720</span>
 <span id="721">721</span>
 <span id="722">722</span>
+<span id="723">723</span>
+<span id="724">724</span>
+<span id="725">725</span>
+<span id="726">726</span>
+<span id="727">727</span>
+<span id="728">728</span>
+<span id="729">729</span>
+<span id="730">730</span>
+<span id="731">731</span>
+<span id="732">732</span>
+<span id="733">733</span>
+<span id="734">734</span>
+<span id="735">735</span>
+<span id="736">736</span>
 </pre><pre class="rust">
 <span class="macro">macro_rules!</span> <span class="ident">define_vectorlike</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">test_mod_name</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">x</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">y</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">doc</span>:<span class="ident">literal</span>) <span class="op">=</span><span class="op">&gt;</span> {
@@ -1177,6 +1191,15 @@
             }
         }
 
+        <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Unit</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span>(<span class="ident">T</span>, <span class="ident">T</span>)<span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Unit</span><span class="op">&gt;</span>
+        <span class="kw">where</span>
+            <span class="ident">T</span>: <span class="ident">Copy</span>,
+        {
+            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">tuple</span>: (<span class="ident">T</span>, <span class="ident">T</span>)) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+                <span class="self">Self</span><span class="ident">::new</span>(<span class="ident">tuple</span>.<span class="number">0</span>, <span class="ident">tuple</span>.<span class="number">1</span>)
+            }
+        }
+
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
         <span class="kw">mod</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">test_mod_name</span> {
             <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
@@ -1370,6 +1393,11 @@
                 <span class="macro">assert_eq!</span>(<span class="ident">value</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">y</span>, <span class="number">20</span>);
                 <span class="ident">value</span> <span class="op">-</span><span class="op">=</span> <span class="ident">other_one</span>;
                 <span class="macro">assert_eq!</span>(<span class="ident">value</span>, <span class="ident">other_one</span>);
+            }
+
+            <span class="attribute">#[<span class="ident">test</span>]</span>
+            <span class="kw">fn</span> <span class="ident">tuple_froms</span>() {
+                <span class="macro">assert_eq!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>::<span class="op">&lt;</span><span class="ident">i32</span>, <span class="ident">Pixels</span><span class="op">&gt;</span><span class="ident">::new</span>(<span class="number">1</span>, <span class="number">2</span>), <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name::from</span>((<span class="number">1</span>, <span class="number">2</span>)));
             }
         }
     };

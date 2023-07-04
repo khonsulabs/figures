@@ -1,0 +1,12 @@
+[package]
+name = "figures"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+bytemuck = { version = "1.13.1", features = ["derive"], optional = true }
+wgpu = { version = "0.16.1", default-features = false, optional = true }
+winit = { version = "0.28.6", default-features = false, optional = true }
+euclid = { version = "0.22.9", default-features = false, optional = true }

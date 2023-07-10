@@ -1,14 +1,23 @@
-use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg};
+use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
 
-use crate::traits::{FloatConversion, FromComponents, IntoComponents, Zero};
+use crate::traits::{
+    FloatConversion, FromComponents, IntoComponents, IntoDips, IntoPixels, IntoSigned,
+    IntoUnsigned, IsZero,
+};
+use crate::units::{Dips, Px};
+use crate::utils::vec_ord;
 
+/// A coordinate in a 2d space.
 #[derive(Default, Clone, Copy, Eq, PartialEq, Hash, Debug)]
 pub struct Point<Unit> {
+    /// The x-axis component.
     pub x: Unit,
+    /// The y-axis component
     pub y: Unit,
 }
 
 impl<Unit> Point<Unit> {
+    /// Returns a new point with the provided `x` and `y` components.
     pub fn new(x: impl Into<Unit>, y: impl Into<Unit>) -> Self {
         Self {
             x: x.into(),
@@ -16,6 +25,7 @@ impl<Unit> Point<Unit> {
         }
     }
 
+    /// Converts the contents of this point to `NewUnit` using [`From`].
     pub fn cast<NewUnit>(self) -> Point<NewUnit>
     where
         NewUnit: From<Unit>,
@@ -26,14 +36,95 @@ impl<Unit> Point<Unit> {
         }
     }
 
-    pub fn try_cast<NewUnit>(self) -> Option<Point<NewUnit>>
+    /// Converts the contents of this point to `NewUnit` using [`TryFrom`].
+    ///
+    /// # Errors
+    ///
+    /// Returns `<NewUnit as TryFrom>::Error` when the inner type cannot be
+    /// converted. For this crate's types, this genenerally will be
+    /// [`TryFromIntError`](std::num::TryFromIntError).
+    pub fn try_cast<NewUnit>(self) -> Result<Point<NewUnit>, NewUnit::Error>
     where
         NewUnit: TryFrom<Unit>,
     {
-        Some(Point {
-            x: self.x.try_into().ok()?,
-            y: self.y.try_into().ok()?,
+        Ok(Point {
+            x: self.x.try_into()?,
+            y: self.y.try_into()?,
         })
+    }
+}
+
+impl<Unit> IntoUnsigned for Point<Unit>
+where
+    Unit: IntoUnsigned,
+{
+    type Unsigned = Point<Unit::Unsigned>;
+
+    fn into_unsigned(self) -> Self::Unsigned {
+        Point {
+            x: self.x.into_unsigned(),
+            y: self.y.into_unsigned(),
+        }
+    }
+}
+
+impl<Unit> IntoSigned for Point<Unit>
+where
+    Unit: IntoSigned,
+{
+    type Signed = Point<Unit::Signed>;
+
+    fn into_signed(self) -> Self::Signed {
+        Point {
+            x: self.x.into_signed(),
+            y: self.y.into_signed(),
+        }
+    }
+}
+
+impl<Unit> Ord for Point<Unit>
+where
+    Unit: Ord + Copy + Mul<Output = Unit>,
+{
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        vec_ord::<Unit>((*self).into_components(), (*other).into_components())
+    }
+}
+
+impl<Unit> PartialOrd for Point<Unit>
+where
+    Unit: Ord + Copy + Mul<Output = Unit>,
+{
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
+impl<Unit> IntoPixels for Point<Unit>
+where
+    Unit: IntoPixels<Px = Px>,
+{
+    type Px = Point<Px>;
+
+    fn into_px(self, scale: crate::Fraction) -> Self::Px {
+        Point {
+            x: self.x.into_px(scale),
+            y: self.y.into_px(scale),
+        }
+    }
+}
+
+impl<Unit> IntoDips for Point<Unit>
+where
+    Unit: IntoDips<Dips = Dips>,
+{
+    type Dips = Point<Dips>;
+
+    fn into_dips(self, scale: crate::Fraction) -> Self::Dips {
+        Point {
+            x: self.x.into_dips(scale),
+            y: self.y.into_dips(scale),
+        }
     }
 }
 
@@ -108,6 +199,34 @@ where
     }
 }
 
+impl<T, Unit> Sub<T> for Point<Unit>
+where
+    Unit: Sub<Output = Unit>,
+    T: IntoComponents<Unit>,
+{
+    type Output = Self;
+
+    fn sub(self, rhs: T) -> Self::Output {
+        let (rx, ry) = rhs.into_components();
+        Self {
+            x: self.x - rx,
+            y: self.y - ry,
+        }
+    }
+}
+
+impl<T, Unit> SubAssign<T> for Point<Unit>
+where
+    Unit: SubAssign,
+    T: IntoComponents<Unit>,
+{
+    fn sub_assign(&mut self, rhs: T) {
+        let rhs = rhs.into_components();
+        self.x -= rhs.0;
+        self.y -= rhs.1;
+    }
+}
+
 impl<T, Unit> Mul<T> for Point<Unit>
 where
     Unit: Mul<Output = Unit>,
@@ -164,9 +283,9 @@ where
     }
 }
 
-impl<Unit> Zero for Point<Unit>
+impl<Unit> IsZero for Point<Unit>
 where
-    Unit: Zero,
+    Unit: IsZero,
 {
     fn is_zero(&self) -> bool {
         self.x.is_zero() && self.y.is_zero()
@@ -211,9 +330,4 @@ impl<Unit> FromComponents<Unit> for Point<Unit> {
             y: components.1,
         }
     }
-}
-
-#[test]
-fn add_tuple() {
-    assert_eq!(Point::new(1, 2) + (3, 4), Point { x: 4, y: 6 });
 }

@@ -1,15 +1,25 @@
-use std::ops::{Div, Mul};
+use std::cmp::Ordering;
+use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
 
-use crate::traits::{FloatConversion, FromComponents, IntoComponents, Zero};
+use crate::traits::{
+    FloatConversion, FromComponents, IntoComponents, IntoDips, IntoPixels, IntoSigned,
+    IntoUnsigned, IsZero,
+};
+use crate::units::{Dips, Px};
+use crate::utils::vec_ord;
 use crate::Point;
 
+/// A width and a height measurement.
 #[derive(Clone, Copy, Eq, PartialEq, Hash, Debug)]
 pub struct Size<Unit> {
+    /// The width component
     pub width: Unit,
+    /// The height component
     pub height: Unit,
 }
 
 impl<Unit> Size<Unit> {
+    /// Returns a new size of the given `width` and `height`.
     pub fn new(width: impl Into<Unit>, height: impl Into<Unit>) -> Self {
         Self {
             width: width.into(),
@@ -17,6 +27,7 @@ impl<Unit> Size<Unit> {
         }
     }
 
+    /// Returns the area of the rectangle.
     pub fn area(&self) -> <Unit as Mul>::Output
     where
         Unit: Mul + Copy,
@@ -24,6 +35,7 @@ impl<Unit> Size<Unit> {
         self.width * self.height
     }
 
+    /// Converts the contents of this size to `NewUnit` using [`From`].
     pub fn cast<NewUnit>(self) -> Size<NewUnit>
     where
         NewUnit: From<Unit>,
@@ -34,14 +46,66 @@ impl<Unit> Size<Unit> {
         }
     }
 
-    pub fn try_cast<NewUnit>(self) -> Option<Size<NewUnit>>
+    /// Converts the contents of this size to `NewUnit` using [`TryFrom`].
+    ///
+    /// # Errors
+    ///
+    /// Returns `<NewUnit as TryFrom>::Error` when the inner type cannot be
+    /// converted. For this crate's types, this genenerally will be
+    pub fn try_cast<NewUnit>(self) -> Result<Size<NewUnit>, NewUnit::Error>
     where
         NewUnit: TryFrom<Unit>,
     {
-        Some(Size {
-            width: self.width.try_into().ok()?,
-            height: self.height.try_into().ok()?,
+        Ok(Size {
+            width: self.width.try_into()?,
+            height: self.height.try_into()?,
         })
+    }
+}
+
+impl<Unit> IntoUnsigned for Size<Unit>
+where
+    Unit: IntoUnsigned,
+{
+    type Unsigned = Size<Unit::Unsigned>;
+
+    fn into_unsigned(self) -> Self::Unsigned {
+        Size {
+            width: self.width.into_unsigned(),
+            height: self.height.into_unsigned(),
+        }
+    }
+}
+
+impl<Unit> IntoSigned for Size<Unit>
+where
+    Unit: IntoSigned,
+{
+    type Signed = Size<Unit::Signed>;
+
+    fn into_signed(self) -> Self::Signed {
+        Size {
+            width: self.width.into_signed(),
+            height: self.height.into_signed(),
+        }
+    }
+}
+
+impl<Unit> Ord for Size<Unit>
+where
+    Unit: Ord + Mul<Output = Unit> + Copy,
+{
+    fn cmp(&self, other: &Self) -> Ordering {
+        vec_ord::<Unit>((*self).into_components(), (*other).into_components())
+    }
+}
+
+impl<Unit> PartialOrd for Size<Unit>
+where
+    Unit: Ord + Mul<Output = Unit> + Copy,
+{
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.cmp(other))
     }
 }
 
@@ -53,6 +117,34 @@ where
         Self {
             width: Unit::default(),
             height: Unit::default(),
+        }
+    }
+}
+
+impl<Unit> IntoPixels for Size<Unit>
+where
+    Unit: IntoPixels<Px = Px>,
+{
+    type Px = Size<Px>;
+
+    fn into_px(self, scale: crate::Fraction) -> Self::Px {
+        Size {
+            width: self.width.into_px(scale),
+            height: self.height.into_px(scale),
+        }
+    }
+}
+
+impl<Unit> IntoDips for Size<Unit>
+where
+    Unit: IntoDips<Dips = Dips>,
+{
+    type Dips = Size<Dips>;
+
+    fn into_dips(self, scale: crate::Fraction) -> Self::Dips {
+        Size {
+            width: self.width.into_dips(scale),
+            height: self.height.into_dips(scale),
         }
     }
 }
@@ -78,52 +170,168 @@ where
     }
 }
 
-impl<Unit> Zero for Size<Unit>
+impl<T, Unit> Add<T> for Size<Unit>
 where
-    Unit: Zero,
+    Unit: Add<Output = Unit>,
+    T: IntoComponents<Unit>,
+{
+    type Output = Self;
+
+    fn add(self, rhs: T) -> Self::Output {
+        let (rx, ry) = rhs.into_components();
+        Self {
+            width: self.width + rx,
+            height: self.height + ry,
+        }
+    }
+}
+
+impl<T, Unit> AddAssign<T> for Size<Unit>
+where
+    Unit: AddAssign,
+    T: IntoComponents<Unit>,
+{
+    fn add_assign(&mut self, rhs: T) {
+        let rhs = rhs.into_components();
+        self.width += rhs.0;
+        self.height += rhs.1;
+    }
+}
+
+impl<T, Unit> Sub<T> for Size<Unit>
+where
+    Unit: Sub<Output = Unit>,
+    T: IntoComponents<Unit>,
+{
+    type Output = Self;
+
+    fn sub(self, rhs: T) -> Self::Output {
+        let (rx, ry) = rhs.into_components();
+        Self {
+            width: self.width - rx,
+            height: self.height - ry,
+        }
+    }
+}
+
+impl<T, Unit> SubAssign<T> for Size<Unit>
+where
+    Unit: SubAssign,
+    T: IntoComponents<Unit>,
+{
+    fn sub_assign(&mut self, rhs: T) {
+        let rhs = rhs.into_components();
+        self.width -= rhs.0;
+        self.height -= rhs.1;
+    }
+}
+
+impl<T, Unit> Mul<T> for Size<Unit>
+where
+    Unit: Mul<Output = Unit>,
+    T: IntoComponents<Unit>,
+{
+    type Output = Self;
+
+    fn mul(self, rhs: T) -> Self::Output {
+        let (rx, ry) = rhs.into_components();
+        Self {
+            width: self.width * rx,
+            height: self.height * ry,
+        }
+    }
+}
+
+impl<T, Unit> MulAssign<T> for Size<Unit>
+where
+    Unit: MulAssign,
+    T: IntoComponents<Unit>,
+{
+    fn mul_assign(&mut self, rhs: T) {
+        let rhs = rhs.into_components();
+        self.width *= rhs.0;
+        self.height *= rhs.1;
+    }
+}
+
+impl<T, Unit> Div<T> for Size<Unit>
+where
+    Unit: Div<Output = Unit>,
+    T: IntoComponents<Unit>,
+{
+    type Output = Self;
+
+    fn div(self, rhs: T) -> Self::Output {
+        let (rx, ry) = rhs.into_components();
+        Self {
+            width: self.width / rx,
+            height: self.height / ry,
+        }
+    }
+}
+
+// impl Div<i32> for Point<UPx> {
+//     type Output = Self;
+
+//     fn div(self, rhs: i32) -> Self::Output {
+//         if let Ok(rhs) = u32::try_from(rhs) {
+//             Self {
+//                 x: self.x / rhs,
+//                 y: self.y / rhs,
+//             }
+//         } else {
+//             Self {
+//                 x: UPx::MAX,
+//                 y: UPx::MAX,
+//             }
+//         }
+//     }
+// }
+
+impl<T, Unit> DivAssign<T> for Size<Unit>
+where
+    Unit: DivAssign,
+    T: IntoComponents<Unit>,
+{
+    fn div_assign(&mut self, rhs: T) {
+        let rhs = rhs.into_components();
+        self.width /= rhs.0;
+        self.height /= rhs.1;
+    }
+}
+
+impl<Unit> Neg for Size<Unit>
+where
+    Unit: Neg<Output = Unit>,
+{
+    type Output = Self;
+
+    fn neg(self) -> Self::Output {
+        Self {
+            width: -self.width,
+            height: -self.height,
+        }
+    }
+}
+
+impl<Unit> IsZero for Size<Unit>
+where
+    Unit: IsZero,
 {
     fn is_zero(&self) -> bool {
         self.width.is_zero() && self.height.is_zero()
     }
 }
 
-impl<Unit> Div<i32> for Size<Unit>
-where
-    Unit: Div<i32, Output = Unit>,
-{
-    type Output = Self;
-
-    fn div(self, rhs: i32) -> Self::Output {
-        Self {
-            width: self.width / rhs,
-            height: self.height / rhs,
-        }
-    }
-}
-
-impl<Unit> Mul<i32> for Size<Unit>
-where
-    Unit: Mul<i32, Output = Unit>,
-{
-    type Output = Self;
-
-    fn mul(self, rhs: i32) -> Self::Output {
-        Self {
-            width: self.width * rhs,
-            height: self.height * rhs,
-        }
-    }
-}
-
 impl<Unit> From<Size<Unit>> for Point<Unit> {
     fn from(value: Size<Unit>) -> Self {
-        value.to()
+        value.to_vec()
     }
 }
 
 impl<Unit> From<Point<Unit>> for Size<Unit> {
     fn from(value: Point<Unit>) -> Self {
-        value.to()
+        value.to_vec()
     }
 }
 

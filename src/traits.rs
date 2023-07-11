@@ -123,12 +123,12 @@ where
     }
 }
 
-/// Converts this type into its measurement in [`Px`](crate::units::Px) and [`Dips`](crate::units::Dips).
+/// Converts this type into its measurement in [`Px`](crate::units::Px) and [`Lp`](crate::units::Lp).
 pub trait ScreenScale {
     /// This type when measuring with [`Px`](crate::units::Px).
     type Px;
-    /// This type when measuring with [`Dips`](crate::units::Dips).
-    type Dips;
+    /// This type when measuring with [`Lp`](crate::units::Lp).
+    type Lp;
 
     /// Converts this value from its current unit into device pixels ([`Px`](crate::units::Px))
     /// using the provided `scale` factor.
@@ -137,10 +137,10 @@ pub trait ScreenScale {
     fn from_px(px: Self::Px, scale: Fraction) -> Self;
 
     /// Converts this value from its current unit into device independent pixels
-    /// ([`Dips`](crate::units::Dips)) using the provided `scale` factor.
-    fn into_dips(self, scale: Fraction) -> Self::Dips;
-    /// Converts from Dips into this type, using the provided `scale` factor.
-    fn from_dips(dips: Self::Dips, scale: Fraction) -> Self;
+    /// ([`Lp`](crate::units::Lp)) using the provided `scale` factor.
+    fn into_lp(self, scale: Fraction) -> Self::Lp;
+    /// Converts from Lp into this type, using the provided `scale` factor.
+    fn from_lp(lp: Self::Lp, scale: Fraction) -> Self;
 }
 
 /// Converts a value into its signed representation, clamping negative numbers

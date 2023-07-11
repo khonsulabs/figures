@@ -2,22 +2,22 @@ use std::fmt::Debug;
 use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Sub, SubAssign};
 
 use crate::traits::{FromComponents, IntoComponents, ScreenScale};
-use crate::units::{Dips, Px, UPx};
+use crate::units::{Lp, Px, UPx};
 use crate::{Fraction, Point, Size};
 
 #[test]
 fn one_inch_is_correct() {
-    assert_eq!(Dips::inches(1).into_px(Fraction::ONE), Px(96));
-    assert_eq!(Dips::inches(1).into_px(Fraction::new_whole(2)), Px(96 * 2));
+    assert_eq!(dbg!(Lp::inches(1)).into_px(Fraction::ONE), Px(96));
+    assert_eq!(Lp::inches(1).into_px(Fraction::new_whole(2)), Px(96 * 2));
 }
 
 #[test]
-fn dips_conversions() {
-    assert_eq!(Dips::cm_f(1.), Dips::cm(1));
-    assert_eq!(Dips::mm_f(1.), Dips::mm(1));
-    assert_eq!(Dips::inches_f(1.), Dips::inches(1));
-    assert_eq!(Dips::mm(10), Dips::cm(1));
-    assert_eq!(Dips::inches(1), Dips::cm_f(2.54));
+fn lp_conversions() {
+    assert_eq!(Lp::cm_f(1.), Lp::cm(1));
+    assert_eq!(Lp::mm_f(1.), Lp::mm(1));
+    assert_eq!(Lp::inches_f(1.), Lp::inches(1));
+    assert_eq!(Lp::mm(10), Lp::cm(1));
+    assert_eq!(Lp::inches(1), Lp::cm_f(2.54));
 }
 
 #[test]
@@ -141,7 +141,7 @@ where
 fn math_ops() {
     test_unit_math::<Px, _>();
     test_unit_math::<UPx, _>();
-    test_unit_math::<Dips, _>();
+    test_unit_math::<Lp, _>();
 }
 
 fn test_vec_ord<V>()

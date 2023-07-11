@@ -3,7 +3,7 @@ use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssi
 use crate::traits::{
     FloatConversion, FromComponents, IntoComponents, IntoSigned, IntoUnsigned, IsZero, ScreenScale,
 };
-use crate::units::{Dips, Px};
+use crate::units::{Lp, Px};
 use crate::utils::vec_ord;
 
 /// A coordinate in a 2d space.
@@ -17,11 +17,8 @@ pub struct Point<Unit> {
 
 impl<Unit> Point<Unit> {
     /// Returns a new point with the provided `x` and `y` components.
-    pub fn new(x: impl Into<Unit>, y: impl Into<Unit>) -> Self {
-        Self {
-            x: x.into(),
-            y: y.into(),
-        }
+    pub const fn new(x: Unit, y: Unit) -> Self {
+        Self { x, y }
     }
 
     /// Converts the contents of this point to `NewUnit` using [`From`].
@@ -131,9 +128,9 @@ where
 
 impl<Unit> ScreenScale for Point<Unit>
 where
-    Unit: ScreenScale<Px = Px, Dips = Dips>,
+    Unit: ScreenScale<Px = Px, Lp = Lp>,
 {
-    type Dips = Point<Dips>;
+    type Lp = Point<Lp>;
     type Px = Point<Px>;
 
     fn into_px(self, scale: crate::Fraction) -> Self::Px {
@@ -150,17 +147,17 @@ where
         }
     }
 
-    fn into_dips(self, scale: crate::Fraction) -> Self::Dips {
+    fn into_lp(self, scale: crate::Fraction) -> Self::Lp {
         Point {
-            x: self.x.into_dips(scale),
-            y: self.y.into_dips(scale),
+            x: self.x.into_lp(scale),
+            y: self.y.into_lp(scale),
         }
     }
 
-    fn from_dips(dips: Self::Dips, scale: crate::Fraction) -> Self {
+    fn from_lp(lp: Self::Lp, scale: crate::Fraction) -> Self {
         Self {
-            x: Unit::from_dips(dips.x, scale),
-            y: Unit::from_dips(dips.y, scale),
+            x: Unit::from_lp(lp.x, scale),
+            y: Unit::from_lp(lp.y, scale),
         }
     }
 }

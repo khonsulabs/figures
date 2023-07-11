@@ -8,6 +8,11 @@ use crate::traits::{
 use crate::utils::lossy_f32_to_i32;
 use crate::Fraction;
 
+const ARBITRARY_SCALE: i32 = 182_880;
+const ARBITRARY_SCALE_U32: u32 = ARBITRARY_SCALE.unsigned_abs();
+#[allow(clippy::cast_precision_loss)]
+const ARBITRARY_SCALE_F32: f32 = ARBITRARY_SCALE as f32;
+
 macro_rules! define_integer_type {
     ($name:ident, $inner:ty, $docs_file:literal) => {
         #[derive(Default, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
@@ -21,6 +26,8 @@ macro_rules! define_integer_type {
             pub const MAX: Self = Self(<$inner>::MAX);
             /// The minimum value for this type.
             pub const MIN: Self = Self(<$inner>::MIN);
+            /// Zero for this type.
+            pub const ZERO: Self = Self(0);
         }
 
         impl From<$name> for f32 {
@@ -232,43 +239,43 @@ macro_rules! define_integer_type {
     };
 }
 
-define_integer_type!(Dips, i32, "docs/dips.md");
+define_integer_type!(Lp, i32, "docs/lp.md");
 
-impl IntoComponents<Dips> for i32 {
-    fn into_components(self) -> (Dips, Dips) {
-        (Dips(self), Dips(self))
+impl IntoComponents<Lp> for i32 {
+    fn into_components(self) -> (Lp, Lp) {
+        (Lp(self), Lp(self))
     }
 }
 
-impl IntoComponents<Dips> for f32 {
-    fn into_components(self) -> (Dips, Dips) {
-        let value = Dips::from_float(self);
+impl IntoComponents<Lp> for f32 {
+    fn into_components(self) -> (Lp, Lp) {
+        let value = Lp::from_float(self);
         (value, value)
     }
 }
 
-impl ScreenScale for Dips {
-    type Dips = Dips;
+impl ScreenScale for Lp {
+    type Lp = Lp;
     type Px = Px;
 
     fn into_px(self, scale: Fraction) -> Self::Px {
-        Px(self.0 / scale * 96 / 2540)
+        Px(self.0 * 96 / scale / ARBITRARY_SCALE)
     }
 
     fn from_px(px: Self::Px, scale: Fraction) -> Self {
-        px.into_dips(scale)
+        px.into_lp(scale)
     }
 
-    fn into_dips(self, _scale: Fraction) -> Self::Dips {
+    fn into_lp(self, _scale: Fraction) -> Self::Lp {
         self
     }
 
-    fn from_dips(dips: Self::Dips, _scale: Fraction) -> Self {
-        dips
+    fn from_lp(lp: Self::Lp, _scale: Fraction) -> Self {
+        lp
     }
 }
 
-impl std::ops::Neg for Dips {
+impl std::ops::Neg for Lp {
     type Output = Self;
 
     fn neg(self) -> Self::Output {
@@ -276,7 +283,7 @@ impl std::ops::Neg for Dips {
     }
 }
 
-impl TryFrom<u32> for Dips {
+impl TryFrom<u32> for Lp {
     type Error = TryFromIntError;
 
     fn try_from(value: u32) -> Result<Self, Self::Error> {
@@ -284,13 +291,13 @@ impl TryFrom<u32> for Dips {
     }
 }
 
-impl Dips {
+impl Lp {
     /// Returns a value equivalent to the number of `points` provided. One
     /// [point](https://en.wikipedia.org/wiki/Point_(typography)) is 1/72 of an
     /// inch.
     #[must_use]
     pub const fn points(points: i32) -> Self {
-        Self(points * 2540 / 72)
+        Self(points * ARBITRARY_SCALE / 72)
     }
 
     /// Returns a value equivalent to the number of `points` provided. One
@@ -298,7 +305,7 @@ impl Dips {
     /// inch.
     #[must_use]
     pub fn points_f(points: f32) -> Self {
-        Dips(lossy_f32_to_i32(points * 2540. / 72.))
+        Lp(lossy_f32_to_i32(points * ARBITRARY_SCALE_F32 / 72.))
     }
 
     /// Returns a value equivalent to the number of `centimeters` provided.
@@ -310,31 +317,31 @@ impl Dips {
     /// Returns a value equivalent to the number of `centimeters` provided.
     #[must_use]
     pub fn cm_f(centimeters: f32) -> Self {
-        Dips(lossy_f32_to_i32(centimeters * 1000.))
+        Lp(lossy_f32_to_i32(centimeters * ARBITRARY_SCALE_F32 / 2.54))
     }
 
     /// Returns a value equivalent to the number of `millimeters` provided.
     #[must_use]
     pub const fn mm(millimeters: i32) -> Self {
-        Self(100 * millimeters)
+        Self(millimeters * ARBITRARY_SCALE * 10 / 254)
     }
 
     /// Returns a value equivalent to the number of `millimeters` provided.
     #[must_use]
     pub fn mm_f(millimeters: f32) -> Self {
-        Dips(lossy_f32_to_i32(millimeters * 100.))
+        Lp(lossy_f32_to_i32(millimeters * ARBITRARY_SCALE_F32 / 25.4))
     }
 
     /// Returns a value equivalent to the number of `inches` provided.
     #[must_use]
     pub const fn inches(inches: i32) -> Self {
-        Self(inches * 2540)
+        Self(inches * ARBITRARY_SCALE)
     }
 
     /// Returns a value equivalent to the number of `inches` provided.
     #[must_use]
     pub fn inches_f(inches: f32) -> Self {
-        Dips(lossy_f32_to_i32(inches * 2540.))
+        Self(lossy_f32_to_i32(inches * ARBITRARY_SCALE_F32))
     }
 
     /// Raises this value to power of `exp`.
@@ -351,7 +358,7 @@ impl Dips {
     }
 }
 
-impl IntoSigned for Dips {
+impl IntoSigned for Lp {
     type Signed = Self;
 
     fn into_signed(self) -> Self::Signed {
@@ -359,9 +366,9 @@ impl IntoSigned for Dips {
     }
 }
 
-impl fmt::Debug for Dips {
+impl fmt::Debug for Lp {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}dip", self.0)
+        write!(f, "{}lp", self.0)
     }
 }
 define_integer_type!(Px, i32, "docs/px.md");
@@ -398,7 +405,7 @@ impl IntoSigned for Px {
 }
 
 impl ScreenScale for Px {
-    type Dips = Dips;
+    type Lp = Lp;
     type Px = Self;
 
     fn into_px(self, _scale: Fraction) -> Self::Px {
@@ -409,12 +416,12 @@ impl ScreenScale for Px {
         px
     }
 
-    fn into_dips(self, scale: Fraction) -> Self::Dips {
-        Dips(self.0 * scale * 2540 / 96)
+    fn into_lp(self, scale: Fraction) -> Self::Lp {
+        Lp(self.0 * ARBITRARY_SCALE * scale / 96)
     }
 
-    fn from_dips(dips: Self::Dips, scale: Fraction) -> Self {
-        dips.into_px(scale)
+    fn from_lp(lp: Self::Lp, scale: Fraction) -> Self {
+        lp.into_px(scale)
     }
 }
 
@@ -487,7 +494,7 @@ impl IntoUnsigned for UPx {
 }
 
 impl ScreenScale for UPx {
-    type Dips = Dips;
+    type Lp = Lp;
     type Px = Px;
 
     fn into_px(self, _scale: Fraction) -> Self::Px {
@@ -498,12 +505,16 @@ impl ScreenScale for UPx {
         Self::try_from(px).unwrap_or(Self::MIN)
     }
 
-    fn into_dips(self, scale: Fraction) -> Self::Dips {
-        (self.0 * scale * 2540 / 96).try_into().unwrap_or(Dips::MAX)
+    fn into_lp(self, scale: Fraction) -> Self::Lp {
+        (self.0 * ARBITRARY_SCALE_U32 * scale / 96)
+            .try_into()
+            .unwrap_or(Lp::MAX)
     }
 
-    fn from_dips(dips: Self::Dips, scale: Fraction) -> Self {
-        (dips.0 * scale * 2540 / 96).try_into().unwrap_or(Self::MIN)
+    fn from_lp(lp: Self::Lp, scale: Fraction) -> Self {
+        (lp.0 * ARBITRARY_SCALE * scale / 96)
+            .try_into()
+            .unwrap_or(Self::MIN)
     }
 }
 

@@ -4,7 +4,7 @@ use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssi
 use crate::traits::{
     FloatConversion, FromComponents, IntoComponents, IntoSigned, IntoUnsigned, IsZero, ScreenScale,
 };
-use crate::units::{Dips, Px};
+use crate::units::{Lp, Px};
 use crate::utils::vec_ord;
 use crate::Point;
 
@@ -23,6 +23,18 @@ impl<Unit> Size<Unit> {
         Self {
             width: width.into(),
             height: height.into(),
+        }
+    }
+
+    /// Returns a new size using `dimension` for both width and height.
+    pub fn squared(dimension: impl Into<Unit>) -> Self
+    where
+        Unit: Copy,
+    {
+        let dimension = dimension.into();
+        Self {
+            width: dimension,
+            height: dimension,
         }
     }
 
@@ -152,9 +164,9 @@ where
 
 impl<Unit> ScreenScale for Size<Unit>
 where
-    Unit: ScreenScale<Px = Px, Dips = Dips>,
+    Unit: ScreenScale<Px = Px, Lp = Lp>,
 {
-    type Dips = Size<Dips>;
+    type Lp = Size<Lp>;
     type Px = Size<Px>;
 
     fn into_px(self, scale: crate::Fraction) -> Self::Px {
@@ -171,17 +183,17 @@ where
         }
     }
 
-    fn into_dips(self, scale: crate::Fraction) -> Self::Dips {
+    fn into_lp(self, scale: crate::Fraction) -> Self::Lp {
         Size {
-            width: self.width.into_dips(scale),
-            height: self.height.into_dips(scale),
+            width: self.width.into_lp(scale),
+            height: self.height.into_lp(scale),
         }
     }
 
-    fn from_dips(dips: Self::Dips, scale: crate::Fraction) -> Self {
+    fn from_lp(lp: Self::Lp, scale: crate::Fraction) -> Self {
         Self {
-            width: Unit::from_dips(dips.width, scale),
-            height: Unit::from_dips(dips.height, scale),
+            width: Unit::from_lp(lp.width, scale),
+            height: Unit::from_lp(lp.height, scale),
         }
     }
 }

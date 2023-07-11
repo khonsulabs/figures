@@ -1,13 +1,14 @@
 use std::fmt::Debug;
 use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Sub, SubAssign};
 
-use crate::traits::{FromComponents, IntoComponents, IntoPixels};
+use crate::traits::{FromComponents, IntoComponents, ScreenScale};
 use crate::units::{Dips, Px, UPx};
 use crate::{Fraction, Point, Size};
 
 #[test]
 fn one_inch_is_correct() {
     assert_eq!(Dips::inches(1).into_px(Fraction::ONE), Px(96));
+    assert_eq!(Dips::inches(1).into_px(Fraction::new_whole(2)), Px(96 * 2));
 }
 
 #[test]

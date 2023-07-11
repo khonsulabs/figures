@@ -3,7 +3,7 @@ use std::num::TryFromIntError;
 use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Rem, RemAssign, Sub, SubAssign};
 
 use crate::traits::{
-    FloatConversion, IntoComponents, IntoDips, IntoPixels, IntoSigned, IntoUnsigned, IsZero,
+    FloatConversion, IntoComponents, IntoSigned, IntoUnsigned, IsZero, ScreenScale,
 };
 use crate::utils::lossy_f32_to_i32;
 use crate::Fraction;
@@ -247,11 +247,24 @@ impl IntoComponents<Dips> for f32 {
     }
 }
 
-impl IntoPixels for Dips {
+impl ScreenScale for Dips {
+    type Dips = Dips;
     type Px = Px;
 
     fn into_px(self, scale: Fraction) -> Self::Px {
-        Px(self.0 * scale * 96 / 2540)
+        Px(self.0 / scale * 96 / 2540)
+    }
+
+    fn from_px(px: Self::Px, scale: Fraction) -> Self {
+        px.into_dips(scale)
+    }
+
+    fn into_dips(self, _scale: Fraction) -> Self::Dips {
+        self
+    }
+
+    fn from_dips(dips: Self::Dips, _scale: Fraction) -> Self {
+        dips
     }
 }
 
@@ -272,6 +285,22 @@ impl TryFrom<u32> for Dips {
 }
 
 impl Dips {
+    /// Returns a value equivalent to the number of `points` provided. One
+    /// [point](https://en.wikipedia.org/wiki/Point_(typography)) is 1/72 of an
+    /// inch.
+    #[must_use]
+    pub const fn points(points: i32) -> Self {
+        Self(points * 2540 / 72)
+    }
+
+    /// Returns a value equivalent to the number of `points` provided. One
+    /// [point](https://en.wikipedia.org/wiki/Point_(typography)) is 1/72 of an
+    /// inch.
+    #[must_use]
+    pub fn points_f(points: f32) -> Self {
+        Dips(lossy_f32_to_i32(points * 2540. / 72.))
+    }
+
     /// Returns a value equivalent to the number of `centimeters` provided.
     #[must_use]
     pub const fn cm(centimeters: i32) -> Self {
@@ -368,11 +397,24 @@ impl IntoSigned for Px {
     }
 }
 
-impl IntoDips for Px {
+impl ScreenScale for Px {
     type Dips = Dips;
+    type Px = Self;
+
+    fn into_px(self, _scale: Fraction) -> Self::Px {
+        self
+    }
+
+    fn from_px(px: Self::Px, _scale: Fraction) -> Self {
+        px
+    }
 
     fn into_dips(self, scale: Fraction) -> Self::Dips {
-        Dips(self.0 / scale * 2540 / 96)
+        Dips(self.0 * scale * 2540 / 96)
+    }
+
+    fn from_dips(dips: Self::Dips, scale: Fraction) -> Self {
+        dips.into_px(scale)
     }
 }
 
@@ -444,11 +486,24 @@ impl IntoUnsigned for UPx {
     }
 }
 
-impl IntoPixels for UPx {
+impl ScreenScale for UPx {
+    type Dips = Dips;
     type Px = Px;
 
     fn into_px(self, _scale: Fraction) -> Self::Px {
         Px::try_from(self.0).unwrap_or(Px::MAX)
+    }
+
+    fn from_px(px: Self::Px, _scale: Fraction) -> Self {
+        Self::try_from(px).unwrap_or(Self::MIN)
+    }
+
+    fn into_dips(self, scale: Fraction) -> Self::Dips {
+        (self.0 * scale * 2540 / 96).try_into().unwrap_or(Dips::MAX)
+    }
+
+    fn from_dips(dips: Self::Dips, scale: Fraction) -> Self {
+        (dips.0 * scale * 2540 / 96).try_into().unwrap_or(Self::MIN)
     }
 }
 
@@ -492,14 +547,6 @@ impl TryFrom<Px> for UPx {
 
     fn try_from(value: Px) -> Result<Self, Self::Error> {
         value.0.try_into().map(Self)
-    }
-}
-
-impl IntoDips for UPx {
-    type Dips = Dips;
-
-    fn into_dips(self, scale: Fraction) -> Self::Dips {
-        (self.0 / scale * 2540 / 96).try_into().unwrap_or(Dips::MAX)
     }
 }
 

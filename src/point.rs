@@ -1,8 +1,7 @@
 use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
 
 use crate::traits::{
-    FloatConversion, FromComponents, IntoComponents, IntoDips, IntoPixels, IntoSigned,
-    IntoUnsigned, IsZero,
+    FloatConversion, FromComponents, IntoComponents, IntoSigned, IntoUnsigned, IsZero, ScreenScale,
 };
 use crate::units::{Dips, Px};
 use crate::utils::vec_ord;
@@ -89,6 +88,36 @@ where
     fn cmp(&self, other: &Self) -> std::cmp::Ordering {
         vec_ord::<Unit>((*self).into_components(), (*other).into_components())
     }
+
+    fn max(self, other: Self) -> Self
+    where
+        Self: Sized,
+    {
+        Self {
+            x: self.x.max(other.x),
+            y: self.y.max(other.y),
+        }
+    }
+
+    fn min(self, other: Self) -> Self
+    where
+        Self: Sized,
+    {
+        Self {
+            x: self.x.min(other.x),
+            y: self.y.min(other.y),
+        }
+    }
+
+    fn clamp(self, min: Self, max: Self) -> Self
+    where
+        Self: Sized,
+    {
+        Self {
+            x: self.x.clamp(min.x, max.x),
+            y: self.y.clamp(min.y, max.y),
+        }
+    }
 }
 
 impl<Unit> PartialOrd for Point<Unit>
@@ -100,10 +129,11 @@ where
     }
 }
 
-impl<Unit> IntoPixels for Point<Unit>
+impl<Unit> ScreenScale for Point<Unit>
 where
-    Unit: IntoPixels<Px = Px>,
+    Unit: ScreenScale<Px = Px, Dips = Dips>,
 {
+    type Dips = Point<Dips>;
     type Px = Point<Px>;
 
     fn into_px(self, scale: crate::Fraction) -> Self::Px {
@@ -112,18 +142,25 @@ where
             y: self.y.into_px(scale),
         }
     }
-}
 
-impl<Unit> IntoDips for Point<Unit>
-where
-    Unit: IntoDips<Dips = Dips>,
-{
-    type Dips = Point<Dips>;
+    fn from_px(px: Self::Px, scale: crate::Fraction) -> Self {
+        Self {
+            x: Unit::from_px(px.x, scale),
+            y: Unit::from_px(px.y, scale),
+        }
+    }
 
     fn into_dips(self, scale: crate::Fraction) -> Self::Dips {
         Point {
             x: self.x.into_dips(scale),
             y: self.y.into_dips(scale),
+        }
+    }
+
+    fn from_dips(dips: Self::Dips, scale: crate::Fraction) -> Self {
+        Self {
+            x: Unit::from_dips(dips.x, scale),
+            y: Unit::from_dips(dips.y, scale),
         }
     }
 }

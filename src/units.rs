@@ -1,3 +1,4 @@
+use std::cmp::Ordering;
 use std::fmt;
 use std::num::TryFromIntError;
 use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Rem, RemAssign, Sub, SubAssign};
@@ -45,6 +46,18 @@ macro_rules! define_integer_type {
         impl From<$inner> for $name {
             fn from(value: $inner) -> Self {
                 Self(value)
+            }
+        }
+
+        impl PartialEq<$inner> for $name {
+            fn eq(&self, other: &$inner) -> bool {
+                self.0 == *other
+            }
+        }
+
+        impl PartialOrd<$inner> for $name {
+            fn partial_cmp(&self, other: &$inner) -> Option<std::cmp::Ordering> {
+                self.0.partial_cmp(other)
             }
         }
 
@@ -460,6 +473,26 @@ impl TryFrom<u32> for Px {
     }
 }
 
+impl PartialEq<UPx> for Px {
+    fn eq(&self, other: &UPx) -> bool {
+        if let Ok(unsigned) = UPx::try_from(*self) {
+            unsigned == *other
+        } else {
+            false
+        }
+    }
+}
+
+impl PartialOrd<UPx> for Px {
+    fn partial_cmp(&self, other: &UPx) -> Option<Ordering> {
+        if let Ok(unsigned) = UPx::try_from(*self) {
+            Some(unsigned.cmp(other))
+        } else {
+            Some(Ordering::Less)
+        }
+    }
+}
+
 define_integer_type!(UPx, u32, "docs/upx.md");
 
 impl UPx {
@@ -566,5 +599,25 @@ impl TryFrom<UPx> for Px {
 
     fn try_from(value: UPx) -> Result<Self, Self::Error> {
         value.0.try_into()
+    }
+}
+
+impl PartialEq<Px> for UPx {
+    fn eq(&self, other: &Px) -> bool {
+        if let Ok(unsigned) = UPx::try_from(*other) {
+            unsigned == *self
+        } else {
+            false
+        }
+    }
+}
+
+impl PartialOrd<Px> for UPx {
+    fn partial_cmp(&self, other: &Px) -> Option<Ordering> {
+        if let Ok(unsigned) = UPx::try_from(*other) {
+            Some(unsigned.cmp(self))
+        } else {
+            Some(Ordering::Less)
+        }
     }
 }

@@ -205,6 +205,19 @@ where
     }
 }
 
+#[cfg(feature = "winit")]
+impl<Unit> From<winit::dpi::PhysicalPosition<f64>> for Point<Unit>
+where
+    Unit: FloatConversion<Float = f32>,
+{
+    fn from(point: winit::dpi::PhysicalPosition<f64>) -> Self {
+        Self {
+            x: Unit::from_float(crate::utils::lossy_f64_to_f32(point.x)),
+            y: Unit::from_float(crate::utils::lossy_f64_to_f32(point.y)),
+        }
+    }
+}
+
 impl<T, Unit> Add<T> for Point<Unit>
 where
     Unit: Add<Output = Unit>,

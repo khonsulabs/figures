@@ -24,7 +24,7 @@ impl<Unit> Point<Unit> {
     /// Converts the contents of this point to `NewUnit` using [`From`].
     pub fn cast<NewUnit>(self) -> Point<NewUnit>
     where
-        NewUnit: From<Unit>,
+        Unit: Into<NewUnit>,
     {
         Point {
             x: self.x.into(),
@@ -39,9 +39,9 @@ impl<Unit> Point<Unit> {
     /// Returns `<NewUnit as TryFrom>::Error` when the inner type cannot be
     /// converted. For this crate's types, this genenerally will be
     /// [`TryFromIntError`](std::num::TryFromIntError).
-    pub fn try_cast<NewUnit>(self) -> Result<Point<NewUnit>, NewUnit::Error>
+    pub fn try_cast<NewUnit>(self) -> Result<Point<NewUnit>, Unit::Error>
     where
-        NewUnit: TryFrom<Unit>,
+        Unit: TryInto<NewUnit>,
     {
         Ok(Point {
             x: self.x.try_into()?,

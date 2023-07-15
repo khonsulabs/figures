@@ -67,6 +67,15 @@ impl<Unit> Rect<Unit> {
         })
     }
 
+    /// Returns true if this rect contains `point`.
+    pub fn contains(&self, point: Point<Unit>) -> bool
+    where
+        Unit: crate::Unit,
+    {
+        let (p1, p2) = self.extents();
+        p1.x <= point.x && p1.y <= point.y && p2.x > point.x && p2.y > point.y
+    }
+
     /// Returns true if the areas of `self` and `other` overlap.
     ///
     /// This function does not return true if the edges touch but do not overlap.

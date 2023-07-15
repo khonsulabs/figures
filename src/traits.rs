@@ -219,6 +219,9 @@ pub trait Unit:
     + Copy
     + Default
     + std::fmt::Debug
+    + IntoSigned
+    + TryInto<i32>
+    + 'static
 {
 }
 
@@ -240,6 +243,9 @@ impl<T> Unit for T where
         + Copy
         + Default
         + std::fmt::Debug
+        + IntoSigned
+        + TryInto<i32>
+        + 'static
 {
 }
 

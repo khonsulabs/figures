@@ -1,4 +1,4 @@
-use std::ops::{Add, Sub};
+use std::ops::Add;
 
 use crate::traits::{IntoSigned, IntoUnsigned};
 use crate::{Point, Size};
@@ -25,7 +25,7 @@ impl<Unit> Rect<Unit> {
     /// form the top-left and the maximum values will form the bottom-right.
     pub fn from_extents(p1: Point<Unit>, p2: Point<Unit>) -> Self
     where
-        Unit: Copy + Ord + Sub<Output = Unit>,
+        Unit: crate::Unit,
     {
         let min_x = p1.x.min(p2.x);
         let min_y = p1.y.min(p2.y);
@@ -124,7 +124,7 @@ impl<Unit> Rect<Unit> {
     /// ```
     pub fn intersection(&self, other: &Self) -> Option<Rect<Unit>>
     where
-        Unit: Add<Output = Unit> + Sub<Output = Unit> + Ord + Copy,
+        Unit: crate::Unit,
     {
         let (a1, a2) = self.extents();
         let (b1, b2) = other.extents();

@@ -1,3 +1,6 @@
+use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Rem, RemAssign, Sub, SubAssign};
+
+use crate::units::{Lp, Px};
 use crate::Fraction;
 
 /// Converts a type to its floating point representation.
@@ -196,3 +199,52 @@ impl IntoUnsigned for u32 {
         self
     }
 }
+
+/// A type that can be used as a `Unit` in figures.
+pub trait Unit:
+    FloatConversion<Float = f32>
+    + Add<Output = Self>
+    + Sub<Output = Self>
+    + Div<Output = Self>
+    + Mul<Output = Self>
+    + Rem<Output = Self>
+    + AddAssign
+    + SubAssign
+    + DivAssign
+    + MulAssign
+    + RemAssign
+    + IsZero
+    + Ord
+    + Eq
+    + Copy
+    + Default
+    + std::fmt::Debug
+{
+}
+
+impl<T> Unit for T where
+    T: FloatConversion<Float = f32>
+        + Add<Output = Self>
+        + Sub<Output = Self>
+        + Div<Output = Self>
+        + Mul<Output = Self>
+        + Rem<Output = Self>
+        + AddAssign
+        + SubAssign
+        + DivAssign
+        + MulAssign
+        + RemAssign
+        + IsZero
+        + Ord
+        + Eq
+        + Copy
+        + Default
+        + std::fmt::Debug
+{
+}
+
+/// A type that can be used as a `Unit` in figures that knows how to convert to
+/// [`Lp`] or [`Px`].
+pub trait ScreenUnit: ScreenScale<Px = Px, Lp = Lp> + Unit {}
+
+impl<T> ScreenUnit for T where T: ScreenScale<Px = Px, Lp = Lp> + Unit {}

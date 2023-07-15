@@ -128,7 +128,7 @@ where
 
 impl<Unit> ScreenScale for Point<Unit>
 where
-    Unit: ScreenScale<Px = Px, Lp = Lp>,
+    Unit: crate::ScreenScale<Lp = Lp, Px = Px>,
 {
     type Lp = Point<Lp>;
     type Px = Point<Px>;

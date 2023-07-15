@@ -14,8 +14,11 @@ mod primes;
 mod rect;
 mod size;
 mod tables;
-/// Traits for the number types used in figures.
-pub mod traits;
+mod traits;
+pub use traits::{
+    FloatConversion, FromComponents, IntoComponents, IntoSigned, IntoUnsigned, IsZero, ScreenScale,
+    ScreenUnit, Unit,
+};
 /// The measurement units supported by figures.
 pub mod units;
 /// Utility functions to aide in warning-free development for users of

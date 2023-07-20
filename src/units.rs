@@ -29,6 +29,38 @@ macro_rules! define_integer_type {
             pub const MIN: Self = Self(<$inner>::MIN);
             /// Zero for this type.
             pub const ZERO: Self = Self(0);
+
+            /// Returns the result of subtracting `other` from `self`. If the
+            /// calculation overflows, the value will be limited to
+            /// [`Self::MIN`]/[`Self::MAX`].
+            #[must_use]
+            pub const fn saturating_sub(self, other: Self) -> Self {
+                Self(self.0.saturating_sub(other.0))
+            }
+
+            /// Returns the result of adding `self` and `other`. If the
+            /// calculation overflows, the value will be limited to
+            /// [`Self::MIN`]/[`Self::MAX`].
+            #[must_use]
+            pub const fn saturating_add(self, other: Self) -> Self {
+                Self(self.0.saturating_add(other.0))
+            }
+
+            /// Returns the result of multiplying `self` and `other`. If the
+            /// calculation overflows, the value will be limited to
+            /// [`Self::MIN`]/[`Self::MAX`].
+            #[must_use]
+            pub const fn saturating_mul(self, other: Self) -> Self {
+                Self(self.0.saturating_mul(other.0))
+            }
+
+            /// Returns the result of dividing `self` by `other`. If the
+            /// calculation overflows, the value will be limited to
+            /// [`Self::MIN`]/[`Self::MAX`].
+            #[must_use]
+            pub const fn saturating_div(self, other: Self) -> Self {
+                Self(self.0.saturating_div(other.0))
+            }
         }
 
         impl From<$name> for f32 {
@@ -384,6 +416,13 @@ impl fmt::Debug for Lp {
         write!(f, "{}lp", self.0)
     }
 }
+
+impl fmt::Display for Lp {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        fmt::Debug::fmt(self, f)
+    }
+}
+
 define_integer_type!(Px, i32, "docs/px.md");
 
 impl Px {
@@ -454,6 +493,12 @@ impl IntoComponents<Px> for f32 {
 impl fmt::Debug for Px {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}px", self.0)
+    }
+}
+
+impl fmt::Display for Px {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        fmt::Debug::fmt(self, f)
     }
 }
 
@@ -567,6 +612,12 @@ impl IntoComponents<UPx> for f32 {
 impl fmt::Debug for UPx {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}px", self.0)
+    }
+}
+
+impl fmt::Display for UPx {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        fmt::Debug::fmt(self, f)
     }
 }
 

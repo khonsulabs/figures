@@ -419,3 +419,13 @@ impl From<winit::dpi::PhysicalSize<u32>> for Size<crate::units::UPx> {
         }
     }
 }
+
+#[cfg(feature = "winit")]
+impl From<Size<crate::units::UPx>> for winit::dpi::PhysicalSize<u32> {
+    fn from(size: Size<crate::units::UPx>) -> Self {
+        Self {
+            width: size.width.0,
+            height: size.height.0,
+        }
+    }
+}

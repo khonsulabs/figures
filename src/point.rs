@@ -218,6 +218,26 @@ where
     }
 }
 
+#[cfg(feature = "winit")]
+impl From<winit::dpi::PhysicalPosition<i32>> for Point<Px> {
+    fn from(point: winit::dpi::PhysicalPosition<i32>) -> Self {
+        Self {
+            x: Px(point.x),
+            y: Px(point.y),
+        }
+    }
+}
+
+#[cfg(feature = "winit")]
+impl From<Point<Px>> for winit::dpi::PhysicalPosition<i32> {
+    fn from(point: Point<Px>) -> Self {
+        Self {
+            x: point.x.0,
+            y: point.y.0,
+        }
+    }
+}
+
 impl<T, Unit> Add<T> for Point<Unit>
 where
     Unit: Add<Output = Unit>,

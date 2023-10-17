@@ -265,7 +265,7 @@ macro_rules! define_integer_type {
 
         impl From<f32> for $name {
             fn from(value: f32) -> Self {
-                Self(value as $inner)
+                Self(value.round() as $inner)
             }
         }
 
@@ -590,9 +590,7 @@ impl ScreenScale for UPx {
     }
 
     fn from_lp(lp: Self::Lp, scale: Fraction) -> Self {
-        (lp.0 * ARBITRARY_SCALE * scale / 96)
-            .try_into()
-            .unwrap_or(Self::MIN)
+        lp.into_px(scale).try_into().unwrap_or(Self::MIN)
     }
 }
 

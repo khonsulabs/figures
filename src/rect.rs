@@ -1,4 +1,4 @@
-use std::ops::Add;
+use std::ops::{Add, AddAssign, SubAssign};
 
 use crate::traits::{IntoSigned, IntoUnsigned};
 use crate::{Point, Size};
@@ -38,6 +38,20 @@ impl<Unit> Rect<Unit> {
                 height: max_y - min_y,
             },
         }
+    }
+
+    /// Returns a rectangle that has been inset by `amount` on all sides.
+    pub fn inset(mut self, amount: impl Into<Unit>) -> Self
+    where
+        Unit: Add<Unit, Output = Unit> + AddAssign<Unit> + SubAssign<Unit> + Copy,
+    {
+        let amount = amount.into();
+        let double_amount = amount + amount;
+        self.origin.x += amount;
+        self.origin.y += amount;
+        self.size.width -= double_amount;
+        self.size.height -= double_amount;
+        self
     }
 
     /// Converts the contents of this point to `NewUnit` using [`From`].

@@ -1,4 +1,4 @@
-use std::ops::{Add, AddAssign, SubAssign};
+use std::ops::{Add, AddAssign, Sub, SubAssign};
 
 use crate::traits::{IntoSigned, IntoUnsigned};
 use crate::{Point, Size};
@@ -162,6 +162,14 @@ impl<Unit> Rect<Unit> {
         }
         None
     }
+
+    /// Returns the non-origin point.
+    pub fn extent(&self) -> Point<Unit>
+    where
+        Unit: crate::Unit,
+    {
+        self.origin + self.size
+    }
 }
 
 impl<Unit> Rect<Unit>
@@ -226,6 +234,28 @@ where
 {
     fn from(size: Size<Unit>) -> Self {
         Self::new(Point::default(), size)
+    }
+}
+
+impl<Unit> Add<Point<Unit>> for Rect<Unit>
+where
+    Unit: Add<Output = Unit>,
+{
+    type Output = Self;
+
+    fn add(self, rhs: Point<Unit>) -> Self::Output {
+        Self::new(self.origin + rhs, self.size)
+    }
+}
+
+impl<Unit> Sub<Point<Unit>> for Rect<Unit>
+where
+    Unit: Sub<Output = Unit>,
+{
+    type Output = Self;
+
+    fn sub(self, rhs: Point<Unit>) -> Self::Output {
+        Self::new(self.origin - rhs, self.size)
     }
 }
 

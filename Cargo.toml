@@ -10,3 +10,4 @@ bytemuck = { version = "1.13.1", features = ["derive"], optional = true }
 wgpu = { version = "0.18.0", default-features = false, optional = true }
 winit = { version = "0.29.1-beta", default-features = false, optional = true }
 euclid = { version = "0.22.9", default-features = false, optional = true }
+intentional = "0.1.0"

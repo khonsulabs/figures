@@ -41,6 +41,7 @@ impl<Unit> Rect<Unit> {
     }
 
     /// Returns a rectangle that has been inset by `amount` on all sides.
+    #[must_use]
     pub fn inset(mut self, amount: impl Into<Unit>) -> Self
     where
         Unit: Add<Unit, Output = Unit> + AddAssign<Unit> + SubAssign<Unit> + Copy,

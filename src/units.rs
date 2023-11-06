@@ -3,10 +3,11 @@ use std::fmt;
 use std::num::TryFromIntError;
 use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Rem, RemAssign, Sub, SubAssign};
 
+use intentional::Cast;
+
 use crate::traits::{
     FloatConversion, IntoComponents, IntoSigned, IntoUnsigned, IsZero, ScreenScale,
 };
-use crate::utils::lossy_f32_to_i32;
 use crate::Fraction;
 
 const ARBITRARY_SCALE: i32 = 182_880;
@@ -350,7 +351,7 @@ impl Lp {
     /// inch.
     #[must_use]
     pub fn points_f(points: f32) -> Self {
-        Lp(lossy_f32_to_i32(points * ARBITRARY_SCALE_F32 / 72.))
+        Lp((points * ARBITRARY_SCALE_F32 / 72.).cast())
     }
 
     /// Returns a value equivalent to the number of `centimeters` provided.
@@ -362,7 +363,7 @@ impl Lp {
     /// Returns a value equivalent to the number of `centimeters` provided.
     #[must_use]
     pub fn cm_f(centimeters: f32) -> Self {
-        Lp(lossy_f32_to_i32(centimeters * ARBITRARY_SCALE_F32 / 2.54))
+        Lp((centimeters * ARBITRARY_SCALE_F32 / 2.54).cast())
     }
 
     /// Returns a value equivalent to the number of `millimeters` provided.
@@ -374,7 +375,7 @@ impl Lp {
     /// Returns a value equivalent to the number of `millimeters` provided.
     #[must_use]
     pub fn mm_f(millimeters: f32) -> Self {
-        Lp(lossy_f32_to_i32(millimeters * ARBITRARY_SCALE_F32 / 25.4))
+        Lp((millimeters * ARBITRARY_SCALE_F32 / 25.4).cast())
     }
 
     /// Returns a value equivalent to the number of `inches` provided.
@@ -386,7 +387,7 @@ impl Lp {
     /// Returns a value equivalent to the number of `inches` provided.
     #[must_use]
     pub fn inches_f(inches: f32) -> Self {
-        Self(lossy_f32_to_i32(inches * ARBITRARY_SCALE_F32))
+        Self((inches * ARBITRARY_SCALE_F32).cast())
     }
 
     /// Raises this value to power of `exp`.

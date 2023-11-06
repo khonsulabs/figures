@@ -212,8 +212,8 @@ where
 {
     fn from(point: winit::dpi::PhysicalPosition<f64>) -> Self {
         Self {
-            x: Unit::from_float(intential::CastFrom::from_cast(point.x)),
-            y: Unit::from_float(intential::CastFrom::from_cast(point.y)),
+            x: Unit::from_float(intentional::CastFrom::from_cast(point.x)),
+            y: Unit::from_float(intentional::CastFrom::from_cast(point.y)),
         }
     }
 }

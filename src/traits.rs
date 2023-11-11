@@ -289,3 +289,8 @@ impl_int_ranged!(f64);
 impl_int_ranged!(Px);
 impl_int_ranged!(UPx);
 impl_int_ranged!(Lp);
+
+impl Ranged for bool {
+    const MAX: Self = true;
+    const MIN: Self = false;
+}

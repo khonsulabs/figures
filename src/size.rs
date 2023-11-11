@@ -2,7 +2,8 @@ use std::cmp::Ordering;
 use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
 
 use crate::traits::{
-    FloatConversion, FromComponents, IntoComponents, IntoSigned, IntoUnsigned, IsZero, ScreenScale,
+    FloatConversion, FromComponents, IntoComponents, IntoSigned, IntoUnsigned, IsZero, Ranged,
+    ScreenScale,
 };
 use crate::units::{Lp, Px};
 use crate::utils::vec_ord;
@@ -428,4 +429,18 @@ impl From<Size<crate::units::UPx>> for winit::dpi::PhysicalSize<u32> {
             height: size.height.0,
         }
     }
+}
+
+impl<Unit> Ranged for Size<Unit>
+where
+    Unit: Ranged,
+{
+    const MAX: Self = Self {
+        width: Unit::MAX,
+        height: Unit::MAX,
+    };
+    const MIN: Self = Self {
+        width: Unit::MIN,
+        height: Unit::MIN,
+    };
 }

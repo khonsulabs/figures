@@ -1,6 +1,6 @@
 use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Rem, RemAssign, Sub, SubAssign};
 
-use crate::units::{Lp, Px};
+use crate::units::{Lp, Px, UPx};
 use crate::Fraction;
 
 /// Converts a type to its floating point representation.
@@ -254,3 +254,38 @@ impl<T> Unit for T where
 pub trait ScreenUnit: ScreenScale<Px = Px, Lp = Lp> + Unit {}
 
 impl<T> ScreenUnit for T where T: ScreenScale<Px = Px, Lp = Lp> + Unit {}
+
+/// A type that has a minimum and a maximum.
+pub trait Ranged: Sized {
+    /// The minimum value for this type.
+    const MIN: Self;
+    /// The maximum value for this type.
+    const MAX: Self;
+}
+
+macro_rules! impl_int_ranged {
+    ($type:ident) => {
+        impl Ranged for $type {
+            const MAX: Self = $type::MAX;
+            const MIN: Self = $type::MIN;
+        }
+    };
+}
+
+impl_int_ranged!(i8);
+impl_int_ranged!(i16);
+impl_int_ranged!(i32);
+impl_int_ranged!(i64);
+impl_int_ranged!(i128);
+impl_int_ranged!(isize);
+impl_int_ranged!(u8);
+impl_int_ranged!(u16);
+impl_int_ranged!(u32);
+impl_int_ranged!(u64);
+impl_int_ranged!(u128);
+impl_int_ranged!(usize);
+impl_int_ranged!(f32);
+impl_int_ranged!(f64);
+impl_int_ranged!(Px);
+impl_int_ranged!(UPx);
+impl_int_ranged!(Lp);

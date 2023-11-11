@@ -1,7 +1,8 @@
 use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
 
 use crate::traits::{
-    FloatConversion, FromComponents, IntoComponents, IntoSigned, IntoUnsigned, IsZero, ScreenScale,
+    FloatConversion, FromComponents, IntoComponents, IntoSigned, IntoUnsigned, IsZero, Ranged,
+    ScreenScale,
 };
 use crate::units::{Lp, Px};
 use crate::utils::vec_ord;
@@ -397,4 +398,18 @@ impl<Unit> FromComponents<Unit> for Point<Unit> {
             y: components.1,
         }
     }
+}
+
+impl<Unit> Ranged for Point<Unit>
+where
+    Unit: Ranged,
+{
+    const MAX: Self = Self {
+        x: Unit::MAX,
+        y: Unit::MAX,
+    };
+    const MIN: Self = Self {
+        x: Unit::MIN,
+        y: Unit::MIN,
+    };
 }

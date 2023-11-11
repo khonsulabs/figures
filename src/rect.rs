@@ -1,6 +1,6 @@
 use std::ops::{Add, AddAssign, Sub, SubAssign};
 
-use crate::traits::{IntoSigned, IntoUnsigned};
+use crate::traits::{IntoSigned, IntoUnsigned, Ranged};
 use crate::{Point, Size};
 
 /// A 2d area expressed as an origin ([`Point`]) and a [`Size`].
@@ -258,6 +258,14 @@ where
     fn sub(self, rhs: Point<Unit>) -> Self::Output {
         Self::new(self.origin - rhs, self.size)
     }
+}
+
+impl<Unit> Ranged for Rect<Unit>
+where
+    Unit: Ranged,
+{
+    const MAX: Self = Self::new(Point::MAX, Size::MAX);
+    const MIN: Self = Self::new(Point::MIN, Size::MIN);
 }
 
 #[test]

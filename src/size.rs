@@ -5,7 +5,7 @@ use crate::traits::{
     FloatConversion, FromComponents, IntoComponents, IntoSigned, IntoUnsigned, IsZero, Ranged,
     ScreenScale,
 };
-use crate::units::{Lp, Px};
+use crate::units::{Lp, Px, UPx};
 use crate::utils::vec_ord;
 use crate::Point;
 
@@ -20,11 +20,8 @@ pub struct Size<Unit> {
 
 impl<Unit> Size<Unit> {
     /// Returns a new size of the given `width` and `height`.
-    pub fn new(width: impl Into<Unit>, height: impl Into<Unit>) -> Self {
-        Self {
-            width: width.into(),
-            height: height.into(),
-        }
+    pub const fn new(width: Unit, height: Unit) -> Self {
+        Self { width, height }
     }
 
     /// Returns a new size using `dimension` for both width and height.
@@ -165,10 +162,11 @@ where
 
 impl<Unit> ScreenScale for Size<Unit>
 where
-    Unit: ScreenScale<Px = Px, Lp = Lp>,
+    Unit: ScreenScale<Px = Px, Lp = Lp, UPx = UPx>,
 {
     type Lp = Size<Lp>;
     type Px = Size<Px>;
+    type UPx = Size<UPx>;
 
     fn into_px(self, scale: crate::Fraction) -> Self::Px {
         Size {
@@ -195,6 +193,20 @@ where
         Self {
             width: Unit::from_lp(lp.width, scale),
             height: Unit::from_lp(lp.height, scale),
+        }
+    }
+
+    fn into_upx(self, scale: crate::Fraction) -> Self::UPx {
+        Size {
+            width: self.width.into_upx(scale),
+            height: self.height.into_upx(scale),
+        }
+    }
+
+    fn from_upx(px: Self::UPx, scale: crate::Fraction) -> Self {
+        Self {
+            width: Unit::from_upx(px.width, scale),
+            height: Unit::from_upx(px.height, scale),
         }
     }
 }

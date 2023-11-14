@@ -130,6 +130,8 @@ where
 pub trait ScreenScale {
     /// This type when measuring with [`Px`](crate::units::Px).
     type Px;
+    /// This type when measuring with [`UPx`](crate::units::UPx).
+    type UPx;
     /// This type when measuring with [`Lp`](crate::units::Lp).
     type Lp;
 
@@ -138,6 +140,12 @@ pub trait ScreenScale {
     fn into_px(self, scale: Fraction) -> Self::Px;
     /// Converts from pixels into this type, using the provided `scale` factor.
     fn from_px(px: Self::Px, scale: Fraction) -> Self;
+
+    /// Converts this value from its current unit into device pixels
+    /// ([`UPx`](crate::units::UPx)) using the provided `scale` factor.
+    fn into_upx(self, scale: Fraction) -> Self::UPx;
+    /// Converts from unsigned pixels into this type, using the provided `scale` factor.
+    fn from_upx(px: Self::UPx, scale: Fraction) -> Self;
 
     /// Converts this value from its current unit into device independent pixels
     /// ([`Lp`](crate::units::Lp)) using the provided `scale` factor.
@@ -166,6 +174,14 @@ impl IntoSigned for u32 {
 }
 
 impl IntoSigned for i32 {
+    type Signed = Self;
+
+    fn into_signed(self) -> Self::Signed {
+        self
+    }
+}
+
+impl IntoSigned for f32 {
     type Signed = Self;
 
     fn into_signed(self) -> Self::Signed {
@@ -251,9 +267,9 @@ impl<T> Unit for T where
 
 /// A type that can be used as a `Unit` in figures that knows how to convert to
 /// [`Lp`] or [`Px`].
-pub trait ScreenUnit: ScreenScale<Px = Px, Lp = Lp> + Unit {}
+pub trait ScreenUnit: ScreenScale<Px = Px, Lp = Lp, UPx = UPx> + Unit {}
 
-impl<T> ScreenUnit for T where T: ScreenScale<Px = Px, Lp = Lp> + Unit {}
+impl<T> ScreenUnit for T where T: ScreenScale<Px = Px, Lp = Lp, UPx = UPx> + Unit {}
 
 /// A type that has a minimum and a maximum.
 pub trait Ranged: Sized {

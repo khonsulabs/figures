@@ -4,7 +4,7 @@ use crate::traits::{
     FloatConversion, FromComponents, IntoComponents, IntoSigned, IntoUnsigned, IsZero, Ranged,
     ScreenScale,
 };
-use crate::units::{Lp, Px};
+use crate::units::{Lp, Px, UPx};
 use crate::utils::vec_ord;
 
 /// A coordinate in a 2d space.
@@ -129,10 +129,11 @@ where
 
 impl<Unit> ScreenScale for Point<Unit>
 where
-    Unit: crate::ScreenScale<Lp = Lp, Px = Px>,
+    Unit: crate::ScreenScale<Lp = Lp, Px = Px, UPx = UPx>,
 {
     type Lp = Point<Lp>;
     type Px = Point<Px>;
+    type UPx = Point<UPx>;
 
     fn into_px(self, scale: crate::Fraction) -> Self::Px {
         Point {
@@ -159,6 +160,20 @@ where
         Self {
             x: Unit::from_lp(lp.x, scale),
             y: Unit::from_lp(lp.y, scale),
+        }
+    }
+
+    fn into_upx(self, scale: crate::Fraction) -> Self::UPx {
+        Point {
+            x: self.x.into_upx(scale),
+            y: self.y.into_upx(scale),
+        }
+    }
+
+    fn from_upx(px: Self::UPx, scale: crate::Fraction) -> Self {
+        Self {
+            x: Unit::from_upx(px.x, scale),
+            y: Unit::from_upx(px.y, scale),
         }
     }
 }

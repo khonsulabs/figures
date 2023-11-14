@@ -138,12 +138,16 @@ impl From<Fraction32> for Fraction {
             .filter(|&prime| numerator >= prime && denominator >= prime)
         {
             let numerator_remainder = numerator % prime;
-            let Ok(numerator) = i16::try_from(numerator / prime) else { break };
+            let Ok(numerator) = i16::try_from(numerator / prime) else {
+                break;
+            };
             if numerator < MIN_VALUE {
                 break;
             }
             let denominator_remainder = denominator % prime;
-            let Ok(denominator) = i16::try_from(denominator / prime) else { break };
+            let Ok(denominator) = i16::try_from(denominator / prime) else {
+                break;
+            };
             let remainder = numerator_remainder + denominator_remainder;
             if remainder < best_remainder {
                 best_numerator = numerator;

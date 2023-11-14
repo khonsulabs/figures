@@ -303,6 +303,7 @@ impl IntoComponents<Lp> for f32 {
 impl ScreenScale for Lp {
     type Lp = Lp;
     type Px = Px;
+    type UPx = UPx;
 
     fn into_px(self, scale: Fraction) -> Self::Px {
         Px(self.0 * 96 / scale / ARBITRARY_SCALE)
@@ -318,6 +319,14 @@ impl ScreenScale for Lp {
 
     fn from_lp(lp: Self::Lp, _scale: Fraction) -> Self {
         lp
+    }
+
+    fn into_upx(self, scale: crate::Fraction) -> Self::UPx {
+        self.into_px(scale).into_unsigned()
+    }
+
+    fn from_upx(px: Self::UPx, scale: crate::Fraction) -> Self {
+        Self::from_px(px.into_signed(), scale)
     }
 }
 
@@ -460,6 +469,7 @@ impl IntoSigned for Px {
 impl ScreenScale for Px {
     type Lp = Lp;
     type Px = Self;
+    type UPx = UPx;
 
     fn into_px(self, _scale: Fraction) -> Self::Px {
         self
@@ -475,6 +485,14 @@ impl ScreenScale for Px {
 
     fn from_lp(lp: Self::Lp, scale: Fraction) -> Self {
         lp.into_px(scale)
+    }
+
+    fn into_upx(self, _scale: crate::Fraction) -> Self::UPx {
+        self.into_unsigned()
+    }
+
+    fn from_upx(px: Self::UPx, _scale: crate::Fraction) -> Self {
+        px.into_signed()
     }
 }
 
@@ -575,6 +593,7 @@ impl IntoUnsigned for UPx {
 impl ScreenScale for UPx {
     type Lp = Lp;
     type Px = Px;
+    type UPx = Self;
 
     fn into_px(self, _scale: Fraction) -> Self::Px {
         Px::try_from(self.0).unwrap_or(Px::MAX)
@@ -592,6 +611,14 @@ impl ScreenScale for UPx {
 
     fn from_lp(lp: Self::Lp, scale: Fraction) -> Self {
         lp.into_px(scale).try_into().unwrap_or(Self::MIN)
+    }
+
+    fn into_upx(self, _scale: crate::Fraction) -> Self::UPx {
+        self
+    }
+
+    fn from_upx(px: Self::UPx, _scale: crate::Fraction) -> Self {
+        px
     }
 }
 

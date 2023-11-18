@@ -310,3 +310,22 @@ impl Ranged for bool {
     const MAX: Self = true;
     const MIN: Self = false;
 }
+
+/// A type that has a scaling factor when converting to pixels.
+pub trait PixelScaling {
+    /// The scaling factor to apply when converting to pixels, in addition to
+    /// any spatial scaling already being applied.
+    const PX_SCALING_FACTOR: u16;
+}
+
+impl PixelScaling for Px {
+    const PX_SCALING_FACTOR: u16 = 1;
+}
+
+impl PixelScaling for UPx {
+    const PX_SCALING_FACTOR: u16 = 1;
+}
+
+impl PixelScaling for Lp {
+    const PX_SCALING_FACTOR: u16 = 1905; // ARBITRARY_SCALE / 96
+}

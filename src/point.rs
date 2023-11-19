@@ -23,6 +23,14 @@ impl<Unit> Point<Unit> {
         Self { x, y }
     }
 
+    /// Returns a new point with both `x` and `y` initialized with `i`.
+    pub fn squared(i: Unit) -> Self
+    where
+        Unit: Clone,
+    {
+        Self::new(i.clone(), i)
+    }
+
     /// Converts the contents of this point to `NewUnit` using [`From`].
     pub fn cast<NewUnit>(self) -> Point<NewUnit>
     where

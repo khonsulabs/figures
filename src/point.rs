@@ -1,11 +1,12 @@
 use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
 
 use crate::traits::{
-    FloatConversion, FromComponents, IntoComponents, IntoSigned, IntoUnsigned, IsZero, Ranged,
-    ScreenScale,
+    FloatConversion, FromComponents, IntoComponents, IntoSigned, IntoUnsigned, Ranged, ScreenScale,
+    Zero,
 };
 use crate::units::{Lp, Px, UPx};
 use crate::utils::vec_ord;
+use crate::Round;
 
 /// A coordinate in a 2d space.
 #[derive(Default, Clone, Copy, Eq, PartialEq, Hash, Debug)]
@@ -49,6 +50,15 @@ impl<Unit> Point<Unit> {
             y: self.y.try_into()?,
         })
     }
+
+    /// Maps each component to `map` and returns a new value with the mapped
+    /// components.
+    pub fn map<NewUnit>(self, mut map: impl FnMut(Unit) -> NewUnit) -> Point<NewUnit> {
+        Point {
+            x: map(self.x),
+            y: map(self.y),
+        }
+    }
 }
 
 impl<Unit> IntoUnsigned for Point<Unit>
@@ -76,6 +86,23 @@ where
             x: self.x.into_signed(),
             y: self.y.into_signed(),
         }
+    }
+}
+
+impl<Unit> Round for Point<Unit>
+where
+    Unit: Round,
+{
+    fn round(self) -> Self {
+        self.map(Unit::round)
+    }
+
+    fn ceil(self) -> Self {
+        self.map(Unit::ceil)
+    }
+
+    fn floor(self) -> Self {
+        self.map(Unit::floor)
     }
 }
 
@@ -238,8 +265,8 @@ where
 impl From<winit::dpi::PhysicalPosition<i32>> for Point<Px> {
     fn from(point: winit::dpi::PhysicalPosition<i32>) -> Self {
         Self {
-            x: Px(point.x),
-            y: Px(point.y),
+            x: Px::new(point.x),
+            y: Px::new(point.y),
         }
     }
 }
@@ -248,8 +275,8 @@ impl From<winit::dpi::PhysicalPosition<i32>> for Point<Px> {
 impl From<Point<Px>> for winit::dpi::PhysicalPosition<i32> {
     fn from(point: Point<Px>) -> Self {
         Self {
-            x: point.x.0,
-            y: point.y.0,
+            x: point.x.into(),
+            y: point.y.into(),
         }
     }
 }
@@ -366,10 +393,12 @@ where
     }
 }
 
-impl<Unit> IsZero for Point<Unit>
+impl<Unit> Zero for Point<Unit>
 where
-    Unit: IsZero,
+    Unit: Zero,
 {
+    const ZERO: Self = Self::new(Unit::ZERO, Unit::ZERO);
+
     fn is_zero(&self) -> bool {
         self.x.is_zero() && self.y.is_zero()
     }
@@ -393,8 +422,8 @@ where
 impl From<Point<crate::units::UPx>> for wgpu::Origin3d {
     fn from(value: Point<crate::units::UPx>) -> Self {
         Self {
-            x: value.x.0,
-            y: value.y.0,
+            x: value.x.into(),
+            y: value.y.into(),
             z: 0,
         }
     }

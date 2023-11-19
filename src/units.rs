@@ -3,10 +3,11 @@ use std::fmt;
 use std::num::TryFromIntError;
 use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Rem, RemAssign, Sub, SubAssign};
 
-use intentional::Cast;
+use intentional::{Cast, CastFrom};
 
 use crate::traits::{
-    FloatConversion, IntoComponents, IntoSigned, IntoUnsigned, IsZero, ScreenScale,
+    FloatConversion, IntoComponents, IntoSigned, IntoUnsigned, Round, ScreenScale, UnscaledUnit,
+    Zero,
 };
 use crate::Fraction;
 
@@ -16,12 +17,12 @@ const ARBITRARY_SCALE_U32: u32 = ARBITRARY_SCALE.unsigned_abs();
 const ARBITRARY_SCALE_F32: f32 = ARBITRARY_SCALE as f32;
 
 macro_rules! define_integer_type {
-    ($name:ident, $inner:ty, $docs_file:literal) => {
+    ($name:ident, $inner:ty, $docs_file:literal, $scale:literal) => {
         #[derive(Default, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
         #[cfg_attr(feature = "bytemuck", derive(bytemuck::Pod, bytemuck::Zeroable))]
         #[doc = include_str!($docs_file)]
         #[repr(C)]
-        pub struct $name(pub $inner);
+        pub struct $name($inner);
 
         impl $name {
             /// The maximum value for this type.
@@ -30,6 +31,22 @@ macro_rules! define_integer_type {
             pub const MIN: Self = Self(<$inner>::MIN);
             /// Zero for this type.
             pub const ZERO: Self = Self(0);
+
+            /// Returns a new wrapped value for this unit.
+            #[must_use]
+            pub const fn new(value: $inner) -> Self {
+                Self(value * $scale)
+            }
+
+            /// Returns the contained value, rounded if applicable.
+            #[must_use]
+            pub const fn get(self) -> $inner {
+                if $scale > 1 {
+                    (self.0 + $scale / 2) / $scale
+                } else {
+                    self.0
+                }
+            }
 
             /// Returns the result of subtracting `other` from `self`. If the
             /// calculation overflows, the value will be limited to
@@ -52,7 +69,7 @@ macro_rules! define_integer_type {
             /// [`Self::MIN`]/[`Self::MAX`].
             #[must_use]
             pub const fn saturating_mul(self, other: Self) -> Self {
-                Self(self.0.saturating_mul(other.0))
+                Self(self.0.saturating_mul(other.0) / $scale)
             }
 
             /// Returns the result of dividing `self` by `other`. If the
@@ -60,7 +77,20 @@ macro_rules! define_integer_type {
             /// [`Self::MIN`]/[`Self::MAX`].
             #[must_use]
             pub const fn saturating_div(self, other: Self) -> Self {
-                Self(self.0.saturating_div(other.0))
+                Self::new(self.0.saturating_div(other.0))
+            }
+        }
+
+        impl FloatConversion for $name {
+            type Float = f32;
+
+            #[allow(clippy::cast_precision_loss)] // precision loss desired to best approximate the value
+            fn into_float(self) -> Self::Float {
+                self.0.cast::<f32>() / $scale.cast::<f32>()
+            }
+
+            fn from_float(float: Self::Float) -> Self {
+                Self((float * $scale.cast::<f32>()).round().cast())
             }
         }
 
@@ -70,27 +100,33 @@ macro_rules! define_integer_type {
             }
         }
 
+        impl From<f32> for $name {
+            fn from(value: f32) -> Self {
+                Self::from_float(value)
+            }
+        }
+
         impl From<$name> for $inner {
             fn from(value: $name) -> Self {
-                value.0
+                value.get()
             }
         }
 
         impl From<$inner> for $name {
             fn from(value: $inner) -> Self {
-                Self(value)
+                Self::new(value)
             }
         }
 
         impl PartialEq<$inner> for $name {
             fn eq(&self, other: &$inner) -> bool {
-                self.0 == *other
+                self == &Self::new(*other)
             }
         }
 
         impl PartialOrd<$inner> for $name {
             fn partial_cmp(&self, other: &$inner) -> Option<std::cmp::Ordering> {
-                self.0.partial_cmp(other)
+                self.partial_cmp(&Self::new(*other))
             }
         }
 
@@ -98,7 +134,7 @@ macro_rules! define_integer_type {
             type Output = Self;
 
             fn div(self, rhs: Self) -> Self::Output {
-                Self(self.0 / rhs.0)
+                Self::new(self.0 / rhs.0)
             }
         }
 
@@ -114,13 +150,13 @@ macro_rules! define_integer_type {
             type Output = Self;
 
             fn div(self, rhs: f32) -> Self::Output {
-                Self((self.0 as f32 / rhs).round() as $inner)
+                Self::from((self.into_float() / rhs))
             }
         }
 
         impl DivAssign for $name {
             fn div_assign(&mut self, rhs: Self) {
-                self.0 /= rhs.0;
+                *self = *self / rhs
             }
         }
 
@@ -162,7 +198,7 @@ macro_rules! define_integer_type {
             type Output = Self;
 
             fn rem(self, rhs: f32) -> Self::Output {
-                Self((self.0 as f32 % rhs).round() as $inner)
+                Self::from((self.into_float() % rhs).round())
             }
         }
 
@@ -170,7 +206,7 @@ macro_rules! define_integer_type {
             type Output = Self;
 
             fn mul(self, rhs: Self) -> Self::Output {
-                self * rhs.0
+                Self(self.0 * rhs.0 / $scale)
             }
         }
 
@@ -186,13 +222,13 @@ macro_rules! define_integer_type {
             type Output = Self;
 
             fn mul(self, rhs: f32) -> Self::Output {
-                Self((self.0 as f32 * rhs).round() as $inner)
+                Self::from((self.into_float() * rhs))
             }
         }
 
         impl MulAssign for $name {
             fn mul_assign(&mut self, rhs: Self) {
-                self.0 *= rhs.0;
+                self.0 = (self.0 * rhs.0) / $scale;
             }
         }
 
@@ -214,7 +250,7 @@ macro_rules! define_integer_type {
             type Output = Self;
 
             fn add(self, rhs: $inner) -> Self::Output {
-                Self(self.0 + rhs)
+                self + Self::new(rhs)
             }
         }
 
@@ -226,7 +262,7 @@ macro_rules! define_integer_type {
 
         impl AddAssign<$inner> for $name {
             fn add_assign(&mut self, rhs: $inner) {
-                self.0 += rhs;
+                *self += Self::new(rhs);
             }
         }
 
@@ -234,7 +270,7 @@ macro_rules! define_integer_type {
             type Output = Self;
 
             fn sub(self, rhs: Self) -> Self::Output {
-                self - rhs.0
+                Self(self.0 - rhs.0)
             }
         }
 
@@ -242,7 +278,7 @@ macro_rules! define_integer_type {
             type Output = Self;
 
             fn sub(self, rhs: $inner) -> Self::Output {
-                Self(self.0 - rhs)
+                Self(self.0 - rhs * $scale)
             }
         }
 
@@ -254,38 +290,59 @@ macro_rules! define_integer_type {
 
         impl SubAssign<$inner> for $name {
             fn sub_assign(&mut self, rhs: $inner) {
-                self.0 -= rhs;
+                *self -= Self::new(rhs);
             }
         }
 
-        impl IsZero for $name {
+        impl Zero for $name {
+            const ZERO: Self = Self(0);
+
             fn is_zero(&self) -> bool {
                 self.0 == 0
             }
         }
 
-        impl From<f32> for $name {
-            fn from(value: f32) -> Self {
-                Self(value.round() as $inner)
+        impl UnscaledUnit for $name {
+            type Representation = $inner;
+
+            fn from_unscaled(unscaled: Self::Representation) -> Self {
+                Self(unscaled)
+            }
+
+            fn into_unscaled(self) -> Self::Representation {
+                self.0
             }
         }
 
-        impl FloatConversion for $name {
-            type Float = f32;
-
-            #[allow(clippy::cast_precision_loss)] // precision loss desired to best approximate the value
-            fn into_float(self) -> Self::Float {
-                self.0 as f32
+        impl Round for $name {
+            fn round(self) -> Self {
+                Self((self.0 + $scale / 2) / $scale * $scale)
             }
 
-            fn from_float(float: Self::Float) -> Self {
-                Self::from(float)
+            fn ceil(self) -> Self {
+                Self((self.0 + $scale - 1) / $scale * $scale)
+            }
+
+            fn floor(self) -> Self {
+                Self(self.0 / $scale * $scale)
             }
         }
     };
 }
 
-define_integer_type!(Lp, i32, "docs/lp.md");
+impl CastFrom<f32> for Px {
+    fn from_cast(from: f32) -> Self {
+        Px::from(from)
+    }
+}
+
+impl CastFrom<Px> for f32 {
+    fn from_cast(from: Px) -> Self {
+        from.into_float()
+    }
+}
+
+define_integer_type!(Lp, i32, "docs/lp.md", 1);
 
 impl IntoComponents<Lp> for i32 {
     fn into_components(self) -> (Lp, Lp) {
@@ -306,7 +363,7 @@ impl ScreenScale for Lp {
     type UPx = UPx;
 
     fn into_px(self, scale: Fraction) -> Self::Px {
-        Px(self.0 * 96 / scale / ARBITRARY_SCALE)
+        Px::new(self.0 * 96 / scale / ARBITRARY_SCALE)
     }
 
     fn from_px(px: Self::Px, scale: Fraction) -> Self {
@@ -433,20 +490,20 @@ impl fmt::Display for Lp {
     }
 }
 
-define_integer_type!(Px, i32, "docs/px.md");
+define_integer_type!(Px, i32, "docs/px.md", 4);
 
 impl Px {
     /// Raises this value to power of `exp`.
     #[must_use]
     pub fn pow(self, exp: u32) -> Self {
-        Self(self.0.pow(exp))
+        Self(self.0.pow(exp) / 4_i32.pow(exp.saturating_sub(1)))
     }
 
     /// Returns the square root of this value.
     #[must_use]
     #[allow(clippy::cast_possible_truncation)]
     pub fn sqrt(self) -> Self {
-        Self(f64::from(self.0).sqrt() as i32)
+        Self::new(f64::from(self.into_float()).sqrt() as i32)
     }
 }
 
@@ -480,7 +537,7 @@ impl ScreenScale for Px {
     }
 
     fn into_lp(self, scale: Fraction) -> Self::Lp {
-        Lp(self.0 * ARBITRARY_SCALE * scale / 96)
+        Lp(self.0 * ARBITRARY_SCALE * scale / (96 * 4))
     }
 
     fn from_lp(lp: Self::Lp, scale: Fraction) -> Self {
@@ -498,7 +555,7 @@ impl ScreenScale for Px {
 
 impl IntoComponents<Px> for i32 {
     fn into_components(self) -> (Px, Px) {
-        (Px(self), Px(self))
+        (Px::new(self), Px::new(self))
     }
 }
 
@@ -511,7 +568,14 @@ impl IntoComponents<Px> for f32 {
 
 impl fmt::Debug for Px {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}px", self.0)
+        let whole = self.0 >> 2;
+        let remainder = self.0 & 0b11;
+        match remainder {
+            1 => write!(f, "{whole}.25px",),
+            2 => write!(f, "{whole}.5px",),
+            3 => write!(f, "{whole}.75px",),
+            _ => write!(f, "{whole}px",),
+        }
     }
 }
 
@@ -533,7 +597,7 @@ impl TryFrom<u32> for Px {
     type Error = TryFromIntError;
 
     fn try_from(value: u32) -> Result<Self, Self::Error> {
-        value.try_into().map(Self)
+        value.try_into().map(Self::new)
     }
 }
 
@@ -557,13 +621,13 @@ impl PartialOrd<UPx> for Px {
     }
 }
 
-define_integer_type!(UPx, u32, "docs/upx.md");
+define_integer_type!(UPx, u32, "docs/upx.md", 4);
 
 impl UPx {
     /// Raises this value to power of `exp`.
     #[must_use]
     pub fn pow(self, exp: u32) -> Self {
-        Self(self.0.pow(exp))
+        Self(self.0.pow(exp) / 4_u32.pow(exp.saturating_sub(1)))
     }
 
     /// Returns the square root of this value.
@@ -596,7 +660,7 @@ impl ScreenScale for UPx {
     type UPx = Self;
 
     fn into_px(self, _scale: Fraction) -> Self::Px {
-        Px::try_from(self.0).unwrap_or(Px::MAX)
+        Px(i32::try_from(self.0).unwrap_or(i32::MAX))
     }
 
     fn from_px(px: Self::Px, _scale: Fraction) -> Self {
@@ -604,7 +668,7 @@ impl ScreenScale for UPx {
     }
 
     fn into_lp(self, scale: Fraction) -> Self::Lp {
-        (self.0 * ARBITRARY_SCALE_U32 * scale / 96)
+        (self.0 * ARBITRARY_SCALE_U32 * scale / (96 * 4))
             .try_into()
             .unwrap_or(Lp::MAX)
     }
@@ -624,7 +688,7 @@ impl ScreenScale for UPx {
 
 impl IntoComponents<UPx> for u32 {
     fn into_components(self) -> (UPx, UPx) {
-        (UPx(self), UPx(self))
+        (UPx::new(self), UPx::new(self))
     }
 }
 
@@ -637,7 +701,14 @@ impl IntoComponents<UPx> for f32 {
 
 impl fmt::Debug for UPx {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}px", self.0)
+        let whole = self.0 / 4;
+        let remainder = self.0 % 4;
+        match remainder {
+            1 => write!(f, "{whole}.25px",),
+            2 => write!(f, "{whole}.5px",),
+            3 => write!(f, "{whole}.75px",),
+            _ => write!(f, "{whole}px",),
+        }
     }
 }
 
@@ -651,7 +722,7 @@ impl TryFrom<UPx> for i32 {
     type Error = TryFromIntError;
 
     fn try_from(value: UPx) -> Result<Self, Self::Error> {
-        value.0.try_into()
+        value.get().try_into()
     }
 }
 
@@ -659,7 +730,7 @@ impl TryFrom<i32> for UPx {
     type Error = TryFromIntError;
 
     fn try_from(value: i32) -> Result<Self, Self::Error> {
-        value.try_into().map(Self)
+        value.try_into().map(Self::new)
     }
 }
 
@@ -675,7 +746,7 @@ impl TryFrom<UPx> for Px {
     type Error = TryFromIntError;
 
     fn try_from(value: UPx) -> Result<Self, Self::Error> {
-        value.0.try_into()
+        value.0.try_into().map(Self)
     }
 }
 

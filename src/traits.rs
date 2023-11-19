@@ -1,5 +1,7 @@
 use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Rem, RemAssign, Sub, SubAssign};
 
+use intentional::CastInto;
+
 use crate::units::{Lp, Px, UPx};
 use crate::Fraction;
 
@@ -47,15 +49,20 @@ impl FloatConversion for i32 {
     }
 }
 
-/// Allows checking if a type represents a `0`.
-pub trait IsZero {
+/// A type that can represent a zero-value.
+pub trait Zero {
+    /// The zero value for this type.
+    const ZERO: Self;
+
     /// Returns true if `self` represents `0`.
     fn is_zero(&self) -> bool;
 }
 
 macro_rules! impl_int_zero {
     ($type:ident) => {
-        impl IsZero for $type {
+        impl Zero for $type {
+            const ZERO: Self = 0;
+
             fn is_zero(&self) -> bool {
                 *self == 0
             }
@@ -91,6 +98,110 @@ pub trait FromComponents<Unit>: Sized {
     }
 }
 
+/// Constructors for types that are composed of two [`Px`] components.
+pub trait Px2D: FromComponents<Px> {
+    /// Returns a new value containing the x and y components converted into
+    /// [`Px`].
+    fn px(x: impl Into<Px>, y: impl Into<Px>) -> Self {
+        Self::from_components((x.into(), y.into()))
+    }
+}
+
+impl<T> Px2D for T where T: FromComponents<Px> {}
+
+/// Constructors for types that are composed of two [`UPx`] components.
+pub trait UPx2D: FromComponents<UPx> {
+    /// Returns a new value containing the x and y components converted into
+    /// [`UPx`].
+    fn upx(x: impl Into<UPx>, y: impl Into<UPx>) -> Self {
+        Self::from_components((x.into(), y.into()))
+    }
+}
+
+impl<T> UPx2D for T where T: FromComponents<UPx> {}
+
+/// Constructors for types that are composed of two [`Lp`] components.
+pub trait Lp2D: FromComponents<Lp> {
+    /// Returns a new value containing the x and y components converted into
+    /// [`Lp`] using [`Lp::points`]/[`Lp::points_f`].
+    fn points(x: impl Into<FloatOrInt>, y: impl Into<FloatOrInt>) -> Self {
+        Self::from_components((x.into().into_points(), y.into().into_points()))
+    }
+
+    /// Returns a new value containing the x and y components converted into
+    /// [`Lp`] using [`Lp::cm`]/[`Lp::cm_f`].
+    fn cm(x: impl Into<FloatOrInt>, y: impl Into<FloatOrInt>) -> Self {
+        Self::from_components((x.into().into_cm(), y.into().into_cm()))
+    }
+
+    /// Returns a new value containing the x and y components converted into
+    /// [`Lp`] using [`Lp::mm`]/[`Lp::mm_f`].
+    fn mm(x: impl Into<FloatOrInt>, y: impl Into<FloatOrInt>) -> Self {
+        Self::from_components((x.into().into_mm(), y.into().into_mm()))
+    }
+
+    /// Returns a new value containing the x and y components converted into
+    /// [`Lp`] using [`Lp::inches`]/[`Lp::inches_f`].
+    fn inches(x: impl Into<FloatOrInt>, y: impl Into<FloatOrInt>) -> Self {
+        Self::from_components((x.into().into_inches(), y.into().into_inches()))
+    }
+}
+
+impl<T> Lp2D for T where T: FromComponents<Lp> {}
+
+/// A type representing either an [`i32`] or an [`f32`].
+#[derive(Clone, Copy)]
+pub enum FloatOrInt {
+    /// An integer value.
+    Int(i32),
+    /// A floating point value.
+    Float(f32),
+}
+
+impl FloatOrInt {
+    fn map<R>(self, float: impl FnOnce(f32) -> R, int: impl FnOnce(i32) -> R) -> R {
+        match self {
+            FloatOrInt::Int(value) => int(value),
+            FloatOrInt::Float(value) => float(value),
+        }
+    }
+
+    /// Returns this number as [`Lp`] using [`Lp::points`]/[`Lp::points_f`].
+    pub fn into_points(self) -> Lp {
+        self.map(Lp::points_f, Lp::points)
+    }
+
+    /// Returns this number as [`Lp`] using [`Lp::cm`]/[`Lp::cm_f`].
+    #[must_use]
+    pub fn into_cm(self) -> Lp {
+        self.map(Lp::cm_f, Lp::cm)
+    }
+
+    /// Returns this number as [`Lp`] using [`Lp::mm`]/[`Lp::mm_f`].
+    #[must_use]
+    pub fn into_mm(self) -> Lp {
+        self.map(Lp::mm_f, Lp::mm)
+    }
+
+    /// Returns this number as [`Lp`] using [`Lp::inches`]/[`Lp::inches_f`].
+    #[must_use]
+    pub fn into_inches(self) -> Lp {
+        self.map(Lp::inches_f, Lp::inches)
+    }
+}
+
+impl From<i32> for FloatOrInt {
+    fn from(value: i32) -> Self {
+        Self::Int(value)
+    }
+}
+
+impl From<f32> for FloatOrInt {
+    fn from(value: f32) -> Self {
+        Self::Float(value)
+    }
+}
+
 /// Converts to a 2d vector in tuple form
 pub trait IntoComponents<Unit>: Sized {
     /// Extracts this type's 2d vector components.
@@ -111,6 +222,7 @@ impl<Unit> FromComponents<Unit> for (Unit, Unit) {
         components
     }
 }
+
 impl<Unit> IntoComponents<Unit> for (Unit, Unit) {
     fn into_components(self) -> Self {
         self
@@ -229,7 +341,7 @@ pub trait Unit:
     + DivAssign
     + MulAssign
     + RemAssign
-    + IsZero
+    + Zero
     + Ord
     + Eq
     + Copy
@@ -253,7 +365,7 @@ impl<T> Unit for T where
         + DivAssign
         + MulAssign
         + RemAssign
-        + IsZero
+        + Zero
         + Ord
         + Eq
         + Copy
@@ -267,9 +379,9 @@ impl<T> Unit for T where
 
 /// A type that can be used as a `Unit` in figures that knows how to convert to
 /// [`Lp`] or [`Px`].
-pub trait ScreenUnit: ScreenScale<Px = Px, Lp = Lp, UPx = UPx> + Unit {}
+pub trait ScreenUnit: UnscaledUnit + ScreenScale<Px = Px, Lp = Lp, UPx = UPx> + Unit {}
 
-impl<T> ScreenUnit for T where T: ScreenScale<Px = Px, Lp = Lp, UPx = UPx> + Unit {}
+impl<T> ScreenUnit for T where T: UnscaledUnit + ScreenScale<Px = Px, Lp = Lp, UPx = UPx> + Unit {}
 
 /// A type that has a minimum and a maximum.
 pub trait Ranged: Sized {
@@ -328,4 +440,42 @@ impl PixelScaling for UPx {
 
 impl PixelScaling for Lp {
     const PX_SCALING_FACTOR: u16 = 1905; // ARBITRARY_SCALE / 96
+}
+
+/// Information about scaling for a numerical unit type.
+pub trait UnscaledUnit {
+    /// The internal reprsentation used by this type.
+    type Representation: CastInto<i32>;
+
+    /// Returns a new instance using the unscaled representation.
+    fn from_unscaled(unscaled: Self::Representation) -> Self;
+    /// Returns the inner, unscaled representation of this value.
+    fn into_unscaled(self) -> Self::Representation;
+}
+
+/// Functionality for rounding values to whole numbers.
+pub trait Round {
+    /// Returns `self` rounded to the nearest whole number.
+    #[must_use]
+    fn round(self) -> Self;
+    /// Returns `self` raised to the next whole number further away from 0.
+    #[must_use]
+    fn ceil(self) -> Self;
+    /// Returns `self` lowered to the next whole number closer to 0.
+    #[must_use]
+    fn floor(self) -> Self;
+}
+
+impl Round for f32 {
+    fn round(self) -> Self {
+        self.round()
+    }
+
+    fn ceil(self) -> Self {
+        self.ceil()
+    }
+
+    fn floor(self) -> Self {
+        self.floor()
+    }
 }

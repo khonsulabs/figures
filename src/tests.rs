@@ -7,8 +7,14 @@ use crate::{Fraction, Point, Size};
 
 #[test]
 fn one_inch_is_correct() {
-    assert_eq!(dbg!(Lp::inches(1)).into_px(Fraction::ONE), Px(96));
-    assert_eq!(Lp::inches(1).into_px(Fraction::new_whole(2)), Px(96 * 2));
+    assert_eq!(Lp::inches(1).into_px(Fraction::ONE), Px::new(96));
+    assert_eq!(Px::new(96).into_lp(Fraction::ONE), Lp::inches(1));
+    assert_eq!(
+        Lp::inches(1).into_px(Fraction::new_whole(2)),
+        Px::new(96 * 2)
+    );
+    assert_eq!(Lp::inches(1).into_upx(Fraction::ONE), UPx::new(96));
+    assert_eq!(UPx::new(96).into_lp(Fraction::ONE), Lp::inches(1));
 }
 
 #[test]

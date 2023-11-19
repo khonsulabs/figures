@@ -1,7 +1,7 @@
 use std::ops::{Add, AddAssign, Sub, SubAssign};
 
 use crate::traits::{IntoSigned, IntoUnsigned, Ranged};
-use crate::{Point, Size};
+use crate::{Point, Round, Size};
 
 /// A 2d area expressed as an origin ([`Point`]) and a [`Size`].
 #[derive(Clone, Copy, Eq, PartialEq, Hash, Debug)]
@@ -37,6 +37,29 @@ impl<Unit> Rect<Unit> {
                 width: max_x - min_x,
                 height: max_y - min_y,
             },
+        }
+    }
+
+    /// Expands this rect to the nearest whole number.
+    ///
+    /// This function will never return a smaller rectangle.
+    #[must_use]
+    pub fn expand_rounded(self) -> Self
+    where
+        Unit: Round + crate::Unit,
+    {
+        let (tl, br) = self.extents();
+
+        Self::from_extents(tl.floor(), br.ceil())
+    }
+
+    /// Maps each component to `map` and returns a new value with the mapped
+    /// components.
+    #[must_use]
+    pub fn map<NewUnit>(self, mut map: impl FnMut(Unit) -> NewUnit) -> Rect<NewUnit> {
+        Rect {
+            origin: self.origin.map(&mut map),
+            size: self.size.map(map),
         }
     }
 

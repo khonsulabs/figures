@@ -6,7 +6,7 @@ use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Rem, Sub, Su
 
 use crate::primes::{FactorsOf, PRIMES};
 use crate::tables::{approximate_via_lookup_table, ARCTAN_SUBDIVISIONS, ARCTAN_TABLE};
-use crate::traits::IsZero;
+use crate::traits::Zero;
 use crate::Angle;
 
 /// Returns a new fraction.
@@ -470,7 +470,7 @@ fn atan2() {
 
 pub fn reduce<T>(numerator: &mut T, denominator: &mut T)
 where
-    T: Abs + IsZero + Copy + From<i16> + Ord + Rem<Output = T> + DivAssign,
+    T: Abs + Zero + Copy + From<i16> + Ord + Rem<Output = T> + DivAssign,
 {
     let one = T::from(1);
     if numerator.is_zero() {

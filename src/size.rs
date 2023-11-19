@@ -2,12 +2,12 @@ use std::cmp::Ordering;
 use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
 
 use crate::traits::{
-    FloatConversion, FromComponents, IntoComponents, IntoSigned, IntoUnsigned, IsZero, Ranged,
-    ScreenScale,
+    FloatConversion, FromComponents, IntoComponents, IntoSigned, IntoUnsigned, Ranged, ScreenScale,
+    Zero,
 };
 use crate::units::{Lp, Px, UPx};
 use crate::utils::vec_ord;
-use crate::Point;
+use crate::{Point, Round};
 
 /// A width and a height measurement.
 #[derive(Clone, Copy, Eq, PartialEq, Hash, Debug)]
@@ -55,6 +55,16 @@ impl<Unit> Size<Unit> {
         }
     }
 
+    /// Maps each component to `map` and returns a new value with the mapped
+    /// components.
+    #[must_use]
+    pub fn map<NewUnit>(self, mut map: impl FnMut(Unit) -> NewUnit) -> Size<NewUnit> {
+        Size {
+            width: map(self.width),
+            height: map(self.height),
+        }
+    }
+
     /// Converts the contents of this size to `NewUnit` using [`TryFrom`].
     ///
     /// # Errors
@@ -97,6 +107,23 @@ where
             width: self.width.into_signed(),
             height: self.height.into_signed(),
         }
+    }
+}
+
+impl<Unit> Round for Size<Unit>
+where
+    Unit: Round,
+{
+    fn round(self) -> Self {
+        self.map(Unit::round)
+    }
+
+    fn ceil(self) -> Self {
+        self.map(Unit::ceil)
+    }
+
+    fn floor(self) -> Self {
+        self.map(Unit::floor)
     }
 }
 
@@ -376,10 +403,12 @@ where
     }
 }
 
-impl<Unit> IsZero for Size<Unit>
+impl<Unit> Zero for Size<Unit>
 where
-    Unit: IsZero,
+    Unit: Zero,
 {
+    const ZERO: Self = Self::new(Unit::ZERO, Unit::ZERO);
+
     fn is_zero(&self) -> bool {
         self.width.is_zero() && self.height.is_zero()
     }
@@ -401,8 +430,8 @@ impl<Unit> From<Point<Unit>> for Size<Unit> {
 impl From<Size<crate::units::UPx>> for wgpu::Extent3d {
     fn from(value: Size<crate::units::UPx>) -> Self {
         Self {
-            width: value.width.0,
-            height: value.height.0,
+            width: value.width.into(),
+            height: value.height.into(),
             depth_or_array_layers: 1,
         }
     }
@@ -437,8 +466,8 @@ impl From<winit::dpi::PhysicalSize<u32>> for Size<crate::units::UPx> {
 impl From<Size<crate::units::UPx>> for winit::dpi::PhysicalSize<u32> {
     fn from(size: Size<crate::units::UPx>) -> Self {
         Self {
-            width: size.width.0,
-            height: size.height.0,
+            width: size.width.into(),
+            height: size.height.into(),
         }
     }
 }

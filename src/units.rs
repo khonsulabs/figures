@@ -6,8 +6,8 @@ use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Rem, RemAssign, S
 use intentional::{Cast, CastFrom};
 
 use crate::traits::{
-    FloatConversion, IntoComponents, IntoSigned, IntoUnsigned, Round, ScreenScale, UnscaledUnit,
-    Zero,
+    FloatConversion, IntoComponents, IntoSigned, IntoUnsigned, Roots, Round, ScreenScale,
+    UnscaledUnit, Zero,
 };
 use crate::Fraction;
 
@@ -327,6 +327,16 @@ macro_rules! define_integer_type {
                 Self(self.0 / $scale * $scale)
             }
         }
+
+        impl Roots for $name {
+            fn sqrt(self) -> Self {
+                Self(f64::from(self.0).sqrt().cast())
+            }
+
+            fn cbrt(self) -> Self {
+                Self(f64::from(self.0).cbrt().cast())
+            }
+        }
     };
 }
 
@@ -461,13 +471,6 @@ impl Lp {
     pub fn pow(self, exp: u32) -> Self {
         Self(self.0.pow(exp))
     }
-
-    /// Returns the square root of this value.
-    #[must_use]
-    #[allow(clippy::cast_possible_truncation)]
-    pub fn sqrt(self) -> Self {
-        Self(f64::from(self.0).sqrt() as i32)
-    }
 }
 
 impl IntoSigned for Lp {
@@ -497,13 +500,6 @@ impl Px {
     #[must_use]
     pub fn pow(self, exp: u32) -> Self {
         Self(self.0.pow(exp) / 4_i32.pow(exp.saturating_sub(1)))
-    }
-
-    /// Returns the square root of this value.
-    #[must_use]
-    #[allow(clippy::cast_possible_truncation)]
-    pub fn sqrt(self) -> Self {
-        Self::new(f64::from(self.into_float()).sqrt() as i32)
     }
 }
 
@@ -628,13 +624,6 @@ impl UPx {
     #[must_use]
     pub fn pow(self, exp: u32) -> Self {
         Self(self.0.pow(exp) / 4_u32.pow(exp.saturating_sub(1)))
-    }
-
-    /// Returns the square root of this value.
-    #[must_use]
-    #[allow(clippy::cast_possible_truncation, clippy::cast_sign_loss)]
-    pub fn sqrt(self) -> Self {
-        Self(f64::from(self.0).sqrt() as u32)
     }
 }
 

@@ -479,3 +479,24 @@ impl Round for f32 {
         self.floor()
     }
 }
+
+/// Functionality for getting the root of a number.
+pub trait Roots {
+    /// Returns the square root of `self`.
+    #[must_use]
+    fn sqrt(self) -> Self;
+
+    /// Returns the cube root of `self`.
+    #[must_use]
+    fn cbrt(self) -> Self;
+}
+
+impl Roots for f32 {
+    fn sqrt(self) -> Self {
+        self.sqrt()
+    }
+
+    fn cbrt(self) -> Self {
+        self.cbrt()
+    }
+}

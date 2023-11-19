@@ -1,8 +1,8 @@
 use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
 
 use crate::traits::{
-    FloatConversion, FromComponents, IntoComponents, IntoSigned, IntoUnsigned, Ranged, ScreenScale,
-    Zero,
+    FloatConversion, FromComponents, IntoComponents, IntoSigned, IntoUnsigned, Ranged, Roots,
+    ScreenScale, Zero,
 };
 use crate::units::{Lp, Px, UPx};
 use crate::utils::vec_ord;
@@ -66,6 +66,24 @@ impl<Unit> Point<Unit> {
             x: map(self.x),
             y: map(self.y),
         }
+    }
+
+    /// Returns the dot product of `self` and `other`.
+    #[must_use]
+    pub fn dot(self, other: Point<Unit>) -> Unit
+    where
+        Unit: Mul<Output = Unit> + Add<Output = Unit>,
+    {
+        self.x * other.x + self.y * other.y
+    }
+
+    /// Returns the magnitude of self, which is the absolute distance from 0,0.
+    #[must_use]
+    pub fn magnitude(self) -> Unit
+    where
+        Unit: Mul<Output = Unit> + Add<Output = Unit> + Roots + Copy,
+    {
+        (self.x * self.x + self.y * self.y).sqrt()
     }
 }
 

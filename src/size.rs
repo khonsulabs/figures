@@ -25,11 +25,10 @@ impl<Unit> Size<Unit> {
     }
 
     /// Returns a new size using `dimension` for both width and height.
-    pub fn squared(dimension: impl Into<Unit>) -> Self
+    pub fn squared(dimension: Unit) -> Self
     where
         Unit: Copy,
     {
-        let dimension = dimension.into();
         Self {
             width: dimension,
             height: dimension,

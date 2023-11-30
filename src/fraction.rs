@@ -67,9 +67,12 @@ macro_rules! fraction {
 /// However, in 2d graphics programming, it's rare to be working with irrational
 /// numbers outside of angles represented in radians.
 #[derive(Clone, Copy, Eq, PartialEq, Hash)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[repr(C)]
 pub struct Fraction {
+    #[cfg_attr(feature = "Serde", serde(rename = "n"))]
     numerator: i16,
+    #[cfg_attr(feature = "Serde", serde(rename = "d"))]
     denominator: i16,
 }
 

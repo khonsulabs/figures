@@ -10,6 +10,7 @@ use crate::Round;
 
 /// A coordinate in a 2d space.
 #[derive(Default, Clone, Copy, Eq, PartialEq, Hash, Debug)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Point<Unit> {
     /// The x-axis component.
     pub x: Unit,

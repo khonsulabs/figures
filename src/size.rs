@@ -11,6 +11,7 @@ use crate::{Point, Round};
 
 /// A width and a height measurement.
 #[derive(Clone, Copy, Eq, PartialEq, Hash, Debug)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Size<Unit> {
     /// The width component
     pub width: Unit,

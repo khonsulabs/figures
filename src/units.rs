@@ -20,6 +20,7 @@ macro_rules! define_integer_type {
     ($name:ident, $inner:ty, $docs_file:literal, $scale:literal) => {
         #[derive(Default, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
         #[cfg_attr(feature = "bytemuck", derive(bytemuck::Pod, bytemuck::Zeroable))]
+        #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
         #[doc = include_str!($docs_file)]
         #[repr(C)]
         pub struct $name($inner);

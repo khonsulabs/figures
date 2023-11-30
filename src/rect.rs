@@ -5,6 +5,7 @@ use crate::{Point, Round, Size};
 
 /// A 2d area expressed as an origin ([`Point`]) and a [`Size`].
 #[derive(Clone, Copy, Eq, PartialEq, Hash, Debug)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Rect<Unit> {
     /// The origin of the rectangle
     pub origin: Point<Unit>,

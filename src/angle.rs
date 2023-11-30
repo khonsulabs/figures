@@ -33,6 +33,7 @@ use crate::Fraction;
 /// representation. Angles represented in radians can be converted using
 /// [`Angle::radians`]/[`Angle::radians_f`].
 #[derive(Eq, PartialEq, PartialOrd, Ord, Copy, Clone)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Angle(Fraction);
 
 impl Angle {

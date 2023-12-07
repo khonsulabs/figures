@@ -1,1 +1,1 @@
-window.ALL_CRATES = ["figures","xtask"];
+window.ALL_CRATES = ["figures"];

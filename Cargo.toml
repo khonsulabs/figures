@@ -10,6 +10,10 @@ categories = ["mathematics"]
 readme = "../README.md"
 
 [features]
+# This only exists because we need a paltform selected when running unit tests
+# with the winit feature enabled. This library doesn't need any specific
+# platforms to be enabled, nor doesn't it activate any additional functionality
+# when enabling this feature flag.
 x11 = ["winit/x11"]
 
 [dependencies]

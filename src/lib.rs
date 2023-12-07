@@ -7,6 +7,8 @@
 
 #[macro_use]
 mod fraction;
+#[macro_use]
+mod twod;
 #[cfg(feature = "bytemuck")]
 mod pod;
 mod point;

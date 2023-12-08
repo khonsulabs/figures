@@ -26,7 +26,7 @@ pub use traits::{
 pub mod units;
 /// Utility functions to aide in warning-free development for users of
 /// `clippy::pedantic`.
-pub mod utils;
+mod utils;
 
 mod angle;
 #[cfg(test)]

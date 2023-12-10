@@ -4,7 +4,7 @@ use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssi
 use std::time::Duration;
 
 use crate::tables::{approximate_via_lookup_table, COSINE_TABLE, SINE_TABLE, TANGENT_TABLE};
-use crate::Fraction;
+use crate::{Fraction, Ranged, Zero};
 
 /// An measurement of distance between two rays sharing a common endpoint, in
 /// degrees.
@@ -13,7 +13,7 @@ use crate::Fraction;
 /// is commonly used to represent the amount of rotation to perform.
 ///
 /// Internally, this type ensures that the angle represented using a
-/// [`Fraction`] is always within the range of `0..360°` (degrees). This ensures
+/// [`Fraction`] is always within the range of `0..=360°` (degrees). This ensures
 /// that comparing two angles is efficient and deterministic.
 ///
 /// ```rust
@@ -50,7 +50,7 @@ impl Angle {
                 degrees += 360;
             }
         } else {
-            while degrees >= 360 {
+            while degrees > 360 {
                 degrees -= 360;
             }
         }
@@ -132,7 +132,7 @@ impl Angle {
         // division here, and check whether the ratios are still equal.
         match self.0.cmp(&Fraction::ZERO) {
             Ordering::Greater => {
-                while self.0 >= THREESIXTY {
+                while self.0 > THREESIXTY {
                     self.0 -= THREESIXTY;
                 }
             }
@@ -163,6 +163,19 @@ impl Angle {
     #[must_use]
     pub fn tan(&self) -> Fraction {
         approximate_via_lookup_table(self.0, &TANGENT_TABLE)
+    }
+}
+
+impl Ranged for Angle {
+    const MAX: Self = Self(Fraction::new_whole(360));
+    const MIN: Self = Self::ZERO;
+}
+
+impl Zero for Angle {
+    const ZERO: Self = Self(Fraction::ZERO);
+
+    fn is_zero(&self) -> bool {
+        self.0.is_zero()
     }
 }
 

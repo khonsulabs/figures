@@ -419,13 +419,26 @@
 <a href="#419" id="419">419</a>
 <a href="#420" id="420">420</a>
 <a href="#421" id="421">421</a>
+<a href="#422" id="422">422</a>
+<a href="#423" id="423">423</a>
+<a href="#424" id="424">424</a>
+<a href="#425" id="425">425</a>
+<a href="#426" id="426">426</a>
+<a href="#427" id="427">427</a>
+<a href="#428" id="428">428</a>
+<a href="#429" id="429">429</a>
+<a href="#430" id="430">430</a>
+<a href="#431" id="431">431</a>
+<a href="#432" id="432">432</a>
+<a href="#433" id="433">433</a>
+<a href="#434" id="434">434</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::cmp::Ordering;
 <span class="kw">use </span>std::fmt::{Debug, Display, Write};
 <span class="kw">use </span>std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
 <span class="kw">use </span>std::time::Duration;
 
 <span class="kw">use </span><span class="kw">crate</span>::tables::{approximate_via_lookup_table, COSINE_TABLE, SINE_TABLE, TANGENT_TABLE};
-<span class="kw">use </span><span class="kw">crate</span>::Fraction;
+<span class="kw">use crate</span>::{Fraction, Ranged, Zero};
 
 <span class="doccomment">/// An measurement of distance between two rays sharing a common endpoint, in
 /// degrees.
@@ -434,7 +447,7 @@
 /// is commonly used to represent the amount of rotation to perform.
 ///
 /// Internally, this type ensures that the angle represented using a
-/// [`Fraction`] is always within the range of `0..360°` (degrees). This ensures
+/// [`Fraction`] is always within the range of `0..=360°` (degrees). This ensures
 /// that comparing two angles is efficient and deterministic.
 ///
 /// ```rust
@@ -471,7 +484,7 @@
                 degrees += <span class="number">360</span>;
             }
         } <span class="kw">else </span>{
-            <span class="kw">while </span>degrees &gt;= <span class="number">360 </span>{
+            <span class="kw">while </span>degrees &gt; <span class="number">360 </span>{
                 degrees -= <span class="number">360</span>;
             }
         }
@@ -553,7 +566,7 @@
         // division here, and check whether the ratios are still equal.
         </span><span class="kw">match </span><span class="self">self</span>.<span class="number">0</span>.cmp(<span class="kw-2">&amp;</span>Fraction::ZERO) {
             Ordering::Greater =&gt; {
-                <span class="kw">while </span><span class="self">self</span>.<span class="number">0 </span>&gt;= THREESIXTY {
+                <span class="kw">while </span><span class="self">self</span>.<span class="number">0 </span>&gt; THREESIXTY {
                     <span class="self">self</span>.<span class="number">0 </span>-= THREESIXTY;
                 }
             }
@@ -584,6 +597,19 @@
     </span><span class="attr">#[must_use]
     </span><span class="kw">pub fn </span>tan(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Fraction {
         approximate_via_lookup_table(<span class="self">self</span>.<span class="number">0</span>, <span class="kw-2">&amp;</span>TANGENT_TABLE)
+    }
+}
+
+<span class="kw">impl </span>Ranged <span class="kw">for </span>Angle {
+    <span class="kw">const </span>MAX: <span class="self">Self </span>= <span class="self">Self</span>(Fraction::new_whole(<span class="number">360</span>));
+    <span class="kw">const </span>MIN: <span class="self">Self </span>= <span class="self">Self</span>::ZERO;
+}
+
+<span class="kw">impl </span>Zero <span class="kw">for </span>Angle {
+    <span class="kw">const </span>ZERO: <span class="self">Self </span>= <span class="self">Self</span>(Fraction::ZERO);
+
+    <span class="kw">fn </span>is_zero(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="self">self</span>.<span class="number">0</span>.is_zero()
     }
 }
 

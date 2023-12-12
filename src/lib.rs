@@ -18,9 +18,9 @@ mod size;
 mod tables;
 mod traits;
 pub use traits::{
-    FloatConversion, FloatOrInt, FromComponents, IntoComponents, IntoSigned, IntoUnsigned, Lp2D,
-    PixelScaling, Px2D, Ranged, Roots, Round, ScreenScale, ScreenUnit, UPx2D, Unit, UnscaledUnit,
-    Zero,
+    Abs, FloatConversion, FloatOrInt, FromComponents, IntoComponents, IntoSigned, IntoUnsigned,
+    Lp2D, PixelScaling, Pow, Px2D, Ranged, Roots, Round, ScreenScale, ScreenUnit, UPx2D, Unit,
+    UnscaledUnit, Zero,
 };
 /// The measurement units supported by figures.
 pub mod units;

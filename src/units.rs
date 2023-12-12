@@ -6,7 +6,7 @@ use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Rem, RemAssign, S
 use intentional::{Cast, CastFrom};
 
 use crate::traits::{
-    FloatConversion, IntoComponents, IntoSigned, IntoUnsigned, Roots, Round, ScreenScale,
+    Abs, FloatConversion, IntoComponents, IntoSigned, IntoUnsigned, Pow, Roots, Round, ScreenScale,
     UnscaledUnit, Zero,
 };
 use crate::Fraction;
@@ -466,11 +466,17 @@ impl Lp {
     pub fn inches_f(inches: f32) -> Self {
         Self((inches * ARBITRARY_SCALE_F32).cast())
     }
+}
 
-    /// Raises this value to power of `exp`.
-    #[must_use]
-    pub fn pow(self, exp: u32) -> Self {
-        Self(self.0.pow(exp))
+impl Pow for Lp {
+    fn pow(&self, exp: u32) -> Self {
+        Self(self.0.saturating_pow(exp))
+    }
+}
+
+impl Abs for Lp {
+    fn abs(&self) -> Self {
+        Self(self.0.saturating_abs())
     }
 }
 
@@ -496,11 +502,15 @@ impl fmt::Display for Lp {
 
 define_integer_type!(Px, i32, "docs/px.md", 4);
 
-impl Px {
-    /// Raises this value to power of `exp`.
-    #[must_use]
-    pub fn pow(self, exp: u32) -> Self {
-        Self(self.0.pow(exp) / 4_i32.pow(exp.saturating_sub(1)))
+impl Pow for Px {
+    fn pow(&self, exp: u32) -> Self {
+        Self(self.0.saturating_pow(exp) / 4_i32.pow(exp.saturating_sub(1)))
+    }
+}
+
+impl Abs for Px {
+    fn abs(&self) -> Self {
+        Self(self.0.saturating_abs())
     }
 }
 
@@ -620,11 +630,9 @@ impl PartialOrd<UPx> for Px {
 
 define_integer_type!(UPx, u32, "docs/upx.md", 4);
 
-impl UPx {
-    /// Raises this value to power of `exp`.
-    #[must_use]
-    pub fn pow(self, exp: u32) -> Self {
-        Self(self.0.pow(exp) / 4_u32.pow(exp.saturating_sub(1)))
+impl Pow for UPx {
+    fn pow(&self, exp: u32) -> Self {
+        Self(self.0.saturating_pow(exp) / 4_u32.pow(exp.saturating_sub(1)))
     }
 }
 

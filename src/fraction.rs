@@ -6,7 +6,7 @@ use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Rem, Sub, Su
 
 use crate::primes::{FactorsOf, PRIMES};
 use crate::tables::{approximate_via_lookup_table, ARCTAN_SUBDIVISIONS, ARCTAN_TABLE};
-use crate::traits::Zero;
+use crate::traits::{Abs, Zero};
 use crate::Angle;
 
 /// Returns a new fraction.
@@ -492,22 +492,6 @@ where
                 }
             }
         }
-    }
-}
-
-pub trait Abs {
-    fn abs(&self) -> Self;
-}
-
-impl Abs for i32 {
-    fn abs(&self) -> Self {
-        self.wrapping_abs()
-    }
-}
-
-impl Abs for i16 {
-    fn abs(&self) -> Self {
-        self.wrapping_abs()
     }
 }
 

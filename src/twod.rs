@@ -6,7 +6,7 @@ macro_rules! impl_2d_math {
             use super::$type;
             use crate::traits::{
                 FloatConversion, FromComponents, IntoComponents, IntoSigned, IntoUnsigned, Ranged,
-                Round, ScreenScale, Zero,
+                Round, ScreenScale, Zero, Abs, Pow,
             };
             use crate::units::{Lp, Px, UPx};
 
@@ -18,6 +18,30 @@ macro_rules! impl_2d_math {
 
                 fn is_zero(&self) -> bool {
                     self.$x.is_zero() && self.$y.is_zero()
+                }
+            }
+
+            impl<Unit> Pow for $type<Unit>
+            where
+                Unit: Pow,
+            {
+                fn pow(&self, exp: u32) -> Self {
+                    Self {
+                        $x: self.$x.pow(exp),
+                        $y: self.$y.pow(exp),
+                    }
+                }
+            }
+
+            impl<Unit> Abs for $type<Unit>
+            where
+                Unit: Abs,
+            {
+                fn abs(&self) -> Self {
+                    Self {
+                        $x: self.$x.abs(),
+                        $y: self.$y.abs(),
+                    }
                 }
             }
 

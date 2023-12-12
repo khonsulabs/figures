@@ -1,6 +1,6 @@
 use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Rem, RemAssign, Sub, SubAssign};
 
-use intentional::CastInto;
+use intentional::{Cast, CastInto};
 
 use crate::units::{Lp, Px, UPx};
 use crate::Fraction;
@@ -82,6 +82,75 @@ impl_int_zero!(u32);
 impl_int_zero!(u64);
 impl_int_zero!(u128);
 impl_int_zero!(usize);
+
+/// A type that can have its absolute difference from zero calculated.
+pub trait Abs {
+    /// Returns the positive difference between this value and 0.
+    ///
+    /// This function should never panic and always perform a saturating
+    /// absolute value calculation.
+    #[must_use]
+    fn abs(&self) -> Self;
+}
+
+macro_rules! impl_int_abs {
+    ($type:ident) => {
+        impl Abs for $type {
+            fn abs(&self) -> Self {
+                self.saturating_abs()
+            }
+        }
+    };
+}
+
+impl_int_abs!(i8);
+impl_int_abs!(i16);
+impl_int_abs!(i32);
+impl_int_abs!(i64);
+impl_int_abs!(i128);
+impl_int_abs!(isize);
+
+impl Abs for f32 {
+    fn abs(&self) -> Self {
+        (*self).abs()
+    }
+}
+
+/// Raises a value to an exponent.
+pub trait Pow {
+    /// Returns the saturating result of raising `self` to the `exp` power.
+    #[must_use]
+    fn pow(&self, exp: u32) -> Self;
+}
+
+macro_rules! impl_int_pow {
+    ($type:ident) => {
+        impl Pow for $type {
+            fn pow(&self, exp: u32) -> Self {
+                self.saturating_pow(exp)
+            }
+        }
+    };
+}
+
+impl_int_pow!(i8);
+impl_int_pow!(i16);
+impl_int_pow!(i32);
+impl_int_pow!(i64);
+impl_int_pow!(i128);
+impl_int_pow!(isize);
+impl_int_pow!(u8);
+impl_int_pow!(u16);
+impl_int_pow!(u32);
+impl_int_pow!(u64);
+impl_int_pow!(u128);
+impl_int_pow!(usize);
+
+impl Pow for f32 {
+    fn pow(&self, exp: u32) -> Self {
+        self.powf(exp.cast())
+    }
+}
 
 /// Converts from a 2d vector in tuple form
 pub trait FromComponents<Unit>: Sized {

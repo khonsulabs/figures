@@ -24,10 +24,10 @@ impl<Unit> Size<Unit> {
     /// Returns a new size using `dimension` for both width and height.
     pub fn squared(dimension: Unit) -> Self
     where
-        Unit: Copy,
+        Unit: Clone,
     {
         Self {
-            width: dimension,
+            width: dimension.clone(),
             height: dimension,
         }
     }

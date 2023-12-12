@@ -934,22 +934,6 @@
 <a href="#934" id="934">934</a>
 <a href="#935" id="935">935</a>
 <a href="#936" id="936">936</a>
-<a href="#937" id="937">937</a>
-<a href="#938" id="938">938</a>
-<a href="#939" id="939">939</a>
-<a href="#940" id="940">940</a>
-<a href="#941" id="941">941</a>
-<a href="#942" id="942">942</a>
-<a href="#943" id="943">943</a>
-<a href="#944" id="944">944</a>
-<a href="#945" id="945">945</a>
-<a href="#946" id="946">946</a>
-<a href="#947" id="947">947</a>
-<a href="#948" id="948">948</a>
-<a href="#949" id="949">949</a>
-<a href="#950" id="950">950</a>
-<a href="#951" id="951">951</a>
-<a href="#952" id="952">952</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::cmp::Ordering;
 <span class="kw">use </span>std::fmt;
 <span class="kw">use </span>std::iter::Peekable;
@@ -958,7 +942,7 @@
 
 <span class="kw">use </span><span class="kw">crate</span>::primes::{FactorsOf, PRIMES};
 <span class="kw">use </span><span class="kw">crate</span>::tables::{approximate_via_lookup_table, ARCTAN_SUBDIVISIONS, ARCTAN_TABLE};
-<span class="kw">use </span><span class="kw">crate</span>::traits::Zero;
+<span class="kw">use </span><span class="kw">crate</span>::traits::{Abs, Zero};
 <span class="kw">use </span><span class="kw">crate</span>::Angle;
 
 <span class="doccomment">/// Returns a new fraction.
@@ -1444,22 +1428,6 @@
                 }
             }
         }
-    }
-}
-
-<span class="kw">pub trait </span>Abs {
-    <span class="kw">fn </span>abs(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span>;
-}
-
-<span class="kw">impl </span>Abs <span class="kw">for </span>i32 {
-    <span class="kw">fn </span>abs(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
-        <span class="self">self</span>.wrapping_abs()
-    }
-}
-
-<span class="kw">impl </span>Abs <span class="kw">for </span>i16 {
-    <span class="kw">fn </span>abs(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
-        <span class="self">self</span>.wrapping_abs()
     }
 }
 

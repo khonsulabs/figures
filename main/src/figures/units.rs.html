@@ -759,6 +759,14 @@
 <a href="#759" id="759">759</a>
 <a href="#760" id="760">760</a>
 <a href="#761" id="761">761</a>
+<a href="#762" id="762">762</a>
+<a href="#763" id="763">763</a>
+<a href="#764" id="764">764</a>
+<a href="#765" id="765">765</a>
+<a href="#766" id="766">766</a>
+<a href="#767" id="767">767</a>
+<a href="#768" id="768">768</a>
+<a href="#769" id="769">769</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::cmp::Ordering;
 <span class="kw">use </span>std::fmt;
 <span class="kw">use </span>std::num::TryFromIntError;
@@ -767,7 +775,7 @@
 <span class="kw">use </span>intentional::{Cast, CastFrom};
 
 <span class="kw">use </span><span class="kw">crate</span>::traits::{
-    FloatConversion, IntoComponents, IntoSigned, IntoUnsigned, Roots, Round, ScreenScale,
+    Abs, FloatConversion, IntoComponents, IntoSigned, IntoUnsigned, Pow, Roots, Round, ScreenScale,
     UnscaledUnit, Zero,
 };
 <span class="kw">use </span><span class="kw">crate</span>::Fraction;
@@ -1227,11 +1235,17 @@
     </span><span class="kw">pub fn </span>inches_f(inches: f32) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>((inches * ARBITRARY_SCALE_F32).cast())
     }
+}
 
-    <span class="doccomment">/// Raises this value to power of `exp`.
-    </span><span class="attr">#[must_use]
-    </span><span class="kw">pub fn </span>pow(<span class="self">self</span>, exp: u32) -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>(<span class="self">self</span>.<span class="number">0</span>.pow(exp))
+<span class="kw">impl </span>Pow <span class="kw">for </span>Lp {
+    <span class="kw">fn </span>pow(<span class="kw-2">&amp;</span><span class="self">self</span>, exp: u32) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>(<span class="self">self</span>.<span class="number">0</span>.saturating_pow(exp))
+    }
+}
+
+<span class="kw">impl </span>Abs <span class="kw">for </span>Lp {
+    <span class="kw">fn </span>abs(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>(<span class="self">self</span>.<span class="number">0</span>.saturating_abs())
     }
 }
 
@@ -1257,11 +1271,15 @@
 
 <span class="macro">define_integer_type!</span>(Px, i32, <span class="string">&quot;docs/px.md&quot;</span>, <span class="number">4</span>);
 
-<span class="kw">impl </span>Px {
-    <span class="doccomment">/// Raises this value to power of `exp`.
-    </span><span class="attr">#[must_use]
-    </span><span class="kw">pub fn </span>pow(<span class="self">self</span>, exp: u32) -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>(<span class="self">self</span>.<span class="number">0</span>.pow(exp) / <span class="number">4_i32</span>.pow(exp.saturating_sub(<span class="number">1</span>)))
+<span class="kw">impl </span>Pow <span class="kw">for </span>Px {
+    <span class="kw">fn </span>pow(<span class="kw-2">&amp;</span><span class="self">self</span>, exp: u32) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>(<span class="self">self</span>.<span class="number">0</span>.saturating_pow(exp) / <span class="number">4_i32</span>.pow(exp.saturating_sub(<span class="number">1</span>)))
+    }
+}
+
+<span class="kw">impl </span>Abs <span class="kw">for </span>Px {
+    <span class="kw">fn </span>abs(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>(<span class="self">self</span>.<span class="number">0</span>.saturating_abs())
     }
 }
 
@@ -1381,11 +1399,9 @@
 
 <span class="macro">define_integer_type!</span>(UPx, u32, <span class="string">&quot;docs/upx.md&quot;</span>, <span class="number">4</span>);
 
-<span class="kw">impl </span>UPx {
-    <span class="doccomment">/// Raises this value to power of `exp`.
-    </span><span class="attr">#[must_use]
-    </span><span class="kw">pub fn </span>pow(<span class="self">self</span>, exp: u32) -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>(<span class="self">self</span>.<span class="number">0</span>.pow(exp) / <span class="number">4_u32</span>.pow(exp.saturating_sub(<span class="number">1</span>)))
+<span class="kw">impl </span>Pow <span class="kw">for </span>UPx {
+    <span class="kw">fn </span>pow(<span class="kw-2">&amp;</span><span class="self">self</span>, exp: u32) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>(<span class="self">self</span>.<span class="number">0</span>.saturating_pow(exp) / <span class="number">4_u32</span>.pow(exp.saturating_sub(<span class="number">1</span>)))
     }
 }
 

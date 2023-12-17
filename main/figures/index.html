@@ -2,12 +2,14 @@
 <p>A primarily integer-based 2d graphics math library.</p>
 <h3 id="inspiration"><a href="#inspiration">Inspiration</a></h3>
 <p>Sharp graphics are achieved by ensuring that drawing is aligned to pixel
-boundaries. If a 1px-squre dot is drawn at 0.5 pixels offset, the dot will look
+boundaries. If a 1px-squre dot is drawn at 0.99 pixels offset, the dot may look
 fuzzy because its color will be shared across multiple pixels. While this can
 give the illusion of subpixel imaging, it can also be undesired on high-dpi
 displays.</p>
 <p>This library embraces integer types for its data representation to allow for
-predictable math to be performed without loss of precision.</p>
+predictable math to be performed without loss of precision. It supports
+subdividing physical pixels into 4 subpixels, allowing for subpixel layout while
+providing consistent results.</p>
 <h3 id="pixels-px-and-device-independent-pixels-lp"><a href="#pixels-px-and-device-independent-pixels-lp">Pixels (<code>Px</code>) and Device-Independent Pixels (<code>Lp</code>)</a></h3>
 <p>In this crate, a pixel (<code>Px</code>) is a single colorable location on a screen. A
 display’s resolution, such as 1920x1080, is its measurement in pixels. A pixel

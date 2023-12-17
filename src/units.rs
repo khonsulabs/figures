@@ -11,8 +11,9 @@ use crate::traits::{
 };
 use crate::Fraction;
 
-const ARBITRARY_SCALE: i32 = 182_880;
-const ARBITRARY_SCALE_U32: u32 = ARBITRARY_SCALE.unsigned_abs();
+pub(crate) const ARBITRARY_SCALE: u16 = 1905;
+const ARBITRARY_SCALE_I32: i32 = ARBITRARY_SCALE as i32;
+const ARBITRARY_SCALE_U32: u32 = ARBITRARY_SCALE as u32;
 #[allow(clippy::cast_precision_loss)]
 const ARBITRARY_SCALE_F32: f32 = ARBITRARY_SCALE as f32;
 
@@ -353,7 +354,7 @@ impl CastFrom<Px> for f32 {
     }
 }
 
-define_integer_type!(Lp, i32, "docs/lp.md", 1);
+define_integer_type!(Lp, i32, "docs/lp.md", 1905);
 
 impl IntoComponents<Lp> for i32 {
     fn into_components(self) -> (Lp, Lp) {
@@ -374,7 +375,7 @@ impl ScreenScale for Lp {
     type UPx = UPx;
 
     fn into_px(self, scale: Fraction) -> Self::Px {
-        Px::new(self.0 * 96 / scale / ARBITRARY_SCALE)
+        Px(self.0 * 4 * scale / ARBITRARY_SCALE_I32)
     }
 
     fn from_px(px: Self::Px, scale: Fraction) -> Self {
@@ -420,7 +421,7 @@ impl Lp {
     /// inch.
     #[must_use]
     pub const fn points(points: i32) -> Self {
-        Self(points * ARBITRARY_SCALE / 72)
+        Self(points * ARBITRARY_SCALE_I32 * 4 / 3)
     }
 
     /// Returns a value equivalent to the number of `points` provided. One
@@ -428,7 +429,7 @@ impl Lp {
     /// inch.
     #[must_use]
     pub fn points_f(points: f32) -> Self {
-        Lp((points * ARBITRARY_SCALE_F32 / 72.).cast())
+        Lp((points * ARBITRARY_SCALE_F32 * 4. / 3.).cast())
     }
 
     /// Returns a value equivalent to the number of `centimeters` provided.
@@ -440,31 +441,31 @@ impl Lp {
     /// Returns a value equivalent to the number of `centimeters` provided.
     #[must_use]
     pub fn cm_f(centimeters: f32) -> Self {
-        Lp((centimeters * ARBITRARY_SCALE_F32 / 2.54).cast())
+        Lp((centimeters * ARBITRARY_SCALE_F32 * 96. / 2.54).cast())
     }
 
     /// Returns a value equivalent to the number of `millimeters` provided.
     #[must_use]
     pub const fn mm(millimeters: i32) -> Self {
-        Self(millimeters * ARBITRARY_SCALE * 10 / 254)
+        Self(millimeters * ARBITRARY_SCALE_I32 * 960 / 254)
     }
 
     /// Returns a value equivalent to the number of `millimeters` provided.
     #[must_use]
     pub fn mm_f(millimeters: f32) -> Self {
-        Lp((millimeters * ARBITRARY_SCALE_F32 / 25.4).cast())
+        Lp((millimeters * ARBITRARY_SCALE_F32 * 96. / 25.4).cast())
     }
 
     /// Returns a value equivalent to the number of `inches` provided.
     #[must_use]
     pub const fn inches(inches: i32) -> Self {
-        Self(inches * ARBITRARY_SCALE)
+        Self(inches * ARBITRARY_SCALE_I32 * 96)
     }
 
     /// Returns a value equivalent to the number of `inches` provided.
     #[must_use]
     pub fn inches_f(inches: f32) -> Self {
-        Self((inches * ARBITRARY_SCALE_F32).cast())
+        Self((inches * ARBITRARY_SCALE_F32 * 96.).cast())
     }
 }
 
@@ -490,7 +491,15 @@ impl IntoSigned for Lp {
 
 impl fmt::Debug for Lp {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}lp", self.0)
+        let fractional = self.0 % ARBITRARY_SCALE_I32;
+        let whole = self.0 / ARBITRARY_SCALE_I32;
+        if fractional == 0 {
+            write!(f, "{whole}lp")
+        } else {
+            let as_float =
+                f64::from(whole) + f64::from(fractional) / f64::from(ARBITRARY_SCALE_F32);
+            write!(f, "{as_float}lp")
+        }
     }
 }
 
@@ -544,7 +553,7 @@ impl ScreenScale for Px {
     }
 
     fn into_lp(self, scale: Fraction) -> Self::Lp {
-        Lp(self.0 * ARBITRARY_SCALE * scale / (96 * 4))
+        Lp(self.0 * ARBITRARY_SCALE_I32 / scale / 4)
     }
 
     fn from_lp(lp: Self::Lp, scale: Fraction) -> Self {
@@ -666,7 +675,7 @@ impl ScreenScale for UPx {
     }
 
     fn into_lp(self, scale: Fraction) -> Self::Lp {
-        (self.0 * ARBITRARY_SCALE_U32 * scale / (96 * 4))
+        (self.0 * ARBITRARY_SCALE_U32 / scale / 4)
             .try_into()
             .unwrap_or(Lp::MAX)
     }

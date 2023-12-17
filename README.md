@@ -25,3 +25,24 @@ As an alternative to pixels, this crate also provides its own measurement unit:
 device-independent pixels (`Lp`). This type offers many constructors using
 real-world measurements that developers and designers are familiar with, and
 handles converting to the display's scale for the developer.
+
+## Project Status
+
+This project is early in development as part of of [Kludgine][kludgine] and
+[Gooey][gooey]. It is considered experimental and unspported at this time, and
+the primary focus for [@ecton][ecton] is to use this for his own projects.
+Feature requests and bug fixes will be prioritized based on @ecton's own needs.
+
+This project is **not currently maintaining a changelog**. Once v0.2.0 is
+released, a changelog will be maintained.
+
+If you would like to contribute, bug fixes are always appreciated. Before
+working on a new feature, please [open an issue][issues] proposing the feature
+and problem it aims to solve. Doing so will help prevent friction in merging
+pull requests, as it ensures changes fit the vision the maintainers have for
+Gooey.
+
+[gooey]: https://github.com/khonsulabs/gooey
+[kludgine]: https://github.com/khonsulabs/kludgine
+[ecton]: https://github.com/khonsulabs/ecton
+[issues]: https://github.com/khonsulabs/gooey/issues

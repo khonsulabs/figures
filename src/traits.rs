@@ -2,7 +2,7 @@ use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Rem, RemAssign, S
 
 use intentional::{Cast, CastInto};
 
-use crate::units::{Lp, Px, UPx};
+use crate::units::{Lp, Px, UPx, ARBITRARY_SCALE};
 use crate::Fraction;
 
 /// Converts a type to its floating point representation.
@@ -508,7 +508,7 @@ impl PixelScaling for UPx {
 }
 
 impl PixelScaling for Lp {
-    const PX_SCALING_FACTOR: u16 = 1905; // ARBITRARY_SCALE / 96
+    const PX_SCALING_FACTOR: u16 = ARBITRARY_SCALE; // ARBITRARY_SCALE / 96
 }
 
 /// Information about scaling for a numerical unit type.

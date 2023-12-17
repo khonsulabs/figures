@@ -4,6 +4,8 @@ use std::iter::Peekable;
 use std::num::TryFromIntError;
 use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Rem, Sub, SubAssign};
 
+use intentional::Cast;
+
 use crate::primes::{FactorsOf, PRIMES};
 use crate::tables::{approximate_via_lookup_table, ARCTAN_SUBDIVISIONS, ARCTAN_TABLE};
 use crate::traits::{Abs, Zero};
@@ -752,7 +754,10 @@ impl Mul<Fraction> for i32 {
 
     #[allow(clippy::suspicious_arithmetic_impl)]
     fn mul(self, rhs: Fraction) -> Self::Output {
-        self.saturating_mul(Self::from(rhs.denominator)) / Self::from(rhs.numerator)
+        let temporary = i64::from(self) * i64::from(rhs.numerator) / i64::from(rhs.denominator);
+        temporary
+            .clamp(i64::from(i32::MIN), i64::from(i32::MAX))
+            .cast()
     }
 }
 
@@ -770,7 +775,8 @@ impl Mul<Fraction> for u32 {
         if let (Ok(numerator), Ok(denominator)) =
             (u32::try_from(rhs.numerator), u32::try_from(rhs.denominator))
         {
-            self.saturating_mul(numerator) / denominator
+            let temporary = u64::from(self) * u64::from(numerator) / u64::from(denominator);
+            temporary.min(u64::from(u32::MAX)).cast()
         } else {
             0
         }

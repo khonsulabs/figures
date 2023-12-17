@@ -13,6 +13,10 @@ fn one_inch_is_correct() {
         Lp::inches(1).into_px(Fraction::new_whole(2)),
         Px::new(96 * 2)
     );
+    assert_eq!(
+        Px::new(96 * 2).into_lp(Fraction::new_whole(2)),
+        Lp::inches(1)
+    );
     assert_eq!(Lp::inches(1).into_upx(Fraction::ONE), UPx::new(96));
     assert_eq!(UPx::new(96).into_lp(Fraction::ONE), Lp::inches(1));
 }
@@ -24,6 +28,8 @@ fn lp_conversions() {
     assert_eq!(Lp::inches_f(1.), Lp::inches(1));
     assert_eq!(Lp::mm(10), Lp::cm(1));
     assert_eq!(Lp::inches(1), Lp::cm_f(2.54));
+    assert_eq!(Lp::points(36), Lp::inches_f(0.5));
+    assert_eq!(Lp::points_f(36.), Lp::points(36));
 }
 
 #[test]

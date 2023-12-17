@@ -1,16 +1,39 @@
 Logical pixels, a device-independent measurement
 
+A logical pixel is equivalent to a single pixel on a 96-DPI display. However,
+this unit is scaled when converiting to [`Px`] to honor the target display's
+actual DPI.
+
+For example, consider these assertions:
+
+```rust
+use figures::units::{Lp, Px};
+use figures::{Fraction, ScreenScale};
+
+// Scaling factor of 1.0
+assert_eq!(Lp::new(1).into_px(Fraction::new_whole(1)), Px::new(1));
+
+// Scaling factor of 2.0
+assert_eq!(Lp::new(1).into_px(Fraction::new_whole(2)), Px::new(2));
+
+// Scaling factor of 0.5
+assert_eq!(Lp::new(1).into_px(Fraction::new(1, 2)), Px::from(0.5));
+```
+
 Logical pixels are designed around several use cases. Internally, this type uses
 integers to represent logical pixels, which ensures that math is always
 predictable, and any precision loss is controllable by the developer.
 
 To ensure that the `Lp` type has as little precision loss as possible, it uses a
-scale of 36,576 pixels per inch. This number may seem arbitrary, but it is the
-lowest common multiple of:
+scale of 1,905 subpixels . This number may seem arbitrary, but it is a multiple
+of the prime numbers 3, 5, and 127. These numbers are important because:
 
-- 72: Typographic points are defined as 72 points per inch
-- 96: A scaling factor of 1 is defined as 96 pixels per inch
-- 254: Allows using metric units lossleslly because 2.54cm = 1in
+- 72: Typographic points are defined as 72 points per inch, and the prime
+  factorization is `2^3 * 3^2`.
+- 96: A scaling factor of 1 is defined as 96 pixels per inchm, and the prime
+  factorization is `2^5 * 3`.
+- 254: Allows using metric units lossleslly because 2.54cm = 1in, and it's prime
+  factorization is `2 * 127`
 - 5: Five is a low common prime, and everyone likes round numbers.
 
 Because the `Lp` scale is arbitrary and hard to reason about, this type has many

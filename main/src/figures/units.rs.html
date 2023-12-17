@@ -767,6 +767,15 @@
 <a href="#767" id="767">767</a>
 <a href="#768" id="768">768</a>
 <a href="#769" id="769">769</a>
+<a href="#770" id="770">770</a>
+<a href="#771" id="771">771</a>
+<a href="#772" id="772">772</a>
+<a href="#773" id="773">773</a>
+<a href="#774" id="774">774</a>
+<a href="#775" id="775">775</a>
+<a href="#776" id="776">776</a>
+<a href="#777" id="777">777</a>
+<a href="#778" id="778">778</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::cmp::Ordering;
 <span class="kw">use </span>std::fmt;
 <span class="kw">use </span>std::num::TryFromIntError;
@@ -780,8 +789,9 @@
 };
 <span class="kw">use </span><span class="kw">crate</span>::Fraction;
 
-<span class="kw">const </span>ARBITRARY_SCALE: i32 = <span class="number">182_880</span>;
-<span class="kw">const </span>ARBITRARY_SCALE_U32: u32 = ARBITRARY_SCALE.unsigned_abs();
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const </span>ARBITRARY_SCALE: u16 = <span class="number">1905</span>;
+<span class="kw">const </span>ARBITRARY_SCALE_I32: i32 = ARBITRARY_SCALE <span class="kw">as </span>i32;
+<span class="kw">const </span>ARBITRARY_SCALE_U32: u32 = ARBITRARY_SCALE <span class="kw">as </span>u32;
 <span class="attr">#[allow(clippy::cast_precision_loss)]
 </span><span class="kw">const </span>ARBITRARY_SCALE_F32: f32 = ARBITRARY_SCALE <span class="kw">as </span>f32;
 
@@ -1122,7 +1132,7 @@
     }
 }
 
-<span class="macro">define_integer_type!</span>(Lp, i32, <span class="string">&quot;docs/lp.md&quot;</span>, <span class="number">1</span>);
+<span class="macro">define_integer_type!</span>(Lp, i32, <span class="string">&quot;docs/lp.md&quot;</span>, <span class="number">1905</span>);
 
 <span class="kw">impl </span>IntoComponents&lt;Lp&gt; <span class="kw">for </span>i32 {
     <span class="kw">fn </span>into_components(<span class="self">self</span>) -&gt; (Lp, Lp) {
@@ -1143,7 +1153,7 @@
     <span class="kw">type </span>UPx = UPx;
 
     <span class="kw">fn </span>into_px(<span class="self">self</span>, scale: Fraction) -&gt; <span class="self">Self</span>::Px {
-        Px::new(<span class="self">self</span>.<span class="number">0 </span>* <span class="number">96 </span>/ scale / ARBITRARY_SCALE)
+        Px(<span class="self">self</span>.<span class="number">0 </span>* <span class="number">4 </span>* scale / ARBITRARY_SCALE_I32)
     }
 
     <span class="kw">fn </span>from_px(px: <span class="self">Self</span>::Px, scale: Fraction) -&gt; <span class="self">Self </span>{
@@ -1189,7 +1199,7 @@
     /// inch.
     </span><span class="attr">#[must_use]
     </span><span class="kw">pub const fn </span>points(points: i32) -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>(points * ARBITRARY_SCALE / <span class="number">72</span>)
+        <span class="self">Self</span>(points * ARBITRARY_SCALE_I32 * <span class="number">4 </span>/ <span class="number">3</span>)
     }
 
     <span class="doccomment">/// Returns a value equivalent to the number of `points` provided. One
@@ -1197,7 +1207,7 @@
     /// inch.
     </span><span class="attr">#[must_use]
     </span><span class="kw">pub fn </span>points_f(points: f32) -&gt; <span class="self">Self </span>{
-        Lp((points * ARBITRARY_SCALE_F32 / <span class="number">72.</span>).cast())
+        Lp((points * ARBITRARY_SCALE_F32 * <span class="number">4. </span>/ <span class="number">3.</span>).cast())
     }
 
     <span class="doccomment">/// Returns a value equivalent to the number of `centimeters` provided.
@@ -1209,31 +1219,31 @@
     <span class="doccomment">/// Returns a value equivalent to the number of `centimeters` provided.
     </span><span class="attr">#[must_use]
     </span><span class="kw">pub fn </span>cm_f(centimeters: f32) -&gt; <span class="self">Self </span>{
-        Lp((centimeters * ARBITRARY_SCALE_F32 / <span class="number">2.54</span>).cast())
+        Lp((centimeters * ARBITRARY_SCALE_F32 * <span class="number">96. </span>/ <span class="number">2.54</span>).cast())
     }
 
     <span class="doccomment">/// Returns a value equivalent to the number of `millimeters` provided.
     </span><span class="attr">#[must_use]
     </span><span class="kw">pub const fn </span>mm(millimeters: i32) -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>(millimeters * ARBITRARY_SCALE * <span class="number">10 </span>/ <span class="number">254</span>)
+        <span class="self">Self</span>(millimeters * ARBITRARY_SCALE_I32 * <span class="number">960 </span>/ <span class="number">254</span>)
     }
 
     <span class="doccomment">/// Returns a value equivalent to the number of `millimeters` provided.
     </span><span class="attr">#[must_use]
     </span><span class="kw">pub fn </span>mm_f(millimeters: f32) -&gt; <span class="self">Self </span>{
-        Lp((millimeters * ARBITRARY_SCALE_F32 / <span class="number">25.4</span>).cast())
+        Lp((millimeters * ARBITRARY_SCALE_F32 * <span class="number">96. </span>/ <span class="number">25.4</span>).cast())
     }
 
     <span class="doccomment">/// Returns a value equivalent to the number of `inches` provided.
     </span><span class="attr">#[must_use]
     </span><span class="kw">pub const fn </span>inches(inches: i32) -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>(inches * ARBITRARY_SCALE)
+        <span class="self">Self</span>(inches * ARBITRARY_SCALE_I32 * <span class="number">96</span>)
     }
 
     <span class="doccomment">/// Returns a value equivalent to the number of `inches` provided.
     </span><span class="attr">#[must_use]
     </span><span class="kw">pub fn </span>inches_f(inches: f32) -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>((inches * ARBITRARY_SCALE_F32).cast())
+        <span class="self">Self</span>((inches * ARBITRARY_SCALE_F32 * <span class="number">96.</span>).cast())
     }
 }
 
@@ -1259,7 +1269,15 @@
 
 <span class="kw">impl </span>fmt::Debug <span class="kw">for </span>Lp {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        <span class="macro">write!</span>(f, <span class="string">&quot;{}lp&quot;</span>, <span class="self">self</span>.<span class="number">0</span>)
+        <span class="kw">let </span>fractional = <span class="self">self</span>.<span class="number">0 </span>% ARBITRARY_SCALE_I32;
+        <span class="kw">let </span>whole = <span class="self">self</span>.<span class="number">0 </span>/ ARBITRARY_SCALE_I32;
+        <span class="kw">if </span>fractional == <span class="number">0 </span>{
+            <span class="macro">write!</span>(f, <span class="string">&quot;{whole}lp&quot;</span>)
+        } <span class="kw">else </span>{
+            <span class="kw">let </span>as_float =
+                f64::from(whole) + f64::from(fractional) / f64::from(ARBITRARY_SCALE_F32);
+            <span class="macro">write!</span>(f, <span class="string">&quot;{as_float}lp&quot;</span>)
+        }
     }
 }
 
@@ -1313,7 +1331,7 @@
     }
 
     <span class="kw">fn </span>into_lp(<span class="self">self</span>, scale: Fraction) -&gt; <span class="self">Self</span>::Lp {
-        Lp(<span class="self">self</span>.<span class="number">0 </span>* ARBITRARY_SCALE * scale / (<span class="number">96 </span>* <span class="number">4</span>))
+        Lp(<span class="self">self</span>.<span class="number">0 </span>* ARBITRARY_SCALE_I32 / scale / <span class="number">4</span>)
     }
 
     <span class="kw">fn </span>from_lp(lp: <span class="self">Self</span>::Lp, scale: Fraction) -&gt; <span class="self">Self </span>{
@@ -1435,7 +1453,7 @@
     }
 
     <span class="kw">fn </span>into_lp(<span class="self">self</span>, scale: Fraction) -&gt; <span class="self">Self</span>::Lp {
-        (<span class="self">self</span>.<span class="number">0 </span>* ARBITRARY_SCALE_U32 * scale / (<span class="number">96 </span>* <span class="number">4</span>))
+        (<span class="self">self</span>.<span class="number">0 </span>* ARBITRARY_SCALE_U32 / scale / <span class="number">4</span>)
             .try_into()
             .unwrap_or(Lp::MAX)
     }

@@ -573,7 +573,7 @@
 
 <span class="kw">use </span>intentional::{Cast, CastInto};
 
-<span class="kw">use </span><span class="kw">crate</span>::units::{Lp, Px, UPx};
+<span class="kw">use </span><span class="kw">crate</span>::units::{Lp, Px, UPx, ARBITRARY_SCALE};
 <span class="kw">use </span><span class="kw">crate</span>::Fraction;
 
 <span class="doccomment">/// Converts a type to its floating point representation.
@@ -1079,7 +1079,7 @@
 }
 
 <span class="kw">impl </span>PixelScaling <span class="kw">for </span>Lp {
-    <span class="kw">const </span>PX_SCALING_FACTOR: u16 = <span class="number">1905</span>; <span class="comment">// ARBITRARY_SCALE / 96
+    <span class="kw">const </span>PX_SCALING_FACTOR: u16 = ARBITRARY_SCALE; <span class="comment">// ARBITRARY_SCALE / 96
 </span>}
 
 <span class="doccomment">/// Information about scaling for a numerical unit type.

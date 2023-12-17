@@ -934,11 +934,19 @@
 <a href="#934" id="934">934</a>
 <a href="#935" id="935">935</a>
 <a href="#936" id="936">936</a>
+<a href="#937" id="937">937</a>
+<a href="#938" id="938">938</a>
+<a href="#939" id="939">939</a>
+<a href="#940" id="940">940</a>
+<a href="#941" id="941">941</a>
+<a href="#942" id="942">942</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::cmp::Ordering;
 <span class="kw">use </span>std::fmt;
 <span class="kw">use </span>std::iter::Peekable;
 <span class="kw">use </span>std::num::TryFromIntError;
 <span class="kw">use </span>std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Rem, Sub, SubAssign};
+
+<span class="kw">use </span>intentional::Cast;
 
 <span class="kw">use </span><span class="kw">crate</span>::primes::{FactorsOf, PRIMES};
 <span class="kw">use </span><span class="kw">crate</span>::tables::{approximate_via_lookup_table, ARCTAN_SUBDIVISIONS, ARCTAN_TABLE};
@@ -1688,7 +1696,10 @@
 
     <span class="attr">#[allow(clippy::suspicious_arithmetic_impl)]
     </span><span class="kw">fn </span>mul(<span class="self">self</span>, rhs: Fraction) -&gt; <span class="self">Self</span>::Output {
-        <span class="self">self</span>.saturating_mul(<span class="self">Self</span>::from(rhs.denominator)) / <span class="self">Self</span>::from(rhs.numerator)
+        <span class="kw">let </span>temporary = i64::from(<span class="self">self</span>) * i64::from(rhs.numerator) / i64::from(rhs.denominator);
+        temporary
+            .clamp(i64::from(i32::MIN), i64::from(i32::MAX))
+            .cast()
     }
 }
 
@@ -1706,7 +1717,8 @@
         <span class="kw">if let </span>(<span class="prelude-val">Ok</span>(numerator), <span class="prelude-val">Ok</span>(denominator)) =
             (u32::try_from(rhs.numerator), u32::try_from(rhs.denominator))
         {
-            <span class="self">self</span>.saturating_mul(numerator) / denominator
+            <span class="kw">let </span>temporary = u64::from(<span class="self">self</span>) * u64::from(numerator) / u64::from(denominator);
+            temporary.min(u64::from(u32::MAX)).cast()
         } <span class="kw">else </span>{
             <span class="number">0
         </span>}

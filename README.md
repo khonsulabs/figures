@@ -5,13 +5,15 @@ A primarily integer-based 2d graphics math library.
 ## Inspiration
 
 Sharp graphics are achieved by ensuring that drawing is aligned to pixel
-boundaries. If a 1px-squre dot is drawn at 0.5 pixels offset, the dot will look
+boundaries. If a 1px-squre dot is drawn at 0.99 pixels offset, the dot may look
 fuzzy because its color will be shared across multiple pixels. While this can
 give the illusion of subpixel imaging, it can also be undesired on high-dpi
 displays.
 
 This library embraces integer types for its data representation to allow for
-predictable math to be performed without loss of precision.
+predictable math to be performed without loss of precision. It supports
+subdividing physical pixels into 4 subpixels, allowing for subpixel layout while
+providing consistent results.
 
 ## Pixels (`Px`) and Device-Independent Pixels (`Lp`)
 

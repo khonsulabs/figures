@@ -1,6 +1,6 @@
 [package]
 name = "figures"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 description = "A math library specialized for 2d screen graphics."
 repository = "https://github.com/khonsulabs/figures"
@@ -19,7 +19,7 @@ x11 = ["winit/x11"]
 [dependencies]
 bytemuck = { version = "1.13.1", features = ["derive"], optional = true }
 wgpu = { version = "0.18.0", default-features = false, optional = true }
-winit = { version = "0.29.1-beta", default-features = false, optional = true }
+winit = { version = "0.29.4", default-features = false, optional = true }
 euclid = { version = "0.22.9", default-features = false, optional = true }
 intentional = "0.1.0"
 serde = { version = "1.0.193", optional = true, features = ["derive"] }

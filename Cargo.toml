@@ -7,7 +7,7 @@ repository = "https://github.com/khonsulabs/figures"
 license = "MIT OR Apache-2.0"
 keywords = ["2d", "math", "graphics"]
 categories = ["mathematics"]
-readme = "../README.md"
+readme = "./README.md"
 
 [features]
 # This only exists because we need a paltform selected when running unit tests

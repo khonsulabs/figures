@@ -3,7 +3,7 @@ use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Sub, SubAssign};
 
 use crate::traits::{FromComponents, IntoComponents, ScreenScale};
 use crate::units::{Lp, Px, UPx};
-use crate::{Fraction, Point, Size};
+use crate::{Angle, Fraction, Point, Size};
 
 #[test]
 fn one_inch_is_correct() {
@@ -212,4 +212,32 @@ fn size_ord_and_eq() {
     assert_ne!(a, b);
     assert!(a < b);
     assert_eq!(a.area(), b.area());
+}
+
+#[test]
+fn rotate() {
+    assert_eq!(
+        Point::new(Px::new(5), Px::ZERO).rotate_by(Angle::degrees(0)),
+        Point::new(Px::new(5), Px::ZERO)
+    );
+    assert_eq!(
+        Point::new(Px::new(5), Px::ZERO).rotate_by(Angle::degrees(30)),
+        Point::new(Px::from(4.25), Px::from(2.5))
+    );
+    assert_eq!(
+        Point::new(Px::new(5), Px::ZERO).rotate_by(Angle::degrees(45)),
+        Point::new(Px::from(3.5), Px::from(3.5))
+    );
+    assert_eq!(
+        Point::new(Px::new(5), Px::ZERO).rotate_by(Angle::degrees(90)),
+        Point::new(Px::ZERO, Px::new(5))
+    );
+    assert_eq!(
+        Point::new(Px::new(5), Px::ZERO).rotate_by(Angle::degrees(180)),
+        Point::new(Px::new(-5), Px::ZERO)
+    );
+    assert_eq!(
+        Point::new(Px::new(5), Px::ZERO).rotate_by(Angle::degrees(270)),
+        Point::new(Px::ZERO, Px::new(-5))
+    );
 }

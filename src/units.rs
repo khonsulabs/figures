@@ -156,6 +156,14 @@ macro_rules! define_integer_type {
             }
         }
 
+        impl Div<Fraction> for $name {
+            type Output = Self;
+
+            fn div(self, rhs: Fraction) -> Self::Output {
+                Self::from_unscaled((self.into_unscaled() / rhs))
+            }
+        }
+
         impl DivAssign for $name {
             fn div_assign(&mut self, rhs: Self) {
                 *self = *self / rhs
@@ -225,6 +233,14 @@ macro_rules! define_integer_type {
 
             fn mul(self, rhs: f32) -> Self::Output {
                 Self::from((self.into_float() * rhs))
+            }
+        }
+
+        impl Mul<Fraction> for $name {
+            type Output = Self;
+
+            fn mul(self, rhs: Fraction) -> Self::Output {
+                Self::from_unscaled((self.into_unscaled() * rhs))
             }
         }
 

@@ -1,7 +1,8 @@
-use std::ops::{Add, Mul};
+use std::ops::{Add, Mul, Sub};
 
 use crate::traits::{IntoComponents, Roots};
 use crate::utils::vec_ord;
+use crate::{Angle, Fraction, Zero};
 
 /// A coordinate in a 2d space.
 #[derive(Default, Clone, Copy, Eq, PartialEq, Hash, Debug)]
@@ -80,6 +81,27 @@ impl<Unit> Point<Unit> {
         Unit: Mul<Output = Unit> + Add<Output = Unit> + Roots + Copy,
     {
         (self.x * self.x + self.y * self.y).sqrt()
+    }
+
+    /// Returns `self` rotated around `origin` by `angle`.
+    #[must_use]
+    pub fn rotate_around(self, origin: Point<Unit>, angle: Angle) -> Point<Unit>
+    where
+        Unit: Copy + Add<Output = Unit> + Sub<Output = Unit> + Mul<Fraction, Output = Unit>,
+    {
+        let cos = angle.cos();
+        let sin = angle.sin();
+        let d = self - origin;
+        origin + Point::new(d.x * cos - d.y * sin, d.y * cos + d.x * sin)
+    }
+
+    /// Returns `self` rotated around `Point::ZERO` by `angle`.
+    #[must_use]
+    pub fn rotate_by(self, angle: Angle) -> Point<Unit>
+    where
+        Unit: Zero + Copy + Add<Output = Unit> + Sub<Output = Unit> + Mul<Fraction, Output = Unit>,
+    {
+        self.rotate_around(Self::ZERO, angle)
     }
 }
 

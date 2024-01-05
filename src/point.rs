@@ -199,8 +199,28 @@ impl From<winit::dpi::PhysicalPosition<i32>> for Point<crate::units::Px> {
 }
 
 #[cfg(feature = "winit")]
+impl From<winit::dpi::PhysicalPosition<u32>> for Point<crate::units::UPx> {
+    fn from(point: winit::dpi::PhysicalPosition<u32>) -> Self {
+        Self {
+            x: crate::units::UPx::new(point.x),
+            y: crate::units::UPx::new(point.y),
+        }
+    }
+}
+
+#[cfg(feature = "winit")]
 impl From<Point<crate::units::Px>> for winit::dpi::PhysicalPosition<i32> {
     fn from(point: Point<crate::units::Px>) -> Self {
+        Self {
+            x: point.x.into(),
+            y: point.y.into(),
+        }
+    }
+}
+
+#[cfg(feature = "winit")]
+impl From<Point<crate::units::UPx>> for winit::dpi::PhysicalPosition<u32> {
+    fn from(point: Point<crate::units::UPx>) -> Self {
         Self {
             x: point.x.into(),
             y: point.y.into(),

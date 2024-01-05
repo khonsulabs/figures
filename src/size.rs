@@ -162,8 +162,28 @@ impl From<winit::dpi::PhysicalSize<u32>> for Size<crate::units::UPx> {
 }
 
 #[cfg(feature = "winit")]
+impl From<winit::dpi::PhysicalSize<i32>> for Size<crate::units::Px> {
+    fn from(value: winit::dpi::PhysicalSize<i32>) -> Self {
+        Self {
+            width: value.width.try_into().expect("width too large"),
+            height: value.height.try_into().expect("height too large"),
+        }
+    }
+}
+
+#[cfg(feature = "winit")]
 impl From<Size<crate::units::UPx>> for winit::dpi::PhysicalSize<u32> {
     fn from(size: Size<crate::units::UPx>) -> Self {
+        Self {
+            width: size.width.into(),
+            height: size.height.into(),
+        }
+    }
+}
+
+#[cfg(feature = "winit")]
+impl From<Size<crate::units::Px>> for winit::dpi::PhysicalSize<i32> {
+    fn from(size: Size<crate::units::Px>) -> Self {
         Self {
             width: size.width.into(),
             height: size.height.into(),

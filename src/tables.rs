@@ -1,6 +1,7 @@
 use crate::Fraction;
 
 #[cfg(test)]
+#[allow(clippy::items_after_test_module)]
 mod gen_and_test {
     use std::f32::consts::PI;
 

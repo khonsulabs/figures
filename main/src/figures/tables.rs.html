@@ -1707,9 +1707,11 @@
 <a href="#1707" id="1707">1707</a>
 <a href="#1708" id="1708">1708</a>
 <a href="#1709" id="1709">1709</a>
+<a href="#1710" id="1710">1710</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::Fraction;
 
 <span class="attr">#[cfg(test)]
+#[allow(clippy::items_after_test_module)]
 </span><span class="kw">mod </span>gen_and_test {
     <span class="kw">use </span>std::f32::consts::PI;
 

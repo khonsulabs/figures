@@ -790,8 +790,6 @@
 <a href="#790" id="790">790</a>
 <a href="#791" id="791">791</a>
 <a href="#792" id="792">792</a>
-<a href="#793" id="793">793</a>
-<a href="#794" id="794">794</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::cmp::Ordering;
 <span class="kw">use </span>std::fmt;
 <span class="kw">use </span>std::num::TryFromIntError;
@@ -825,8 +823,6 @@
             </span><span class="kw">pub const </span>MAX: <span class="self">Self </span>= <span class="self">Self</span>(&lt;<span class="macro-nonterminal">$inner</span>&gt;::MAX);
             <span class="doccomment">/// The minimum value for this type.
             </span><span class="kw">pub const </span>MIN: <span class="self">Self </span>= <span class="self">Self</span>(&lt;<span class="macro-nonterminal">$inner</span>&gt;::MIN);
-            <span class="doccomment">/// Zero for this type.
-            </span><span class="kw">pub const </span>ZERO: <span class="self">Self </span>= <span class="self">Self</span>(<span class="number">0</span>);
 
             <span class="doccomment">/// Returns a new wrapped value for this unit.
             </span><span class="attr">#[must_use]

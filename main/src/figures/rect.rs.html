@@ -300,10 +300,24 @@
 <a href="#300" id="300">300</a>
 <a href="#301" id="301">301</a>
 <a href="#302" id="302">302</a>
+<a href="#303" id="303">303</a>
+<a href="#304" id="304">304</a>
+<a href="#305" id="305">305</a>
+<a href="#306" id="306">306</a>
+<a href="#307" id="307">307</a>
+<a href="#308" id="308">308</a>
+<a href="#309" id="309">309</a>
+<a href="#310" id="310">310</a>
+<a href="#311" id="311">311</a>
+<a href="#312" id="312">312</a>
+<a href="#313" id="313">313</a>
+<a href="#314" id="314">314</a>
+<a href="#315" id="315">315</a>
+<a href="#316" id="316">316</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::ops::{Add, AddAssign, Sub, SubAssign};
 
 <span class="kw">use </span><span class="kw">crate</span>::traits::{IntoSigned, IntoUnsigned, Ranged};
-<span class="kw">use crate</span>::{Point, Round, Size};
+<span class="kw">use crate</span>::{Point, Round, Size, Zero};
 
 <span class="doccomment">/// A 2d area expressed as an origin ([`Point`]) and a [`Size`].
 </span><span class="attr">#[derive(Clone, Copy, Eq, PartialEq, Hash, Debug)]
@@ -592,6 +606,20 @@
 {
     <span class="kw">const </span>MAX: <span class="self">Self </span>= <span class="self">Self</span>::new(Point::MAX, Size::MAX);
     <span class="kw">const </span>MIN: <span class="self">Self </span>= <span class="self">Self</span>::new(Point::MIN, Size::MIN);
+}
+
+<span class="kw">impl</span>&lt;Unit&gt; Zero <span class="kw">for </span>Rect&lt;Unit&gt;
+<span class="kw">where
+    </span>Unit: Zero,
+{
+    <span class="kw">const </span>ZERO: <span class="self">Self </span>= <span class="self">Self </span>{
+        origin: Point::ZERO,
+        size: Size::ZERO,
+    };
+
+    <span class="kw">fn </span>is_zero(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="self">self</span>.origin.is_zero() &amp;&amp; <span class="self">self</span>.size.is_zero()
+    }
 }
 
 <span class="attr">#[test]

@@ -3,7 +3,7 @@ use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Sub, SubAssign};
 
 use crate::traits::{FromComponents, IntoComponents, ScreenScale};
 use crate::units::{Lp, Px, UPx};
-use crate::{Angle, Fraction, Point, Size};
+use crate::{Angle, Fraction, Point, Size, Zero};
 
 #[test]
 fn one_inch_is_correct() {

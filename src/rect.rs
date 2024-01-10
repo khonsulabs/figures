@@ -1,7 +1,7 @@
 use std::ops::{Add, AddAssign, Sub, SubAssign};
 
 use crate::traits::{IntoSigned, IntoUnsigned, Ranged};
-use crate::{Point, Round, Size};
+use crate::{Point, Round, Size, Zero};
 
 /// A 2d area expressed as an origin ([`Point`]) and a [`Size`].
 #[derive(Clone, Copy, Eq, PartialEq, Hash, Debug)]
@@ -290,6 +290,20 @@ where
 {
     const MAX: Self = Self::new(Point::MAX, Size::MAX);
     const MIN: Self = Self::new(Point::MIN, Size::MIN);
+}
+
+impl<Unit> Zero for Rect<Unit>
+where
+    Unit: Zero,
+{
+    const ZERO: Self = Self {
+        origin: Point::ZERO,
+        size: Size::ZERO,
+    };
+
+    fn is_zero(&self) -> bool {
+        self.origin.is_zero() && self.size.is_zero()
+    }
 }
 
 #[test]

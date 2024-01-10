@@ -31,8 +31,6 @@ macro_rules! define_integer_type {
             pub const MAX: Self = Self(<$inner>::MAX);
             /// The minimum value for this type.
             pub const MIN: Self = Self(<$inner>::MIN);
-            /// Zero for this type.
-            pub const ZERO: Self = Self(0);
 
             /// Returns a new wrapped value for this unit.
             #[must_use]

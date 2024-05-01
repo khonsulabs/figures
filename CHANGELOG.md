@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `Px`, `UPx`, and `Lp` no longer directly have an associated constant `ZERO`.
   This constant is still available via the `Zero` trait.
-- This crate's `wgpu` version is now `0.19.0`.
+- This crate's `wgpu` version is now `0.20.0`.
 
 ## v0.2.2 (2024-01-04)
 

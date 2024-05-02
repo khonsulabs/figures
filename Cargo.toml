@@ -1,6 +1,7 @@
 [package]
 name = "figures"
 version = "0.2.2"
+rust-version = "1.70.0"
 edition = "2021"
 description = "A math library specialized for 2d screen graphics."
 repository = "https://github.com/khonsulabs/figures"

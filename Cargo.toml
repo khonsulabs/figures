@@ -1,6 +1,6 @@
 [package]
 name = "figures"
-version = "0.2.2"
+version = "0.3.0"
 rust-version = "1.70.0"
 edition = "2021"
 description = "A math library specialized for 2d screen graphics."

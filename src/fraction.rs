@@ -72,9 +72,7 @@ macro_rules! fraction {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[repr(C)]
 pub struct Fraction {
-    #[cfg_attr(feature = "Serde", serde(rename = "n"))]
     numerator: i16,
-    #[cfg_attr(feature = "Serde", serde(rename = "d"))]
     denominator: i16,
 }
 
@@ -244,6 +242,8 @@ impl Fraction {
     /// `denominator` will be limited to the absolute value of `i16::MIN`.
     #[must_use]
     pub fn new(numerator: i16, denominator: i16) -> Self {
+        debug_assert!(denominator != 0);
+
         Self::new_maybe_reduced(numerator.max(MIN_VALUE), denominator).reduce()
     }
 

@@ -1,7 +1,7 @@
 use std::ops::{Add, AddAssign, Sub, SubAssign};
 
 use crate::traits::{IntoSigned, IntoUnsigned, Ranged};
-use crate::{Point, Round, Size, Zero};
+use crate::{FloatConversion, Point, Round, Size, Zero};
 
 /// A 2d area expressed as an origin ([`Point`]) and a [`Size`].
 #[derive(Clone, Copy, Eq, PartialEq, Hash, Debug)]
@@ -303,6 +303,21 @@ where
 
     fn is_zero(&self) -> bool {
         self.origin.is_zero() && self.size.is_zero()
+    }
+}
+
+impl<Unit> FloatConversion for Rect<Unit>
+where
+    Unit: FloatConversion,
+{
+    type Float = Rect<Unit::Float>;
+
+    fn into_float(self) -> Self::Float {
+        self.map(FloatConversion::into_float)
+    }
+
+    fn from_float(float: Self::Float) -> Self {
+        float.map(FloatConversion::from_float)
     }
 }
 

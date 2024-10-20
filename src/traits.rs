@@ -1,4 +1,5 @@
 use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Rem, RemAssign, Sub, SubAssign};
+use std::time::Duration;
 
 use intentional::{Cast, CastInto};
 
@@ -486,6 +487,11 @@ impl_int_ranged!(f64);
 impl_int_ranged!(Px);
 impl_int_ranged!(UPx);
 impl_int_ranged!(Lp);
+
+impl Ranged for Duration {
+    const MAX: Self = Duration::MAX;
+    const MIN: Self = Duration::ZERO;
+}
 
 impl Ranged for bool {
     const MAX: Self = true;

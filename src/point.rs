@@ -1,6 +1,6 @@
 use std::ops::{Add, Mul, Sub};
 
-use crate::traits::{IntoComponents, Roots};
+use crate::traits::{IntoComponents, Roots, StdNumOps};
 use crate::utils::vec_ord;
 use crate::{Angle, Fraction, Zero};
 
@@ -238,5 +238,38 @@ impl From<Point<crate::units::UPx>> for wgpu::Origin3d {
             y: value.y.into(),
             z: 0,
         }
+    }
+}
+
+impl<T> StdNumOps for Point<T>
+where
+    T: StdNumOps,
+{
+    fn saturating_add(self, other: Self) -> Self {
+        Self::new(
+            self.x.saturating_add(other.x),
+            self.y.saturating_add(other.y),
+        )
+    }
+
+    fn saturating_mul(self, other: Self) -> Self {
+        Self::new(
+            self.x.saturating_mul(other.x),
+            self.y.saturating_mul(other.y),
+        )
+    }
+
+    fn saturating_div(self, other: Self) -> Self {
+        Self::new(
+            self.x.saturating_div(other.x),
+            self.y.saturating_div(other.y),
+        )
+    }
+
+    fn saturating_sub(self, other: Self) -> Self {
+        Self::new(
+            self.x.saturating_sub(other.x),
+            self.y.saturating_sub(other.y),
+        )
     }
 }

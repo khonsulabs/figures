@@ -1,7 +1,7 @@
 use std::cmp::Ordering;
 use std::ops::Mul;
 
-use crate::traits::IntoComponents;
+use crate::traits::{IntoComponents, StdNumOps};
 use crate::utils::vec_ord;
 use crate::Point;
 
@@ -188,5 +188,38 @@ impl From<Size<crate::units::Px>> for winit::dpi::PhysicalSize<i32> {
             width: size.width.into(),
             height: size.height.into(),
         }
+    }
+}
+
+impl<T> StdNumOps for Size<T>
+where
+    T: StdNumOps,
+{
+    fn saturating_add(self, other: Self) -> Self {
+        Self::new(
+            self.width.saturating_add(other.width),
+            self.height.saturating_add(other.height),
+        )
+    }
+
+    fn saturating_mul(self, other: Self) -> Self {
+        Self::new(
+            self.width.saturating_mul(other.width),
+            self.height.saturating_mul(other.height),
+        )
+    }
+
+    fn saturating_div(self, other: Self) -> Self {
+        Self::new(
+            self.width.saturating_div(other.width),
+            self.height.saturating_div(other.height),
+        )
+    }
+
+    fn saturating_sub(self, other: Self) -> Self {
+        Self::new(
+            self.width.saturating_sub(other.width),
+            self.height.saturating_sub(other.height),
+        )
     }
 }

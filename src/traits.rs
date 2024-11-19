@@ -423,6 +423,43 @@ pub trait Unit:
 {
 }
 
+/// Common number operations available on number types in Rust that aren't
+/// available as traits.
+pub trait StdNumOps {
+    /// Adds `self` and `other`, saturating instead of overflowing.
+    fn saturating_add(self, other: Self) -> Self;
+    /// Multiplies `self` and `other`, saturating instead of overflowing.
+    fn saturating_mul(self, other: Self) -> Self;
+    /// Divides `self` by `other`, saturating instead of overflowing.
+    fn saturating_div(self, other: Self) -> Self;
+    /// Subtracts `other` from `self`, saturating instead of overflowing.
+    fn saturating_sub(self, other: Self) -> Self;
+}
+
+macro_rules! impl_std_num_ops {
+    ($type:ident) => {
+        impl StdNumOps for $type {
+            fn saturating_add(self, other: Self) -> Self {
+                self.saturating_add(other)
+            }
+
+            fn saturating_mul(self, other: Self) -> Self {
+                self.saturating_mul(other)
+            }
+
+            fn saturating_div(self, other: Self) -> Self {
+                self.saturating_div(other)
+            }
+
+            fn saturating_sub(self, other: Self) -> Self {
+                self.saturating_sub(other)
+            }
+        }
+    };
+}
+
+impl_std_num_ops!(u8);
+
 impl<T> Unit for T where
     T: FloatConversion<Float = f32>
         + Add<Output = Self>

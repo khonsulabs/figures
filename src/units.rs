@@ -7,7 +7,7 @@ use intentional::{Cast, CastFrom};
 
 use crate::traits::{
     Abs, FloatConversion, IntoComponents, IntoSigned, IntoUnsigned, Pow, Roots, Round, ScreenScale,
-    UnscaledUnit, Zero,
+    StdNumOps, UnscaledUnit, Zero,
 };
 use crate::Fraction;
 
@@ -351,6 +351,24 @@ macro_rules! define_integer_type {
 
             fn cbrt(self) -> Self {
                 Self(f64::from(self.0).cbrt().cast())
+            }
+        }
+
+        impl StdNumOps for $name {
+            fn saturating_add(self, other: Self) -> Self {
+                self.saturating_add(other)
+            }
+
+            fn saturating_mul(self, other: Self) -> Self {
+                self.saturating_mul(other)
+            }
+
+            fn saturating_div(self, other: Self) -> Self {
+                self.saturating_div(other)
+            }
+
+            fn saturating_sub(self, other: Self) -> Self {
+                self.saturating_sub(other)
             }
         }
     };

@@ -1,7 +1,7 @@
 use std::ops::{Add, AddAssign, Sub, SubAssign};
 
-use crate::traits::{IntoSigned, IntoUnsigned, Ranged};
-use crate::{FloatConversion, Point, Round, Size, Zero};
+use crate::traits::{IntoSigned, IntoUnsigned, Ranged, StdNumOps};
+use crate::{FloatConversion, IntoComponents, Point, Round, Size, Zero};
 
 /// A 2d area expressed as an origin ([`Point`]) and a [`Size`].
 #[derive(Clone, Copy, Eq, PartialEq, Hash, Debug)]
@@ -206,6 +206,25 @@ where
     /// The first point returned will always be the top-right point, even if the size of the rectangle is negative.
     pub fn extents(&self) -> (Point<Unit>, Point<Unit>) {
         let extent = self.origin + self.size;
+        (
+            Point::new(self.origin.x.min(extent.x), self.origin.y.min(extent.y)),
+            Point::new(self.origin.x.max(extent.x), self.origin.y.max(extent.y)),
+        )
+    }
+}
+
+impl<Unit> Rect<Unit>
+where
+    Unit: StdNumOps + Ord + Copy,
+{
+    /// Returns the top-left and bottom-right points of this rectangle.
+    ///
+    /// The first point returned will always be the top-right point, even if the
+    /// size of the rectangle is negative.
+    ///
+    /// The returned extent point will be saturated instead of wrapping.
+    pub fn saturating_extents(&self) -> (Point<Unit>, Point<Unit>) {
+        let extent = self.origin.saturating_add(self.size.to_vec());
         (
             Point::new(self.origin.x.min(extent.x), self.origin.y.min(extent.y)),
             Point::new(self.origin.x.max(extent.x), self.origin.y.max(extent.y)),

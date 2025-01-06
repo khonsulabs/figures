@@ -95,7 +95,7 @@ impl<Unit> Rect<Unit> {
     /// # Errors
     ///
     /// Returns `<NewUnit as TryFrom>::Error` when the inner type cannot be
-    /// converted. For this crate's types, this genenerally will be
+    /// converted. For this crate's types, this generally will be
     pub fn try_cast<NewUnit>(self) -> Result<Rect<NewUnit>, NewUnit::Error>
     where
         NewUnit: TryFrom<Unit>,

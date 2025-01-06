@@ -8,7 +8,7 @@ use crate::Fraction;
 
 /// Converts a type to its floating point representation.
 ///
-/// This trait exists because there is no trait in Rust to peform `x as f32`.
+/// This trait exists because there is no trait in Rust to perform `x as f32`.
 pub trait FloatConversion {
     /// The type that represents this type in floating point form.
     type Float;
@@ -332,7 +332,7 @@ pub trait ScreenScale {
     /// Converts this value from its current unit into device independent pixels
     /// ([`Lp`](crate::units::Lp)) using the provided `scale` factor.
     fn into_lp(self, scale: Fraction) -> Self::Lp;
-    /// Converts from Lp into this type, using the provided `scale` factor.
+    /// Converts from [`Lp`](crate::units::Lp) into this type, using the provided `scale` factor.
     fn from_lp(lp: Self::Lp, scale: Fraction) -> Self;
 }
 
@@ -427,12 +427,16 @@ pub trait Unit:
 /// available as traits.
 pub trait StdNumOps {
     /// Adds `self` and `other`, saturating instead of overflowing.
+    #[must_use]
     fn saturating_add(self, other: Self) -> Self;
     /// Multiplies `self` and `other`, saturating instead of overflowing.
+    #[must_use]
     fn saturating_mul(self, other: Self) -> Self;
     /// Divides `self` by `other`, saturating instead of overflowing.
+    #[must_use]
     fn saturating_div(self, other: Self) -> Self;
     /// Subtracts `other` from `self`, saturating instead of overflowing.
+    #[must_use]
     fn saturating_sub(self, other: Self) -> Self;
 }
 
@@ -556,7 +560,7 @@ impl PixelScaling for Lp {
 
 /// Information about scaling for a numerical unit type.
 pub trait UnscaledUnit {
-    /// The internal reprsentation used by this type.
+    /// The internal representation used by this type.
     type Representation: CastInto<i32>;
 
     /// Returns a new instance using the unscaled representation.

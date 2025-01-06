@@ -203,7 +203,7 @@ where
 {
     /// Returns the top-left and bottom-right points of this rectangle.
     ///
-    /// The first point returned will always be the top-right point, even if the size of the rectangle is negative.
+    /// The first point returned will always be the top-left point, even if the size of the rectangle is negative.
     pub fn extents(&self) -> (Point<Unit>, Point<Unit>) {
         let extent = self.origin + self.size;
         (

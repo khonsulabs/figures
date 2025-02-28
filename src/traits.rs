@@ -427,12 +427,16 @@ pub trait Unit:
 /// available as traits.
 pub trait StdNumOps {
     /// Adds `self` and `other`, saturating instead of overflowing.
+    #[must_use]
     fn saturating_add(self, other: Self) -> Self;
     /// Multiplies `self` and `other`, saturating instead of overflowing.
+    #[must_use]
     fn saturating_mul(self, other: Self) -> Self;
     /// Divides `self` by `other`, saturating instead of overflowing.
+    #[must_use]
     fn saturating_div(self, other: Self) -> Self;
     /// Subtracts `other` from `self`, saturating instead of overflowing.
+    #[must_use]
     fn saturating_sub(self, other: Self) -> Self;
 }
 

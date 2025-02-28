@@ -95,7 +95,7 @@ impl<Unit> Rect<Unit> {
     /// # Errors
     ///
     /// Returns `<NewUnit as TryFrom>::Error` when the inner type cannot be
-    /// converted. For this crate's types, this genenerally will be
+    /// converted. For this crate's types, this generally will be
     pub fn try_cast<NewUnit>(self) -> Result<Rect<NewUnit>, NewUnit::Error>
     where
         NewUnit: TryFrom<Unit>,
@@ -191,7 +191,7 @@ impl<Unit> Rect<Unit> {
     /// Returns the non-origin point.
     pub fn extent(&self) -> Point<Unit>
     where
-        Unit: crate::Unit,
+        Unit: Add<Output = Unit> + Copy,
     {
         self.origin + self.size
     }
@@ -199,16 +199,45 @@ impl<Unit> Rect<Unit> {
 
 impl<Unit> Rect<Unit>
 where
+    // alternatively we could reduce the traits for `extent()`
     Unit: Add<Output = Unit> + Ord + Copy,
 {
     /// Returns the top-left and bottom-right points of this rectangle.
     ///
-    /// The first point returned will always be the top-right point, even if the size of the rectangle is negative.
+    /// The first point returned will always be the top-left point, even if the size of the rectangle is negative.
     pub fn extents(&self) -> (Point<Unit>, Point<Unit>) {
-        let extent = self.origin + self.size;
-        (
-            Point::new(self.origin.x.min(extent.x), self.origin.y.min(extent.y)),
-            Point::new(self.origin.x.max(extent.x), self.origin.y.max(extent.y)),
+        (self.top_left(), self.bottom_right())
+    }
+
+    /// Returns the top-left corner of this rectangle.
+    pub fn top_left(&self) -> Point<Unit> {
+        Point::new(
+            self.origin.x.min(self.extent().x),
+            self.origin.y.min(self.extent().y),
+        )
+    }
+
+    /// Returns the top-right corner of this rectangle.
+    pub fn top_right(&self) -> Point<Unit> {
+        Point::new(
+            self.origin.x.max(self.extent().x),
+            self.origin.y.min(self.extent().y),
+        )
+    }
+
+    /// Returns the bottom-left corner of this rectangle.
+    pub fn bottom_left(&self) -> Point<Unit> {
+        Point::new(
+            self.origin.x.min(self.extent().x),
+            self.origin.y.max(self.extent().y),
+        )
+    }
+
+    /// Returns the bottom-right corner of this rectangle.
+    pub fn bottom_right(&self) -> Point<Unit> {
+        Point::new(
+            self.origin.x.max(self.extent().x),
+            self.origin.y.max(self.extent().y),
         )
     }
 }

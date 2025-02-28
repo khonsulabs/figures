@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `wgpu` has been updated to `24.0.1`.
 
+### Added
+
+- Functions to get the four corners of a `Rect`.
+
 ## v0.5.0 (2024-11-19)
 
 ### Breaking Changes
